@@ -37,7 +37,7 @@ const SAMPLE_TICKETS = [
   {
     id: 'GSD-130',
     email: 'priya.verma@company.com',
-    description: 'Snowflake queries are getting queued and taking too long.',
+    description: 'I am unable to log in to my Snowflake account. It shows that my user is locked due to multiple failed login attempts.',
     status: 'Open',
     createdAt: '4 Apr 2026, 8:30 AM',
     hasUpdate: true,
@@ -48,17 +48,16 @@ const SAMPLE_TICKETS = [
         role: 'bot',
         timestamp: '8:31 AM',
         missingFields: [
-          { label: 'Which Warehouse?' },
-          { label: 'Warehouse Size & Auto-scaling' },
-          { label: 'Recent Workload Increase?' },
-          { label: 'Business Impact' },
+          { label: 'Browser & Environment' },
+          { label: 'Steps to Reproduce' },
+          { label: 'Impact' },
         ],
       },
       {
         author: 'priya.verma@company.com',
         role: 'user',
         timestamp: '8:40 AM',
-        text: 'Warehouse: TRANSFORM_WH (Small)\nIssue: Queries are queued\nAuto-scale: Disabled\nWorkload: Increased due to new ETL jobs\nImpact: Data pipeline delays',
+        text: 'Browser & Environment:\nUsing Google Chrome on Production\n\nSteps to Reproduce:\nOpen Snowflake login page\nEnter username and password\nError message: "User is locked. Contact your administrator."\n\nImpact:\nOnly affecting me (single user issue)',
       },
     ],
   },
@@ -303,9 +302,9 @@ const AgentView = ({
       ];
     }
     const subStepDefs = ticketId === 'GSD-130' ? {
-      0: ['Connected to Snowflake (account: prod-01.us-east-1)', "Executed: SELECT * FROM QUERY_HISTORY WHERE WAREHOUSE='TRANSFORM_WH' AND STATUS='QUEUED'", 'Result: 14 queries queued — TRANSFORM_WH at full capacity'],
-      2: ['Executing: ALTER WAREHOUSE TRANSFORM_WH SET WAREHOUSE_SIZE = MEDIUM', 'Warehouse resize acknowledged — spinning up additional nodes', 'TRANSFORM_WH status: RESIZING → RUNNING'],
-      3: ['Executing: ALTER WAREHOUSE … SET MAX_CLUSTER_COUNT = 3', 'Auto-scale policy set: ECONOMY (min 1 / max 3 clusters)', 'Multi-cluster scaling confirmed active'],
+      0: ['Connected to Snowflake Admin Console (account: prod-01.us-east-1)', 'Navigating to Admin → Users & Roles → priya.verma@company.com', 'User status: LOCKED — 8 failed login attempts recorded'],
+      2: ['Executing: ALTER USER "PRIYA.VERMA" SET PASSWORD = \'[temp_secure_pwd]\'', 'Temporary password set — sending via IT secure messaging channel', 'Password reset acknowledged — user notified via email'],
+      4: ['Checking MFA enforcement policy for user role: DATA_ANALYST', 'MFA: Required — Duo authenticator linked and active', 'IP allowlist: Production network confirmed — Chrome/Production environment valid'],
     } : ticketId === 'GSD-150' ? {
       0: ['Authenticating to Salesforce via OAuth2 (client_id: sf-int-prod)', 'GET /services/data/v58.0/limits → API_REQUESTS: 187,432 / 200,000', 'API usage at 93.7% — HTTP 429 rate-limit threshold confirmed'],
       1: ['Connecting to prod-mulesoft-01 via management API', 'Fetching HTTP connector config for Salesforce integration flow', 'Injecting retry policy: base 2s, max 3 retries on HTTP 429'],
@@ -1214,6 +1213,11 @@ const SCENARIO_LIBRARY = [
     scenario: 'Snowflake Queue Congestion',
     sop: 'SOP-DW-006',
     solution: '1. Log into Snowflake console and check active query queue on TRANSFORM_WH\n2. Identify and terminate long-running or blocking queries using SYSTEM$CANCEL_QUERY\n3. Resize warehouse from Small to Medium to handle increased ETL load\n4. Enable multi-cluster auto-scaling with minimum 1 and maximum 3 clusters\n5. Stagger ETL job schedules to avoid concurrent warehouse saturation\n6. Monitor query queue depth and warehouse credit usage after changes\n7. Confirm data pipeline is running without delays and alert the reporter',
+  },
+  {
+    scenario: 'Snowflake User Account Locked',
+    sop: 'SOP-SF-007',
+    solution: '1. Admin logs into Snowflake console and navigates to Admin → Users & Roles\n2. Locate the locked user account and click "Unlock User" to restore access\n3. Reset the user\'s temporary password and communicate via secure IT channel\n4. Review INFORMATION_SCHEMA.LOGIN_HISTORY to identify failed authentication attempts and their source\n5. Verify MFA enforcement policy and IP allowlist configuration for the user role\n6. Confirm user can log in with new credentials from their browser and environment\n7. Update incident record and close ticket with resolution summary',
   },
 ];
 
