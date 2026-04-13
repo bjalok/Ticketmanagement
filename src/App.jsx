@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Search, Inbox, Cpu, Database,
   Zap, BookOpen, UserCheck, Check, Terminal, CheckCircle, Layers, Send,
   Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink
 } from 'lucide-react';
 
-// ── Pre-existing sample tickets shown in agent queue ──────────────────────────
-const GSD100_DUPLICATES = [
-  { id: 'GSD-072', title: 'Speakeasy historical dashboard access – Listnr Adwords', confidence: 94 },
-  { id: 'GSD-058', title: 'Dashboard access request – Speakeasy Listnr GCC', confidence: 91 },
-  { id: 'GSD-083', title: 'Cannot access Speakeasy reports – Cognizant Gurgaon', confidence: 88 },
-  { id: 'GSD-041', title: 'Access issue historical dashboard Adwords GCC', confidence: 85 },
-  { id: 'GSD-067', title: 'Speakeasy dashboard permission denied – contact-center', confidence: 82 },
-];
+// Pre-existing sample tickets shown in agent queue
+
 
 const SAMPLE_TICKETS = [
   {
@@ -120,36 +114,22 @@ const SAMPLE_TICKETS = [
   {
     id: 'GSD-103',
     email: 'ashi@company.com',
-    description: 'unable to update ashi@company.com',
+    description: 'I am unable to update Verint for ashi@company.com please fix it',
     status: 'Open',
     createdAt: '13 Apr 2026, 10:30 AM',
     hasUpdate: true,
     isSample: true,
-    comments: [
-      {
-        author: 'AI Agent',
-        role: 'bot',
-        timestamp: '10:31 AM',
-        missingFields: [
-          { label: 'Specific update that is failing' },
-          { label: 'Single or multiple agents' },
-          { label: 'Error code or message' },
-          { label: 'Program this request falls under' },
-        ],
-        enrichmentQuestions: [
-          { field: 'Specific update that is failing', detail: 'Can you specify what specific update is failing?' },
-          { field: 'Single or multiple agents', detail: 'Is this affecting a single agent or multiple agents?' },
-          { field: 'Error code or message', detail: 'Are there any specific error codes or messages you are seeing?' },
-          { field: 'Program this request falls under', detail: 'Please confirm the specific program this request falls under.' },
-        ],
-      },
-      {
-        author: 'ashi@company.com',
-        role: 'user',
-        timestamp: '10:38 AM',
-        text: 'I am trying to create new profile\nthis is just one agent slivester@company.com\nthere is no error code\nthis is for CPS program',
-      },
-    ],
+    comments: [],
+  },
+  {
+    id: 'GSD-104',
+    email: 'gcpteam@company.com',
+    description: 'Hi Speak easy is not working for GCP Generalists today. it wont launch please fix this ASAP as agent cannot take calls',
+    status: 'Open',
+    createdAt: '13 Apr 2026, 11:00 AM',
+    hasUpdate: true,
+    isSample: true,
+    comments: [],
   },
 ];
 
@@ -162,154 +142,260 @@ const ThinkingDots = ({ color = 'blue' }) => (
 );
 
 const S4_STEPS = [
-  'Connecting to resolution knowledge base…',
-  'Embedding incident context…',
-  'Computing similarity scores…',
-  'Ranking top historical matches…',
-  'Querying KB article index…',
-  'Linking related knowledge base articles…',
+  'Connecting to resolution knowledge base...',
+  'Embedding incident context...',
+  'Computing similarity scores...',
+  'Ranking top historical matches...',
+  'Querying KB article index...',
+  'Linking related knowledge base articles...',
 ];
 
 const CTI_STEPS = [
-  'Parsing ticket summary and reporter context…',
-  'Tokenising key phrases from user reply…',
-  'Matching against CTI taxonomy database…',
-  'Scoring category confidence across contact-center classes…',
-  'Cross-referencing program and site metadata…',
-  'Validating CTI triple against historical ticket corpus…',
-  'Finalising category, type, and item classification…',
+  'Parsing ticket summary and reporter context...',
+  'Tokenising key phrases from user reply...',
+  'Matching against CTI taxonomy database...',
+  'Scoring category confidence across contact-center classes...',
+  'Cross-referencing program and site metadata...',
+  'Validating CTI triple against historical ticket corpus...',
+  'Finalising category, type, and item classification...',
+];
+const GSD100_PRE_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Checking ticket against existing knowledge base...',
+  'Evaluating available context information...',
+  'Identifying required missing fields...',
+];
+const GSD100_CHECK_STEPS = [
+  'Processing reporter context...',
+  'Validating provided information against ticket...',
+  'Context validated — proceeding to classification...',
 ];
 const GSD100_DUP_STEPS = [
-  'Scanning active incident queue for similar issues…',
-  'Embedding ticket description for semantic similarity…',
-  'Comparing against open tickets (last 90 days)…',
-  'Querying resolved ticket history…',
-  'Computing cosine similarity scores across corpus…',
-  'Applying 80% confidence threshold filter…',
-  'Ranking top candidates by similarity score…',
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
 ];
 const GSD100_REC_STEPS = [
-  'Loading similar ticket corpus from vector store…',
-  'Fetching GSD-072 (94% match) from incident archive…',
-  'Extracting resolution transcript from GSD-072…',
-  'Parsing resolution steps from closed ticket…',
-  'Mapping steps to current ticket context…',
-  'Validating resolution applicability…',
+  'Loading similar ticket corpus from vector store...',
+  'Fetching GSD-072 (94% match) from incident archive...',
+  'Extracting resolution transcript from GSD-072...',
+  'Parsing resolution steps from closed ticket...',
+  'Mapping steps to current ticket context...',
+  'Validating resolution applicability...',
 ];
 const GSD100_REC_RESOLUTION = [
-  "Verify user's Speakeasy access role in admin panel under Accounts → Permissions.",
+  "Verify user's Speakeasy access role in admin panel under Accounts -> Permissions.",
   'Submit access grant request to Speakeasy admin at speakeasy-admin@internal with ticket reference.',
-  'Confirm dashboard URL with user after access is granted (Speakeasy → Reports → Historical).',
+  'Confirm dashboard URL with user after access is granted (Speakeasy -> Reports -> Historical).',
   'Add user to the Listnr Adwords GCC distribution group for ongoing access.',
 ];
 const GSD100_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match…',
-  'Matching CTI: contact-center / Speakeasy historical dashboard / access…',
-  'Locating SOP for Speakeasy historical dashboard access requests…',
-  'Retrieving RUNBOOK-CC-047 from knowledge base…',
-  'Validating runbook version and current applicability…',
+  'Querying scenario runbook library for CTI match...',
+  'Matching CTI: contact-center / Speakeasy historical dashboard / access...',
+  'Locating SOP for Speakeasy historical dashboard access requests...',
+  'Retrieving RUNBOOK-CC-047 from knowledge base...',
+  'Validating runbook version and current applicability...',
 ];
 const GSD100_RUNBOOK_RESOLUTION = [
-  'Confirm user identity and site: Cognizant Gurgaon – Adwords GCC (verified via context).',
-  'Log access request in Speakeasy admin portal → Contact: speakeasy-support@internal.',
-  'Assign dashboard role: viewer_historical via Admin → Role Assignment panel.',
-  'Notify user once role is propagated (typically 15–30 min after assignment).',
-  'Verify access: ask user to navigate Speakeasy → Reports → Historical Dashboard.',
+  'Confirm user identity and site: Cognizant Gurgaon - Adwords GCC (verified via context).',
+  'Log access request in Speakeasy admin portal -> Contact: speakeasy-support@internal.',
+  'Assign dashboard role: viewer_historical via Admin -> Role Assignment panel.',
+  'Notify user once role is propagated (typically 15-30 min after assignment).',
+  'Verify access: ask user to navigate Speakeasy -> Reports -> Historical Dashboard.',
 ];
 const GSD100_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Speakeasy dashboard entries…',
-  'Checking error-code catalogue for access-related entries…',
-  'Scanning step-by-step guides for dashboard permission issues…',
-  'Cross-referencing troubleshoot tags: contact-center, dashboard, access…',
+  'Searching troubleshoot guide index for Speakeasy dashboard entries...',
+  'Checking error-code catalogue for access-related entries...',
+  'Scanning step-by-step guides for dashboard permission issues...',
+  'Cross-referencing troubleshoot tags: contact-center, dashboard, access...',
 ];
 const GSD101_REC_STEPS = [
-  'Loading similar ticket corpus from vector store…',
-  'Fetching GSD-089 (87% match) from incident archive…',
-  'Extracting resolution transcript from GSD-089…',
-  'Parsing resolution steps from closed ticket…',
-  'Mapping steps to current ticket context…',
-  'Validating resolution applicability…',
+  'Loading similar ticket corpus from vector store...',
+  'Fetching GSD-089 (87% match) from incident archive...',
+  'Extracting resolution transcript from GSD-089...',
+  'Parsing resolution steps from closed ticket...',
+  'Mapping steps to current ticket context...',
+  'Validating resolution applicability...',
 ];
 const GSD101_REC_RESOLUTION = [
   'Identify duplicate Verint profiles for the agent (jow@companty.com) in admin console.',
-  'Deactivate profile 1234-A in Verint admin → User Management → Set status: Inactive.',
+  'Deactivate profile 1234-A in Verint admin -> User Management -> Set status: Inactive.',
   'Confirm profile 12324 remains active with correct role and schedule assignments.',
   'Notify agent and team lead once the duplicate profile is removed and verified.',
 ];
 const GSD101_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match…',
-  'Matching CTI: contact-center / wfm-verint / others…',
-  'Searching SOP index for Verint duplicate profile resolution…',
-  'Scanning RUNBOOK-WFM-* entries for profile management procedures…',
-  'Validating runbook coverage for this issue type…',
+  'Querying scenario runbook library for CTI match...',
+  'Matching CTI: contact-center / wfm-verint / others...',
+  'Searching SOP index for Verint duplicate profile resolution...',
+  'Scanning RUNBOOK-WFM-* entries for profile management procedures...',
+  'Validating runbook coverage for this issue type...',
 ];
 const GSD101_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Verint profile issues…',
-  'Checking error-code catalogue for duplicate profile entries…',
-  'Scanning step-by-step guides for WFM profile management…',
-  'Cross-referencing troubleshoot tags: wfm-verint, profile, duplicate…',
+  'Searching troubleshoot guide index for Verint profile issues...',
+  'Checking error-code catalogue for duplicate profile entries...',
+  'Scanning step-by-step guides for WFM profile management...',
+  'Cross-referencing troubleshoot tags: wfm-verint, profile, duplicate...',
 ];
 const GSD101_TROUBLESHOOT_RESOLUTION = [
   'Log in to Verint WFM admin console with admin credentials.',
-  'Navigate to User Management → search agent by email: jow@companty.com.',
+  'Navigate to User Management -> search agent by email: jow@companty.com.',
   'Identify both profiles (12324 and 1234-A) and confirm which is the active one.',
-  'Select profile 1234-A → set status to Inactive → Save changes.',
+  'Select profile 1234-A -> set status to Inactive -> Save changes.',
   'Verify profile 12324 retains all schedule and adherence history.',
   'Confirm fix with the agent and close the ticket once verified.',
 ];
 const GSD101_DUP_STEPS = [
-  'Scanning active incident queue for similar issues…',
-  'Embedding ticket description for semantic similarity…',
-  'Comparing against open tickets (last 90 days)…',
-  'Querying resolved ticket history for Verint profile issues…',
-  'Computing cosine similarity scores across corpus…',
-  'Applying 80% confidence threshold filter…',
-  'No tickets found above confidence threshold…',
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Verint profile issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
 ];
 const GSD103_DUP_STEPS = [
-  'Scanning active incident queue for similar issues…',
-  'Embedding ticket description for semantic similarity…',
-  'Comparing against open tickets (last 90 days)…',
-  'Querying resolved ticket history for Verint profile issues…',
-  'Computing cosine similarity scores across corpus…',
-  'Applying 80% confidence threshold filter…',
-  'No tickets found above confidence threshold…',
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Verint profile issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
 ];
 const GSD103_REC_STEPS = [
-  'Loading similar ticket corpus from vector store…',
-  'Fetching GSD-076 (91% match) from incident archive…',
-  'Extracting resolution transcript from GSD-076…',
-  'Parsing resolution steps from closed ticket…',
-  'Mapping steps to current ticket context…',
-  'Validating resolution applicability…',
+  'Loading similar ticket corpus from vector store...',
+  'Fetching GSD-076 (91% match) from incident archive...',
+  'Extracting resolution transcript from GSD-076...',
+  'Parsing resolution steps from closed ticket...',
+  'Mapping steps to current ticket context...',
+  'Validating resolution applicability...',
 ];
 const GSD103_REC_RESOLUTION = [
   'Log in to Verint WFM admin console with admin credentials.',
-  'Navigate to User Management → New Profile and enter agent details: slivester@company.com.',
+  'Navigate to User Management -> New Profile and enter agent details: slivester@company.com.',
   'Assign the correct program: CPS, and set site and role permissions accordingly.',
   'Save the new profile and verify login access for the agent.',
   'Notify the requester (ashi@company.com) once the profile is active.',
 ];
 const GSD103_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match…',
-  'Matching CTI: contact-center / wfm-verint / create new profile…',
-  'Locating SOP for Verint new agent profile creation…',
-  'Retrieving RUNBOOK-WFM-012 from knowledge base…',
-  'Validating runbook version and current applicability…',
+  'Querying scenario runbook library for CTI match...',
+  'Matching CTI: contact-center / wfm-verint / create new profile...',
+  'Locating SOP for Verint new agent profile creation...',
+  'Retrieving RUNBOOK-WFM-012 from knowledge base...',
+  'Validating runbook version and current applicability...',
 ];
 const GSD103_RUNBOOK_RESOLUTION = [
   'Confirm agent details: name, email (slivester@company.com), program (CPS), and site.',
-  'Log in to Verint WFM admin portal → User Management → Create New User.',
+  'Log in to Verint WFM admin portal -> User Management -> Create New User.',
   'Fill in required fields: email, program assignment (CPS), role, and site location.',
   'Set initial password and send credentials via secure IT channel.',
   'Verify profile creation by searching agent email in User Management.',
   'Notify requesting supervisor/admin once profile is active and accessible.',
 ];
 const GSD103_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Verint profile creation issues…',
-  'Checking error-code catalogue for new profile creation failures…',
-  'Scanning step-by-step guides for WFM user provisioning…',
-  'Cross-referencing troubleshoot tags: wfm-verint, create-profile, CPS…',
+  'Searching troubleshoot guide index for Verint profile creation issues...',
+  'Checking error-code catalogue for new profile creation failures...',
+  'Scanning step-by-step guides for WFM user provisioning...',
+  'Cross-referencing troubleshoot tags: wfm-verint, create-profile, CPS...',
+];
+const GSD103_CONTEXT_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Parsing ticket summary and key phrases...',
+  'Checking required context fields against ticket schema...',
+  'Evaluating completeness of reporter information...',
+  'Verifying agent email, program, and site details in description...',
+  'Context provided by reporter — all fields validated...',
+];
+const GSD104_CONTEXT_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Parsing ticket summary and key phrases...',
+  'Checking required context fields against ticket schema...',
+  'Evaluating completeness of reporter information...',
+  'Verifying program, site, and system details in description...',
+  'All required fields present — context complete...',
+];
+const GSD104_DUP_STEPS = [
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Speakeasy issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  '3 tickets found above confidence threshold...',
+];
+const GSD104_REC_STEPS = [
+  'Loading similar ticket corpus from vector store...',
+  'Embedding current ticket for similarity matching...',
+  'Scanning resolved tickets for Speakeasy / Barkeep issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Filtering matches above 80% confidence threshold...',
+  'No resolved tickets matched above threshold...',
+];
+const GSD104_RUNBOOK_STEPS = [
+  'Querying scenario runbook library for CTI match...',
+  'Matching CTI: contact-center / barkeep / app launch...',
+  'Locating SOP for Barkeep application launch failures...',
+  'Retrieving RUNBOOK-CC-031 from knowledge base...',
+  'Validating runbook version and current applicability...',
+];
+const GSD104_RUNBOOK_RESOLUTION = [
+  'Confirm affected agents and site: GCP Generalists — Barcelona TP, Colombia Bogota.',
+  'Check Barkeep / Speakeasy service status at ops-status.internal for active outage alert.',
+  'If outage confirmed, escalate to Barkeep ops team via barkeep-ops@internal with ticket reference.',
+  'If no active outage, instruct agents to clear browser cache and retry launching Speakeasy.',
+  'Verify VPN connectivity for remote agents at all affected sites.',
+  'Confirm fix with team lead once agents can take calls and close all related duplicate tickets.',
+];
+const GSD104_TROUBLESHOOT_STEPS = [
+  'Searching troubleshoot guide index for Barkeep app launch issues...',
+  'Checking error-code catalogue for Speakeasy launch failures...',
+  'Scanning step-by-step guides for contact-center app launch errors...',
+  'Cross-referencing troubleshoot tags: contact-center, barkeep, app-launch...',
+];
+
+// Knowledge Base — GSD-076 incident record
+const GSD076_KB = {
+  id: 'GSD-076',
+  summary: 'Unable to update Verint profile for agent slivester@company.com',
+  reporter: 'ashi@company.com',
+  createdAt: '10 Apr 2026, 2:14 PM',
+  resolvedAt: '10 Apr 2026, 4:47 PM',
+  status: 'Resolved',
+  priority: '2 — High',
+  program: 'CPS',
+  site: 'Cognizant Bangalore',
+  cti: { category: 'contact-center', type: 'wfm-verint', item: 'update profile' },
+  description: 'Supervisor ashi@company.com reported that she is unable to update the Verint WFM profile for agent slivester@company.com. The update operation fails silently — no error message, and changes are not saved. This is preventing the agent from being assigned the correct schedule for the upcoming week.',
+  rootCause: 'The agent profile had a stale session lock from a failed bulk-import job run two days prior. The lock prevented any single-profile edits from persisting.',
+  resolutionSteps: [
+    'Logged in to Verint WFM admin console with elevated admin credentials.',
+    'Navigated to User Management → searched agent by email: slivester@company.com.',
+    'Identified a stale session lock on the profile (lock timestamp: 8 Apr 2026, 11:22 AM).',
+    'Released the lock via Admin Tools → Session Manager → Force Release.',
+    'Re-applied the pending profile updates: program assignment (CPS), site (Cognizant Bangalore), schedule group.',
+    'Saved changes and verified all fields were persisted correctly.',
+    'Notified ashi@company.com that the profile was updated successfully.',
+    'Monitored the profile for 15 minutes — no re-lock occurred.',
+  ],
+  assignedTo: 'Neha Joshi',
+  department: 'L2 WFM Operations',
+  resolutionTime: '2h 33m',
+};
+
+const KB_SEARCH_STEPS = [
+  'Initialising knowledge base search for incident GSD-076...',
+  'Connecting to Buganizer incident archive...',
+  'Querying Buganizer index for ticket ID GSD-076...',
+  'GSD-076 metadata retrieved from Buganizer...',
+  'Connecting to GUTS (Google Universal Ticket System)...',
+  'Querying GUTS for GSD-076 resolution record and root cause...',
+  'Fetching resolution transcript and linked KB articles from GUTS...',
+  'Cross-referencing Buganizer and GUTS records for consistency...',
+  'Full incident record assembled from both sources...',
 ];
 
 const AgentView = ({
@@ -335,7 +421,13 @@ const AgentView = ({
   const [gsd100CtiDone, setGsd100CtiDone] = useState(false);
   const [gsd100DupSteps, setGsd100DupSteps] = useState([]);
   const [gsd100DupDone, setGsd100DupDone] = useState(false);
-  const [gsd100CommentUpdated, setGsd100CommentUpdated] = useState(false);
+
+  const [gsd100PreSteps, setGsd100PreSteps] = useState([]);
+  const [gsd100PreDone, setGsd100PreDone] = useState(false);
+  const [gsd100CheckSteps, setGsd100CheckSteps] = useState([]);
+  const [gsd100CheckDone, setGsd100CheckDone] = useState(false);
+  const [gsd100ContextSubmitted, setGsd100ContextSubmitted] = useState(false);
+  const [gsd100ContextVisible, setGsd100ContextVisible] = useState(false);
   const [gsd100RecSteps, setGsd100RecSteps] = useState([]);
   const [gsd100RecDone, setGsd100RecDone] = useState(false);
   const [gsd100RunbookSteps, setGsd100RunbookSteps] = useState([]);
@@ -353,6 +445,8 @@ const AgentView = ({
   const [gsd101RunbookDone, setGsd101RunbookDone] = useState(false);
   const [gsd101TroubleshootSteps, setGsd101TroubleshootSteps] = useState([]);
   const [gsd101TroubleshootDone, setGsd101TroubleshootDone] = useState(false);
+  const [gsd103ContextSteps, setGsd103ContextSteps] = useState([]);
+  const [gsd103ContextDone, setGsd103ContextDone] = useState(false);
   const [gsd103CtiSteps, setGsd103CtiSteps] = useState([]);
   const [gsd103CtiDone, setGsd103CtiDone] = useState(false);
   const [gsd103DupSteps, setGsd103DupSteps] = useState([]);
@@ -364,6 +458,24 @@ const AgentView = ({
   const [gsd103RunbookDone, setGsd103RunbookDone] = useState(false);
   const [gsd103TroubleshootSteps, setGsd103TroubleshootSteps] = useState([]);
   const [gsd103TroubleshootDone, setGsd103TroubleshootDone] = useState(false);
+  const [gsd104ContextSteps, setGsd104ContextSteps] = useState([]);
+  const [gsd104ContextDone, setGsd104ContextDone] = useState(false);
+  const [gsd104CtiSteps, setGsd104CtiSteps] = useState([]);
+  const [gsd104CtiDone, setGsd104CtiDone] = useState(false);
+  const [gsd104DupSteps, setGsd104DupSteps] = useState([]);
+  const [gsd104DupDone, setGsd104DupDone] = useState(false);
+  const [gsd104RecSteps, setGsd104RecSteps] = useState([]);
+  const [gsd104RecDone, setGsd104RecDone] = useState(false);
+  const [gsd104RunbookSteps, setGsd104RunbookSteps] = useState([]);
+  const [gsd104RunbookDone, setGsd104RunbookDone] = useState(false);
+  const [gsd104TroubleshootSteps, setGsd104TroubleshootSteps] = useState([]);
+  const [gsd104TroubleshootDone, setGsd104TroubleshootDone] = useState(false);
+
+  // KB incident search state
+  const [kbSearchTicketId, setKbSearchTicketId] = useState(null);
+  const [kbSearchStepsShown, setKbSearchStepsShown] = useState([]);
+  const [kbSearchDone, setKbSearchDone] = useState(false);
+  const [kbResultReady, setKbResultReady] = useState(false);
 
   // Combine sample tickets + real tickets; real tickets override sample if same ID
   const ticketMap = new Map();
@@ -401,14 +513,20 @@ const AgentView = ({
     }
   }, [routingTicketId, agentSelectedTicketId]);
 
-  // GSD-100 CTI + duplicate animation
+  // GSD-100: pre-step animation (runs as soon as ticket is selected)
   useEffect(() => {
     if (agentSelectedTicketId !== 'GSD-100') return;
+    setGsd100PreSteps([]);
+    setGsd100PreDone(false);
+    setGsd100CheckSteps([]);
+    setGsd100CheckDone(false);
+    setGsd100ContextSubmitted(false);
+    setGsd100ContextVisible(false);
     setGsd100CtiSteps([]);
     setGsd100CtiDone(false);
     setGsd100DupSteps([]);
     setGsd100DupDone(false);
-    setGsd100CommentUpdated(false);
+
     setGsd100RecSteps([]);
     setGsd100RecDone(false);
     setGsd100RunbookSteps([]);
@@ -416,10 +534,27 @@ const AgentView = ({
     setGsd100TroubleshootSteps([]);
     setGsd100TroubleshootDone(false);
     const timers = [];
-    CTI_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100CtiSteps(prev => [...prev, step]), 400 + i * 900));
+    GSD100_PRE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100PreSteps(prev => [...prev, step]), 300 + i * 700));
     });
-    const ctiDoneAt = 400 + CTI_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd100PreDone(true), 300 + GSD100_PRE_STEPS.length * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
+
+  // GSD-100 CTI + duplicate + recommendation animation — triggered after context submitted
+  useEffect(() => {
+    if (!gsd100ContextSubmitted) return;
+    const timers = [];
+    GSD100_CHECK_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100CheckSteps(prev => [...prev, step]), 300 + i * 700));
+    });
+    const checkDoneAt = 300 + GSD100_CHECK_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd100CheckDone(true), checkDoneAt));
+    const ctiStart = checkDoneAt + 500;
+    CTI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd100CtiDone(true), ctiDoneAt));
     const dupStart = ctiDoneAt + 600;
     GSD100_DUP_STEPS.forEach((step, i) => {
@@ -427,28 +562,25 @@ const AgentView = ({
     });
     const dupDoneAt = dupStart + GSD100_DUP_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd100DupDone(true), dupDoneAt));
-    // Recommendation Agent — similar ticket search
     const recStart = dupDoneAt + 3500;
     GSD100_REC_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100RecSteps(prev => [...prev, step]), recStart + i * 700));
     });
     const recDoneAt = recStart + GSD100_REC_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd100RecDone(true), recDoneAt));
-    // Runbook search
     const runbookStart = recDoneAt + 800;
     GSD100_RUNBOOK_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
     });
     const runbookDoneAt = runbookStart + GSD100_RUNBOOK_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd100RunbookDone(true), runbookDoneAt));
-    // Troubleshoot guide search
     const troubleshootStart = runbookDoneAt + 800;
     GSD100_TROUBLESHOOT_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
     });
     timers.push(setTimeout(() => setGsd100TroubleshootDone(true), troubleshootStart + GSD100_TROUBLESHOOT_STEPS.length * 700));
     return () => timers.forEach(clearTimeout);
-  }, [agentSelectedTicketId]);
+  }, [gsd100ContextVisible]);
 
   // GSD-101 CTI + duplicate animation
   useEffect(() => {
@@ -497,9 +629,11 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // GSD-103 CTI + duplicate + recommendation animation
+  // GSD-103 context validation + CTI + duplicate + recommendation animation
   useEffect(() => {
     if (agentSelectedTicketId !== 'GSD-103') return;
+    setGsd103ContextSteps([]);
+    setGsd103ContextDone(false);
     setGsd103CtiSteps([]);
     setGsd103CtiDone(false);
     setGsd103DupSteps([]);
@@ -512,10 +646,16 @@ const AgentView = ({
     setGsd103TroubleshootSteps([]);
     setGsd103TroubleshootDone(false);
     const timers = [];
-    CTI_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd103CtiSteps(prev => [...prev, step]), 400 + i * 900));
+    GSD103_CONTEXT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd103ContextSteps(prev => [...prev, step]), 300 + i * 700));
     });
-    const ctiDoneAt = 400 + CTI_STEPS.length * 900;
+    const contextDoneAt = 300 + GSD103_CONTEXT_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd103ContextDone(true), contextDoneAt));
+    const ctiStart = contextDoneAt + 600;
+    CTI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd103CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd103CtiDone(true), ctiDoneAt));
     const dupStart = ctiDoneAt + 600;
     GSD103_DUP_STEPS.forEach((step, i) => {
@@ -543,6 +683,75 @@ const AgentView = ({
     timers.push(setTimeout(() => setGsd103TroubleshootDone(true), troubleshootStart + GSD103_TROUBLESHOOT_STEPS.length * 700));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
+
+  // GSD-104 context validation + CTI + duplicate animation
+  useEffect(() => {
+    if (agentSelectedTicketId !== 'GSD-104') return;
+    setGsd104ContextSteps([]);
+    setGsd104ContextDone(false);
+    setGsd104CtiSteps([]);
+    setGsd104CtiDone(false);
+    setGsd104DupSteps([]);
+    setGsd104DupDone(false);
+    setGsd104RecSteps([]);
+    setGsd104RecDone(false);
+    setGsd104RunbookSteps([]);
+    setGsd104RunbookDone(false);
+    setGsd104TroubleshootSteps([]);
+    setGsd104TroubleshootDone(false);
+    const timers = [];
+    GSD104_CONTEXT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104ContextSteps(prev => [...prev, step]), 300 + i * 700));
+    });
+    const contextDoneAt = 300 + GSD104_CONTEXT_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd104ContextDone(true), contextDoneAt));
+    const ctiStart = contextDoneAt + 600;
+    CTI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd104CtiDone(true), ctiDoneAt));
+    const dupStart = ctiDoneAt + 600;
+    GSD104_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104DupSteps(prev => [...prev, step]), dupStart + i * 900));
+    });
+    const dupDoneAt = dupStart + GSD104_DUP_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd104DupDone(true), dupDoneAt));
+    const recStart = dupDoneAt + 3500;
+    GSD104_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104RecSteps(prev => [...prev, step]), recStart + i * 700));
+    });
+    const recDoneAt = recStart + GSD104_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd104RecDone(true), recDoneAt));
+    const runbookStart = recDoneAt + 800;
+    GSD104_RUNBOOK_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
+    });
+    const runbookDoneAt = runbookStart + GSD104_RUNBOOK_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd104RunbookDone(true), runbookDoneAt));
+    const troubleshootStart = runbookDoneAt + 800;
+    GSD104_TROUBLESHOOT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
+    });
+    timers.push(setTimeout(() => setGsd104TroubleshootDone(true), troubleshootStart + GSD104_TROUBLESHOOT_STEPS.length * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
+
+  // KB incident search animation
+  useEffect(() => {
+    if (!kbSearchTicketId) return;
+    setKbSearchStepsShown([]);
+    setKbSearchDone(false);
+    setKbResultReady(false);
+    const timers = [];
+    KB_SEARCH_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setKbSearchStepsShown(prev => [...prev, step]), 400 + i * 600));
+    });
+    const searchDoneAt = 400 + KB_SEARCH_STEPS.length * 600;
+    timers.push(setTimeout(() => setKbSearchDone(true), searchDoneAt));
+    timers.push(setTimeout(() => setKbResultReady(true), searchDoneAt + 400));
+    return () => timers.forEach(clearTimeout);
+  }, [kbSearchTicketId]);
 
   // Pipeline state helper
   const getPipelineState = (ticketId) => {
@@ -576,6 +785,14 @@ const AgentView = ({
     if (!q) return;
     setAgentKBMessages(prev => [...prev, { role: 'user', text: q, timestamp: new Date().toLocaleTimeString() }]);
     setAgentKBInput('');
+    // Detect incident lookup query (e.g. "tell me about incident GSD-076")
+    const incidentMatch = q.match(/GSD-(\d+)/i);
+    if (incidentMatch) {
+      const incidentId = `GSD-${incidentMatch[1]}`;
+      setKbSearchTicketId(prev => (prev === incidentId ? null : prev)); // force re-trigger if same
+      setTimeout(() => setKbSearchTicketId(incidentId), 10);
+      return;
+    }
     setTimeout(() => {
       const ticket = allQueueTickets.find(t => t.id === agentSelectedTicketId);
       const desc = ticket?.description || '';
@@ -653,12 +870,12 @@ const AgentView = ({
     <div className="flex-1 flex overflow-hidden">
 
       {/* Left Sidebar: Ticket Queue */}
-      <div className="w-60 bg-white border-r border-slate-200 flex flex-col flex-shrink-0">
+      <div className="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0">
         <div className="p-3 border-b border-slate-100">
           <div className="flex items-center gap-2 mb-2.5">
             <Inbox className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Queue</span>
-            <span className="ml-auto text-[10px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-bold">{filteredQueue.length}</span>
+            <span className="text-sm font-bold text-slate-600 uppercase tracking-wider">Queue</span>
+            <span className="ml-auto text-sm bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-bold">{filteredQueue.length}</span>
           </div>
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400" />
@@ -667,7 +884,7 @@ const AgentView = ({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search tickets..."
-              className="w-full pl-7 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs focus:outline-none focus:border-indigo-300"
+              className="w-full pl-7 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm focus:outline-none focus:border-indigo-300"
             />
           </div>
         </div>
@@ -675,7 +892,7 @@ const AgentView = ({
           {filteredQueue.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-slate-400">
               <Inbox className="w-8 h-8 mb-2 opacity-30" />
-              <p className="text-xs italic text-center">No tickets in queue</p>
+              <p className="text-sm italic text-center">No tickets in queue</p>
             </div>
           ) : filteredQueue.map(t => (
             <button
@@ -684,7 +901,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 'GSD-100' && t.id !== 'GSD-101' && t.id !== 'GSD-103') {
+                if (!hasBeenRouted && t.id !== 'GSD-100' && t.id !== 'GSD-101' && t.id !== 'GSD-103' && t.id !== 'GSD-104') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -708,14 +925,14 @@ const AgentView = ({
               className={`w-full text-left p-2.5 rounded-lg transition-colors border ${agentSelectedTicketId === t.id ? 'bg-indigo-50 border-indigo-200' : 'hover:bg-slate-50 border-transparent'}`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-bold text-indigo-600">{t.id}</span>
+                <span className="text-sm font-bold text-indigo-600">{t.id}</span>
                 <div className="flex items-center gap-1">
                   {t.hasUpdate && <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />}
-                  <span className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-bold border border-blue-100">Open</span>
+                  <span className="text-sm bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-bold border border-blue-100">Open</span>
                 </div>
               </div>
-              <p className="text-[11px] text-slate-600 line-clamp-2 leading-snug">{t.description}</p>
-              <p className="text-[10px] text-slate-400 mt-1">{t.createdAt}</p>
+              <p className="text-sm text-slate-600 line-clamp-2 leading-snug">{t.description}</p>
+              <p className="text-sm text-slate-400 mt-1">{t.createdAt}</p>
             </button>
           ))}
         </div>
@@ -725,8 +942,8 @@ const AgentView = ({
       {!agentTicket ? (
         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 bg-slate-50">
           <Layers className="w-16 h-16 mb-4 opacity-20" />
-          <p className="text-sm font-semibold">Select a ticket from the queue</p>
-          <p className="text-xs mt-1 opacity-70">AI agent pipeline · SOP matching · resolution recommendations</p>
+          <p className="text-base font-semibold">Select a ticket from the queue</p>
+          <p className="text-sm mt-1 opacity-70">AI agent pipeline · SOP matching · resolution recommendations</p>
         </div>
       ) : (
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -735,8 +952,8 @@ const AgentView = ({
           <div className="bg-white border-b border-slate-200 px-5 py-3 flex items-start gap-4 flex-shrink-0">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-xs font-bold text-indigo-600">{agentTicket.id}</span>
-                <span className="text-[10px] text-slate-400">{agentTicket.createdAt}</span>
+                <span className="text-sm font-bold text-indigo-600">{agentTicket.id}</span>
+                <span className="text-sm text-slate-400">{agentTicket.createdAt}</span>
               </div>
               <p className="text-sm font-semibold text-slate-800 line-clamp-1">{agentTicket.description}</p>
             </div>
@@ -748,7 +965,7 @@ const AgentView = ({
               <button
                 key={tab}
                 onClick={() => setAgentActiveTab(tab)}
-                className={`py-2.5 px-3 text-xs font-semibold border-b-2 transition-colors ${agentActiveTab === tab ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
+                className={`py-2.5 px-3 text-sm font-semibold border-b-2 transition-colors ${agentActiveTab === tab ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-slate-500 hover:text-slate-800'}`}
               >
                 {tab}
               </button>
@@ -762,55 +979,57 @@ const AgentView = ({
               {/* Col 1: Summary */}
               <div className="w-72 border-r border-slate-200 bg-white overflow-y-auto flex-shrink-0">
                 <div className="p-4 border-b border-slate-100">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Summary</p>
-                  <p className="text-xs text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Summary</p>
+                  <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
                   <div className="grid grid-cols-2 gap-x-3 gap-y-3">
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Number</p><p className="text-xs font-semibold text-indigo-600 mt-0.5">{agentTicket.id}</p></div>
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-xs font-semibold text-orange-600 mt-0.5">2 – High</p></div>
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Opened</p><p className="text-xs text-slate-600 mt-0.5">{agentTicket.createdAt}</p></div>
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">State</p><p className="text-xs font-semibold text-green-600 mt-0.5">{agentTicket.status}</p></div>
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Impact</p><p className="text-xs text-slate-600 mt-0.5">3 – Low</p></div>
-                    <div><p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Urgency</p><p className="text-xs text-slate-600 mt-0.5">2 – High</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Number</p><p className="text-sm font-semibold text-indigo-600 mt-0.5">{agentTicket.id}</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-sm font-semibold text-orange-600 mt-0.5">2 — High</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Opened</p><p className="text-sm text-slate-600 mt-0.5">{agentTicket.createdAt}</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">State</p><p className="text-sm font-semibold text-green-600 mt-0.5">{agentTicket.status}</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Impact</p><p className="text-sm text-slate-600 mt-0.5">3 — Low</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Urgency</p><p className="text-sm text-slate-600 mt-0.5">2 — High</p></div>
                   </div>
                 </div>
                 <div className="p-4 border-b border-slate-100">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Caller</p>
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Caller</p>
                   {(() => {
                     const callerMap = {
                       'GSD-100': 'Rahul Sharma',
                       'GSD-101': 'Priya Menon',
                       'GSD-103': 'Ashi Verma',
+                      'GSD-104': 'Ravi Kumar',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">{callerName[0].toUpperCase()}</div>
+                        <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-base flex-shrink-0">{callerName[0].toUpperCase()}</div>
                         <div>
-                          <p className="text-xs font-semibold text-slate-800">{callerName}</p>
-                          <p className="text-[10px] text-slate-400">Employee</p>
+                          <p className="text-sm font-semibold text-slate-800">{callerName}</p>
+                          <p className="text-sm text-slate-400">Employee</p>
                         </div>
                       </div>
                     );
                   })()}
                 </div>
                 <div className="p-4">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Assigned To</p>
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Assigned To</p>
                   {(() => {
                     const assigneeMap = {
                       'GSD-100': { agent: 'Shivam Gupta', department: 'L1 Contact Center Support' },
                       'GSD-101': { agent: 'Ankit Rawat', department: 'L2 WFM Operations' },
                       'GSD-103': { agent: 'Neha Joshi', department: 'L2 WFM Operations' },
+                      'GSD-104': { agent: 'Arjun Singh', department: 'L1 Contact Center Support' },
                     };
                     const assignee = assigneeMap[agentTicket.id];
-                    if (!assignee) return <p className="text-xs text-slate-400 italic">Unassigned</p>;
+                    if (!assignee) return <p className="text-sm text-slate-400 italic">Unassigned</p>;
                     return (
                       <div className="flex items-center gap-2.5">
                         <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm flex-shrink-0">
                           {assignee.agent.split(' ').map(n => n[0]).join('')}
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-slate-800">{assignee.agent}</p>
-                          <p className="text-[10px] text-indigo-500 font-medium">{assignee.department}</p>
+                          <p className="text-sm font-semibold text-slate-800">{assignee.agent}</p>
+                          <p className="text-sm text-indigo-500 font-medium">{assignee.department}</p>
                         </div>
                       </div>
                     );
@@ -819,9 +1038,9 @@ const AgentView = ({
               </div>
 
               {/* Col 2: AI Agent Pipeline */}
-              <div className="flex-1 overflow-y-auto p-5 bg-slate-50">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">AI Agent Pipeline</p>
-                <div className="space-y-3 max-w-2xl">
+              <div className="flex-[3] overflow-y-auto p-5 bg-slate-50 min-w-0">
+                <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">AI Agent Pipeline</p>
+                <div className="space-y-3">
 
                   {/* S1 Card */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
@@ -832,76 +1051,333 @@ const AgentView = ({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <div>
-                            <span className="text-[9px] font-bold text-blue-400 uppercase tracking-wider">Agent</span>
-                            <p className="text-xs font-bold text-slate-800">Context Enrichment</p>
+                            <p className="text-sm font-bold text-slate-800">Triage & Categorize Agent</p>
                           </div>
                           {isThinking ? (
-                            <span className="flex items-center gap-1.5 text-[10px] text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
+                            <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
+                          ) : agentTicket?.id === 'GSD-103' ? (
+                            gsd103ContextDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
+                              : gsd103ContextSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : null
+                          ) : agentTicket?.id === 'GSD-104' ? (
+                            gsd104ContextDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
+                              : gsd104ContextSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : null
                           ) : pipeline?.enrichment ? (() => {
+                            if (agentTicket?.id === 'GSD-100') {
+                              if (gsd100ContextSubmitted) return <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>;
+                              if (gsd100PreDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
+                              return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>;
+                            }
                             const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                             const hasReply = agentComments.some((c, i) => c.role === 'user' && i > enrichmentIdx);
                             return hasReply
-                              ? <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>
-                              : <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>
+                              : <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
                           })() : (
-                            <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
+                            <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
                           )}
                         </div>
-                        {pipeline?.enrichment && !isThinking ? (() => {
+                        {/* GSD-103: context validation + CTI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 'GSD-103' && !isThinking && gsd103ContextSteps.length > 0 && (
+                          <div className="mt-2 space-y-2">
+                            {/* Context Validation */}
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <div>
+                                  <p className="text-sm font-bold text-slate-600">Validating Context</p>
+                                  <p className="text-sm text-slate-400">13 Apr 2026, 10:31 AM</p>
+                                </div>
+                                {!gsd103ContextDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Validated — Context Provided</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd103ContextSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {/* CTI Detection */}
+                            {gsd103CtiSteps.length > 0 && (
+                              <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                  {!gsd103CtiDone
+                                    ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd103CtiSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-violet-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd103CtiDone && (
+                                  <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                      <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                      <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                      <p className="text-sm font-semibold text-slate-700">create new profile</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {/* Duplicate Identification — no duplicate */}
+                            {gsd103DupSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                  {!gsd103DupDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd103DupSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd103DupDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {/* GSD-104: context validation + CTI + duplicate found */}
+                        {agentTicket.id === 'GSD-104' && !isThinking && gsd104ContextSteps.length > 0 && (
+                          <div className="mt-2 space-y-2">
+                            {/* Context Validation */}
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <div>
+                                  <p className="text-sm font-bold text-slate-600">Validating Context</p>
+                                  <p className="text-sm text-slate-400">13 Apr 2026, 11:01 AM</p>
+                                </div>
+                                {!gsd104ContextDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Validated — Complete Context</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd104ContextSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {/* CTI Detection */}
+                            {gsd104CtiSteps.length > 0 && (
+                              <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                  {!gsd104CtiDone
+                                    ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd104CtiSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-violet-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd104CtiDone && (
+                                  <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                      <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                      <p className="text-sm font-semibold text-slate-700">barkeep</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                      <p className="text-sm font-semibold text-slate-700">app launch</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {/* Duplicate Identification */}
+                            {gsd104DupSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                  {!gsd104DupDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-2.5 h-2.5" /> Duplicate Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd104DupSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd104DupDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm font-semibold text-orange-700 mb-2">3 duplicate tickets identified:</p>
+                                    <div className="space-y-2">
+                                      {[
+                                        { id: 'GSD-099', time: '13 Apr 2026, 9:45 AM' },
+                                        { id: 'GSD-097', time: '13 Apr 2026, 8:52 AM' },
+                                        { id: 'GSD-095', time: '13 Apr 2026, 8:10 AM' },
+                                      ].map(dup => (
+                                        <div key={dup.id} className="bg-white rounded-lg border border-orange-200 p-2.5 shadow-sm">
+                                          <div className="flex items-center justify-between mb-1.5">
+                                            <span className="text-sm font-bold text-indigo-600">{dup.id}</span>
+                                            <div className="flex items-center gap-1.5">
+                                              <Clock className="w-3 h-3 text-slate-400" />
+                                              <span className="text-sm text-slate-400">{dup.time}</span>
+                                            </div>
+                                          </div>
+                                          <p className="text-sm font-semibold text-slate-700 mb-1">Speak easy not working</p>
+                                          <p className="text-sm text-slate-500 leading-snug">CLOUD DEMAND EXECUTION-GSUITE Barcelona GCP Generalists TP Colombia Bogata : Speakeasy not Working</p>
+                                          <div className="mt-1.5 flex items-center gap-2">
+                                            <span className="text-sm bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full font-bold border border-orange-100">Open</span>
+                                            <span className="text-sm text-slate-400">gcpteam@company.com</span>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {agentTicket.id !== 'GSD-103' && agentTicket.id !== 'GSD-104' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
-                          const hasDetailedQuestions = pipeline.enrichment.enrichmentQuestions?.length > 0;
                           return (
                             <div className="mt-2 space-y-2">
-                              <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
-                                {hasDetailedQuestions ? (
-                                  <>
-                                    <p className="text-[10px] font-bold text-orange-600 mb-1.5">Required Details Missing</p>
-                                    <div className="flex flex-wrap gap-1">
-                                      {pipeline.enrichment.enrichmentQuestions.map((q, i) => (
-                                        <span key={i} className={`text-[10px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${enrichmentResolved ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-orange-700 border-orange-200'}`}>
-                                          {enrichmentResolved && <CheckCircle className="w-2.5 h-2.5" />}{q.field}
-                                        </span>
-                                      ))}
+                              {/* GSD-100: pre-check telemetry */}
+                              {agentTicket.id === 'GSD-100' && gsd100PreSteps.length > 0 && (
+                                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                  <div className="flex items-center justify-between mb-1.5">
+                                    <div>
+                                      <p className="text-sm font-bold text-slate-600">Checking Context</p>
+                                      <p className="text-sm text-slate-400">13 Apr 2026, 9:15 AM</p>
                                     </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <p className="text-[10px] font-bold text-orange-600 mb-1.5">Missing fields requested from requester:</p>
-                                    <div className="flex flex-wrap gap-1">
-                                      {pipeline.enrichment.missingFields.map((f, i) => (
-                                        <span key={i} className={`text-[10px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${enrichmentResolved ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-orange-700 border-orange-200'}`}>
-                                          {enrichmentResolved && <CheckCircle className="w-2.5 h-2.5" />}{f.label}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                              {enrichmentResolved && reporterReply && (
-                                <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
-                                  <p className="text-[10px] font-bold text-blue-600 mb-1">Context provided by reporter:</p>
-                                  <p className="text-[11px] text-slate-700 leading-relaxed italic whitespace-pre-wrap">"{reporterReply.text}"</p>
+                                    {!gsd100PreDone
+                                      ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                      : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> Done</span>}
+                                  </div>
+                                  <div className="space-y-1 font-mono">
+                                    {gsd100PreSteps.map((step, i) => (
+                                      <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                        <span className="text-slate-400">*</span><span>{step}</span>
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
                               )}
-                              {/* GSD-100: CTI detection + duplicate identification */}
-                              {agentTicket.id === 'GSD-100' && enrichmentResolved && gsd100CtiSteps.length > 0 && (
+                              {agentTicket.id === 'GSD-100' && gsd100PreDone && !gsd100ContextSubmitted && (
+                                <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
+                                  <p className="text-sm font-bold text-orange-600 mb-2">Required Details Missing</p>
+                                  <div className="space-y-2">
+                                    {pipeline.enrichment.enrichmentQuestions.map((q, i) => (
+                                      <div key={i} className={`p-2 rounded-md border text-sm ${gsd100ContextSubmitted ? 'bg-green-50 border-green-200' : 'bg-white border-orange-200'}`}>
+                                        <p className={`font-bold mb-0.5 flex items-center gap-1 ${gsd100ContextSubmitted ? 'text-green-700' : 'text-orange-700'}`}>
+                                          {gsd100ContextSubmitted && <CheckCircle className="w-2.5 h-2.5" />}* {q.field}
+                                        </p>
+                                        <p className={gsd100ContextSubmitted ? 'text-green-600' : 'text-slate-600'}>{q.detail}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                  {!gsd100ContextSubmitted && (
+                                    <div className="mt-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center gap-3">
+                                      <p className="text-sm text-slate-600 font-medium flex-1">Do you want to update these comments in this ticket?</p>
+                                      <button
+                                        onClick={() => {
+                                          setGsd100ContextSubmitted(true);
+                                          setTimeout(() => setGsd100ContextVisible(true), 1800);
+                                        }}
+                                        className="flex-shrink-0 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-1"
+                                      >
+                                        <CheckCircle className="w-3 h-3" /> Approve
+                                      </button>
+                                      <button
+                                        onClick={() => {}}
+                                        className="flex-shrink-0 px-3 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center gap-1"
+                                      >
+                                        Reject
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                              {agentTicket.id === 'GSD-100' && gsd100ContextVisible && (
+                                <>
+                                  <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
+                                    <div className="flex items-center justify-between mb-1">
+                                      <p className="text-sm font-bold text-blue-600">Context provided by reporter:</p>
+                                      <span className="text-sm text-slate-400">13 Apr 2026, 1:05 PM</span>
+                                    </div>
+                                    <p className="text-sm text-slate-700 leading-relaxed italic whitespace-pre-wrap">"{agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx)?.text}"</p>
+                                  </div>
+                                  {/* second checking context */}
+                                  {gsd100CheckSteps.length > 0 && (
+                                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                      <div className="flex items-center justify-between mb-1.5">
+                                        <div>
+                                          <p className="text-sm font-bold text-slate-600">Checking Context</p>
+                                          <p className="text-sm text-slate-400">13 Apr 2026, 1:06 PM</p>
+                                        </div>
+                                        {!gsd100CheckDone
+                                          ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                          : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> Context Validated</span>}
+                                      </div>
+                                      <div className="space-y-1 font-mono">
+                                        {gsd100CheckSteps.map((step, i) => (
+                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                            <span className="text-slate-400">*</span><span>{step}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                              {/* GSD-100: CTI detection + duplicate identification (only after context submitted) */}
+                              {agentTicket.id === 'GSD-100' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
                                 <div className="space-y-2">
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                     <div className="flex items-center justify-between mb-2">
-                                      <p className="text-[10px] font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
                                       {!gsd100CtiDone ? (
-                                        <span className="flex items-center gap-1 text-[10px] text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                        <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                       ) : (
-                                        <span className="text-[10px] font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>
+                                        <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>
                                       )}
                                     </div>
                                     <div className="space-y-1 font-mono">
                                       {gsd100CtiSteps.map((step, i) => (
-                                        <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                          <span className="text-violet-400">›</span>
+                                        <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                          <span className="text-violet-400">*</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -909,16 +1385,16 @@ const AgentView = ({
                                     {gsd100CtiDone && (
                                       <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">contact-center</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">Speakeasy historical dashboard</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                          <p className="text-sm font-semibold text-slate-700">Speakeasy historical dashboard</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">access</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                          <p className="text-sm font-semibold text-slate-700">access</p>
                                         </div>
                                       </div>
                                     )}
@@ -927,50 +1403,25 @@ const AgentView = ({
                                   {gsd100DupSteps.length > 0 && (
                                     <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                       <div className="flex items-center justify-between mb-2">
-                                        <p className="text-[10px] font-bold text-slate-600">Identifying Duplicates</p>
+                                        <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
                                         {!gsd100DupDone ? (
-                                          <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                          <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
                                         ) : (
-                                          <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> 5 found</span>
+                                          <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>
                                         )}
                                       </div>
                                       <div className="space-y-1 font-mono">
                                         {gsd100DupSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                            <span className="text-slate-400">›</span>
+                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                            <span className="text-slate-400">*</span>
                                             <span>{step}</span>
                                           </div>
                                         ))}
                                       </div>
                                       {gsd100DupDone && (
-                                        <>
-                                          <div className="mt-2 pt-2 border-t border-slate-200 space-y-1.5">
-                                            {GSD100_DUPLICATES.map((dup, i) => (
-                                              <div key={i} className="flex items-center justify-between gap-2 text-[10px]">
-                                                <div className="flex items-center gap-2 min-w-0">
-                                                  <span className="font-mono font-bold text-indigo-600 flex-shrink-0">{dup.id}</span>
-                                                  <span className="text-slate-600 truncate">{dup.title}</span>
-                                                </div>
-                                                <span className={`px-1.5 py-0.5 rounded font-bold text-[9px] flex-shrink-0 ${dup.confidence >= 90 ? 'bg-red-100 text-red-700' : dup.confidence >= 85 ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                                  {dup.confidence}%
-                                                </span>
-                                              </div>
-                                            ))}
-                                          </div>
-                                          {!gsd100CommentUpdated ? (
-                                            <button
-                                              onClick={() => setGsd100CommentUpdated(true)}
-                                              className="mt-3 w-full py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5"
-                                            >
-                                              <CheckCircle className="w-3 h-3" /> Update Changes in Ticket
-                                            </button>
-                                          ) : (
-                                            <div className="mt-3 flex items-center gap-2 text-[10px] text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
-                                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                                              <span className="font-semibold">Comments updated in ticket</span>
-                                            </div>
-                                          )}
-                                        </>
+                                        <div className="mt-2 pt-2 border-t border-slate-200">
+                                          <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                        </div>
                                       )}
                                     </div>
                                   )}
@@ -982,15 +1433,15 @@ const AgentView = ({
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                     <div className="flex items-center justify-between mb-2">
-                                      <p className="text-[10px] font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
                                       {!gsd103CtiDone
-                                        ? <span className="flex items-center gap-1 text-[10px] text-violet-500 font-medium">Analysing <ThinkingDots /></span>
-                                        : <span className="text-[10px] font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                        ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                        : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
                                     </div>
                                     <div className="space-y-1 font-mono">
                                       {gsd103CtiSteps.map((step, i) => (
-                                        <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                          <span className="text-violet-400">›</span>
+                                        <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                          <span className="text-violet-400">*</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -998,16 +1449,16 @@ const AgentView = ({
                                     {gsd103CtiDone && (
                                       <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">contact-center</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">wfm-verint</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                          <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">create new profile</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                          <p className="text-sm font-semibold text-slate-700">create new profile</p>
                                         </div>
                                       </div>
                                     )}
@@ -1016,15 +1467,15 @@ const AgentView = ({
                                   {gsd103DupSteps.length > 0 && (
                                     <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                       <div className="flex items-center justify-between mb-2">
-                                        <p className="text-[10px] font-bold text-slate-600">Identifying Duplicates</p>
+                                        <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
                                         {!gsd103DupDone
-                                          ? <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Scanning <ThinkingDots /></span>
-                                          : <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
+                                          ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                          : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
                                       </div>
                                       <div className="space-y-1 font-mono">
                                         {gsd103DupSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                            <span className="text-slate-400">›</span>
+                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                            <span className="text-slate-400">*</span>
                                             <span>{step}</span>
                                           </div>
                                         ))}
@@ -1032,17 +1483,28 @@ const AgentView = ({
                                       {gsd103DupDone && (
                                         <>
                                           <div className="mt-2 pt-2 border-t border-slate-200">
-                                            <p className="text-[10px] text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                            <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
                                           </div>
                                           {!gsd103CommentUpdated ? (
-                                            <button
-                                              onClick={() => setGsd103CommentUpdated(true)}
-                                              className="mt-3 w-full py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5"
-                                            >
-                                              <CheckCircle className="w-3 h-3" /> Update Changes in Ticket
-                                            </button>
+                                            <div className="mt-3">
+                                              <p className="text-sm text-slate-600 font-medium mb-2">Do you want to update these comments in this ticket?</p>
+                                              <div className="flex gap-2">
+                                                <button
+                                                  onClick={() => setGsd103CommentUpdated(true)}
+                                                  className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1"
+                                                >
+                                                  <CheckCircle className="w-3 h-3" /> Approve
+                                                </button>
+                                                <button
+                                                  onClick={() => {}}
+                                                  className="flex-1 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center justify-center gap-1"
+                                                >
+                                                  Reject
+                                                </button>
+                                              </div>
+                                            </div>
                                           ) : (
-                                            <div className="mt-3 flex items-center gap-2 text-[10px] text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
+                                            <div className="mt-3 flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
                                               <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
                                               <span className="font-semibold">Comments updated in ticket</span>
                                             </div>
@@ -1059,15 +1521,15 @@ const AgentView = ({
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                     <div className="flex items-center justify-between mb-2">
-                                      <p className="text-[10px] font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
                                       {!gsd101CtiDone
-                                        ? <span className="flex items-center gap-1 text-[10px] text-violet-500 font-medium">Analysing <ThinkingDots /></span>
-                                        : <span className="text-[10px] font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                        ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                        : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
                                     </div>
                                     <div className="space-y-1 font-mono">
                                       {gsd101CtiSteps.map((step, i) => (
-                                        <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                          <span className="text-violet-400">›</span>
+                                        <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                          <span className="text-violet-400">*</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -1075,16 +1537,16 @@ const AgentView = ({
                                     {gsd101CtiDone && (
                                       <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">contact-center</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">wfm-verint</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                          <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
                                         </div>
                                         <div>
-                                          <p className="text-[9px] font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                          <p className="text-[10px] font-semibold text-slate-700">others</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                          <p className="text-sm font-semibold text-slate-700">others</p>
                                         </div>
                                       </div>
                                     )}
@@ -1093,15 +1555,15 @@ const AgentView = ({
                                   {gsd101DupSteps.length > 0 && (
                                     <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                       <div className="flex items-center justify-between mb-2">
-                                        <p className="text-[10px] font-bold text-slate-600">Identifying Duplicates</p>
+                                        <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
                                         {!gsd101DupDone
-                                          ? <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Scanning <ThinkingDots /></span>
-                                          : <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
+                                          ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                          : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
                                       </div>
                                       <div className="space-y-1 font-mono">
                                         {gsd101DupSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                            <span className="text-slate-400">›</span>
+                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                            <span className="text-slate-400">*</span>
                                             <span>{step}</span>
                                           </div>
                                         ))}
@@ -1109,17 +1571,28 @@ const AgentView = ({
                                       {gsd101DupDone && (
                                         <>
                                           <div className="mt-2 pt-2 border-t border-slate-200">
-                                            <p className="text-[10px] text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                            <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
                                           </div>
                                           {!gsd101CommentUpdated ? (
-                                            <button
-                                              onClick={() => setGsd101CommentUpdated(true)}
-                                              className="mt-3 w-full py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5"
-                                            >
-                                              <CheckCircle className="w-3 h-3" /> Update Changes in Ticket
-                                            </button>
+                                            <div className="mt-3">
+                                              <p className="text-sm text-slate-600 font-medium mb-2">Do you want to update these comments in this ticket?</p>
+                                              <div className="flex gap-2">
+                                                <button
+                                                  onClick={() => setGsd101CommentUpdated(true)}
+                                                  className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1"
+                                                >
+                                                  <CheckCircle className="w-3 h-3" /> Approve
+                                                </button>
+                                                <button
+                                                  onClick={() => {}}
+                                                  className="flex-1 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center justify-center gap-1"
+                                                >
+                                                  Reject
+                                                </button>
+                                              </div>
+                                            </div>
                                           ) : (
-                                            <div className="mt-3 flex items-center gap-2 text-[10px] text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
+                                            <div className="mt-3 flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
                                               <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
                                               <span className="font-semibold">Comments updated in ticket</span>
                                             </div>
@@ -1132,8 +1605,8 @@ const AgentView = ({
                               )}
                             </div>
                           );
-                        })() : !isThinking && (
-                          <p className="text-[11px] text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
+                        })() : agentTicket.id !== 'GSD-103' && agentTicket.id !== 'GSD-104' && !isThinking && (
+                          <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
                         )}
                       </div>
                     </div>
@@ -1148,30 +1621,32 @@ const AgentView = ({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <div>
-                            <span className="text-[9px] font-bold text-amber-500 uppercase tracking-wider">Agent</span>
-                            <p className="text-xs font-bold text-slate-800">Recommendation Agent</p>
+                            <p className="text-sm font-bold text-slate-800">Recommendation Agent</p>
                           </div>
                           {(() => {
                             const isRouting = routingTicketId === agentSelectedTicketId;
-                            if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-[10px] text-blue-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-100' && gsd100TroubleshootDone) return <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-100' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-101' && gsd101TroubleshootDone) return <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-101' && gsd101DupDone) return <span className="flex items-center gap-1.5 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-103' && gsd103TroubleshootDone) return <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-103' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (pipeline?.historicalMatch) return <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
-                            if (pipeline?.isDuplicateOf) return <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
-                            if (pipeline?.kbArticlesOnly) return <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
-                            if (s4Done || pipeline) return <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">No Match</span>;
+                            if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'GSD-100' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'GSD-100' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'GSD-101' && gsd101TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'GSD-101' && gsd101DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'GSD-103' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'GSD-103' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'GSD-104' && gsd104TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'GSD-104' && gsd104DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'GSD-104' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
+                            if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
+                            if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
+                            if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
+                            if (s4Done || pipeline) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">No Match</span>;
                             return null;
                           })()}
                         </div>
                         {routingTicketId === agentSelectedTicketId && s4Steps.length > 0 && (
                           <div className="mt-2 space-y-1 font-mono">
                             {s4Steps.map((step, i) => (
-                              <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                <span className="text-amber-400">›</span>
+                              <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                <span className="text-amber-400">*</span>
                                 <span>{step}</span>
                               </div>
                             ))}
@@ -1183,25 +1658,26 @@ const AgentView = ({
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
-                                <p className="text-[10px] font-bold text-amber-700">Resolution from Similar Ticket (GSD-072 · 94% match)</p>
+                                <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
                                 {!gsd100RecDone
-                                  ? <span className="flex items-center gap-1 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>
-                                  : <span className="text-[10px] font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                  ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                               </div>
                               <div className="space-y-1 font-mono">
                                 {gsd100RecSteps.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                    <span className="text-amber-400">›</span><span>{step}</span>
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-amber-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               {gsd100RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-[10px] font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-072):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-072 · 94% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-072):</p>
                                   <div className="space-y-1.5">
                                     {GSD100_REC_RESOLUTION.map((step, i) => (
-                                      <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                      <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                         <span>{step}</span>
                                       </div>
                                     ))}
@@ -1213,25 +1689,25 @@ const AgentView = ({
                             {gsd100RunbookSteps.length > 0 && (
                               <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-blue-700">Scenario Runbook (RUNBOOK-CC-047)</p>
+                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-CC-047)</p>
                                   {!gsd100RunbookDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd100RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-blue-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-blue-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd100RunbookDone && (
                                   <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-[10px] font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-CC-047):</p>
+                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-CC-047):</p>
                                     <div className="space-y-1.5">
                                       {GSD100_RUNBOOK_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -1244,22 +1720,22 @@ const AgentView = ({
                             {gsd100TroubleshootSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-slate-600">Troubleshoot Guide</p>
+                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
                                   {!gsd100TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd100TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-slate-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd100TroubleshootDone && (
                                   <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-[11px] text-slate-500 font-medium">No troubleshoot guide steps found for this issue type.</p>
-                                    <p className="text-[10px] text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
+                                    <p className="text-sm text-slate-500 font-medium">No troubleshoot guide steps found for this issue type.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
                                   </div>
                                 )}
                               </div>
@@ -1272,25 +1748,26 @@ const AgentView = ({
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
-                                <p className="text-[10px] font-bold text-amber-700">Resolution from Similar Ticket (GSD-089 · 87% match)</p>
+                                <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
                                 {!gsd101RecDone
-                                  ? <span className="flex items-center gap-1 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>
-                                  : <span className="text-[10px] font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                  ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                               </div>
                               <div className="space-y-1 font-mono">
                                 {gsd101RecSteps.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                    <span className="text-amber-400">›</span><span>{step}</span>
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-amber-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               {gsd101RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-[10px] font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-089):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-089 · 87% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-089):</p>
                                   <div className="space-y-1.5">
                                     {GSD101_REC_RESOLUTION.map((step, i) => (
-                                      <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                      <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                         <span>{step}</span>
                                       </div>
                                     ))}
@@ -1302,22 +1779,22 @@ const AgentView = ({
                             {gsd101RunbookSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-slate-600">Scenario Runbook</p>
+                                  <p className="text-sm font-bold text-slate-600">Scenario Runbook</p>
                                   {!gsd101RunbookDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> No Steps Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> No Steps Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd101RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-slate-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd101RunbookDone && (
                                   <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-[11px] text-slate-500 font-medium">No resolution steps found in scenario runbook for this issue type.</p>
-                                    <p className="text-[10px] text-slate-400 mt-0.5">Refer to similar ticket resolution or troubleshoot guide below.</p>
+                                    <p className="text-sm text-slate-500 font-medium">No resolution steps found in scenario runbook for this issue type.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or troubleshoot guide below.</p>
                                   </div>
                                 )}
                               </div>
@@ -1326,25 +1803,25 @@ const AgentView = ({
                             {gsd101TroubleshootSteps.length > 0 && (
                               <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-blue-700">Troubleshoot Guide</p>
+                                  <p className="text-sm font-bold text-blue-700">Troubleshoot Guide</p>
                                   {!gsd101TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Steps Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Steps Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd101TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-blue-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-blue-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd101TroubleshootDone && (
                                   <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-[10px] font-bold text-blue-800 mb-1.5">Troubleshoot Guide Steps:</p>
+                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Troubleshoot Guide Steps:</p>
                                     <div className="space-y-1.5">
                                       {GSD101_TROUBLESHOOT_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -1361,25 +1838,26 @@ const AgentView = ({
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
-                                <p className="text-[10px] font-bold text-amber-700">Resolution from Similar Ticket (GSD-076 · 91% match)</p>
+                                <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
                                 {!gsd103RecDone
-                                  ? <span className="flex items-center gap-1 text-[10px] text-amber-500 font-medium">Searching <ThinkingDots /></span>
-                                  : <span className="text-[10px] font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                  ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                               </div>
                               <div className="space-y-1 font-mono">
                                 {gsd103RecSteps.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                    <span className="text-amber-400">›</span><span>{step}</span>
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-amber-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               {gsd103RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-[10px] font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-076):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-076 · 91% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-076):</p>
                                   <div className="space-y-1.5">
                                     {GSD103_REC_RESOLUTION.map((step, i) => (
-                                      <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                      <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                         <span>{step}</span>
                                       </div>
                                     ))}
@@ -1391,25 +1869,25 @@ const AgentView = ({
                             {gsd103RunbookSteps.length > 0 && (
                               <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-blue-700">Scenario Runbook (RUNBOOK-WFM-012)</p>
+                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-WFM-012)</p>
                                   {!gsd103RunbookDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd103RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-blue-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-blue-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd103RunbookDone && (
                                   <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-[10px] font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-WFM-012):</p>
+                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-WFM-012):</p>
                                     <div className="space-y-1.5">
                                       {GSD103_RUNBOOK_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-[10px] text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-[9px] flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                           <span>{step}</span>
                                         </div>
                                       ))}
@@ -1422,40 +1900,122 @@ const AgentView = ({
                             {gsd103TroubleshootSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-[10px] font-bold text-slate-600">Troubleshoot Guide</p>
+                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
                                   {!gsd103TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-[10px] text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {gsd103TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                                      <span className="text-slate-400">›</span><span>{step}</span>
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
                                 {gsd103TroubleshootDone && (
                                   <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-[11px] text-slate-500 font-medium">Could not find any resolution steps in the troubleshoot guide for this issue type.</p>
-                                    <p className="text-[10px] text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
+                                    <p className="text-sm text-slate-500 font-medium">Could not find any resolution steps in the troubleshoot guide for this issue type.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
                                   </div>
                                 )}
                               </div>
                             )}
                           </div>
                         )}
-                        {agentTicket?.id !== 'GSD-100' && agentTicket?.id !== 'GSD-101' && agentTicket?.id !== 'GSD-103' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {/* GSD-104 Recommendation Agent — no similar ticket, runbook found, troubleshoot no steps */}
+                        {agentTicket?.id === 'GSD-104' && gsd104RecSteps.length > 0 && (
+                          <div className="mt-2 space-y-3">
+                            {/* Similar Ticket — not found */}
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-bold text-slate-600">Resolution from Similar Ticket</p>
+                                {!gsd104RecDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Match Found</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd104RecSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              {gsd104RecDone && (
+                                <div className="mt-2 pt-2 border-t border-slate-200">
+                                  <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found above 80% confidence threshold.</p>
+                                  <p className="text-sm text-slate-400 mt-0.5">Refer to scenario runbook below for resolution guidance.</p>
+                                </div>
+                              )}
+                            </div>
+                            {/* Scenario Runbook — found */}
+                            {gsd104RunbookSteps.length > 0 && (
+                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-CC-031)</p>
+                                  {!gsd104RunbookDone
+                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd104RunbookSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-blue-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd104RunbookDone && (
+                                  <div className="mt-2 pt-2 border-t border-blue-200">
+                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-CC-031):</p>
+                                    <div className="space-y-1.5">
+                                      {GSD104_RUNBOOK_RESOLUTION.map((step, i) => (
+                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                          <span>{step}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {/* Troubleshoot Guide — no steps */}
+                            {gsd104TroubleshootSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
+                                  {!gsd104TroubleshootDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd104TroubleshootSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd104TroubleshootDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 font-medium">Could not find any resolution steps in the troubleshoot guide for this issue type.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to scenario runbook steps above.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {agentTicket?.id !== 'GSD-100' && agentTicket?.id !== 'GSD-101' && agentTicket?.id !== 'GSD-103' && agentTicket?.id !== 'GSD-104' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                              <p className="text-[11px] text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
-                              <p className="text-[11px] text-slate-600 mt-1">Refer to <span className="font-bold text-indigo-600">{pipeline.isDuplicateOf}</span> for historical match and resolution recommendation.</p>
+                              <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
+                              <p className="text-sm text-slate-600 mt-1">Refer to <span className="font-bold text-indigo-600">{pipeline.isDuplicateOf}</span> for historical match and resolution recommendation.</p>
                             </div>
                           ) : pipeline?.historicalMatch ? (
                             <div className="mt-2 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
                               {s4Done && (
                                 <div className="mb-1.5 space-y-0.5 font-mono">
                                   {S4_STEPS.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-400">
                                       <Check className="w-2.5 h-2.5 text-amber-400 flex-shrink-0" />
                                       <span>{step}</span>
                                     </div>
@@ -1463,18 +2023,18 @@ const AgentView = ({
                                 </div>
                               )}
                               <div className="mt-1.5 pt-1.5 border-t border-amber-100">
-                                <p className="text-[11px] font-bold text-amber-800">{pipeline.historicalMatch.pastResolution.ticketRef}</p>
-                                <p className="text-[10px] text-amber-600 mt-0.5">Resolved {pipeline.historicalMatch.pastResolution.resolvedOn} · {pipeline.historicalMatch.pastResolution.similarity} similarity</p>
-                                {ragResolutionText && <p className="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap mt-2 pt-2 border-t border-amber-100">{ragResolutionText}</p>}
+                                <p className="text-sm font-bold text-amber-800">{pipeline.historicalMatch.pastResolution.ticketRef}</p>
+                                <p className="text-sm text-amber-600 mt-0.5">Resolved {pipeline.historicalMatch.pastResolution.resolvedOn} · {pipeline.historicalMatch.pastResolution.similarity} similarity</p>
+                                {ragResolutionText && <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap mt-2 pt-2 border-t border-amber-100">{ragResolutionText}</p>}
                                 {pipeline.historicalMatch.pastResolution.kbArticles?.length > 0 && (
                                   <div className="mt-2 pt-2 border-t border-amber-100">
-                                    <p className="text-[9px] font-bold text-amber-700 uppercase tracking-widest mb-1.5 flex items-center gap-1"><BookOpen className="w-2.5 h-2.5" /> Related KB Articles</p>
+                                    <p className="text-sm font-bold text-amber-700 uppercase tracking-widest mb-1.5 flex items-center gap-1"><BookOpen className="w-2.5 h-2.5" /> Related KB Articles</p>
                                     <div className="space-y-1">
                                       {pipeline.historicalMatch.pastResolution.kbArticles.map(kb => (
-                                        <div key={kb.id} className="flex items-center gap-2 text-[10px]">
+                                        <div key={kb.id} className="flex items-center gap-2 text-sm">
                                           <span className="font-mono text-amber-600 font-semibold flex-shrink-0">{kb.id}</span>
                                           <span className="text-slate-600 flex-1 truncate">{kb.title}</span>
-                                          <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-[9px] font-medium flex-shrink-0">{kb.tag}</span>
+                                          <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-sm font-medium flex-shrink-0">{kb.tag}</span>
                                         </div>
                                       ))}
                                     </div>
@@ -1486,22 +2046,22 @@ const AgentView = ({
                             <div className="mt-2 p-2.5 bg-blue-50 rounded-lg border border-blue-100">
                               <div className="mb-1.5 space-y-0.5 font-mono">
                                 {S4_STEPS.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-400">
                                     <Check className="w-2.5 h-2.5 text-blue-400 flex-shrink-0" />
                                     <span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               <div className="mt-1.5 pt-1.5 border-t border-blue-100">
-                                <p className="text-[11px] text-slate-500 font-medium">No similar resolved tickets found in historical records.</p>
+                                <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found in historical records.</p>
                                 <div className="mt-2">
-                                  <p className="text-[9px] font-bold text-blue-700 uppercase tracking-widest mb-1.5 flex items-center gap-1"><BookOpen className="w-2.5 h-2.5" /> Related KB Articles Found</p>
+                                  <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1.5 flex items-center gap-1"><BookOpen className="w-2.5 h-2.5" /> Related KB Articles Found</p>
                                   <div className="space-y-1">
                                     {pipeline.kbArticlesOnly.map(kb => (
-                                      <div key={kb.id} className="flex items-center gap-2 text-[10px]">
+                                      <div key={kb.id} className="flex items-center gap-2 text-sm">
                                         <span className="font-mono text-blue-600 font-semibold flex-shrink-0">{kb.id}</span>
                                         <span className="text-slate-600 flex-1 truncate">{kb.title}</span>
-                                        <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-[9px] font-medium flex-shrink-0">{kb.tag}</span>
+                                        <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-sm font-medium flex-shrink-0">{kb.tag}</span>
                                       </div>
                                     ))}
                                   </div>
@@ -1512,15 +2072,15 @@ const AgentView = ({
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="mb-1.5 space-y-0.5 font-mono">
                                 {S4_STEPS.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-400">
                                     <Check className="w-2.5 h-2.5 text-slate-300 flex-shrink-0" />
                                     <span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               <div className="mt-1.5 pt-1.5 border-t border-slate-200">
-                                <p className="text-[11px] text-slate-500 font-medium">No similar resolved tickets found in knowledge base.</p>
-                                <p className="text-[11px] text-slate-400 mt-0.5">No related KB articles found for this incident type.</p>
+                                <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found in knowledge base.</p>
+                                <p className="text-sm text-slate-400 mt-0.5">No related KB articles found for this incident type.</p>
                               </div>
                             </div>
                           ) : null
@@ -1539,14 +2099,14 @@ const AgentView = ({
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <div>
-                              <span className="text-[9px] font-bold text-green-500 uppercase tracking-wider">Agent</span>
-                              <p className="text-xs font-bold text-slate-800">Autonomous Execution</p>
+                              <span className="text-sm font-bold text-green-500 uppercase tracking-wider">Agent</span>
+                              <p className="text-sm font-bold text-slate-800">Autonomous Execution</p>
                             </div>
-                            <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>
+                            <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>
                           </div>
                           <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                            <p className="text-[11px] text-slate-500">Execution skipped — this ticket is a confirmed duplicate.</p>
-                            <p className="text-[11px] text-slate-600 mt-1">Refer to <span className="font-bold text-indigo-600">{pipeline.isDuplicateOf}</span> for all active resolution steps and autonomous execution trace.</p>
+                            <p className="text-sm text-slate-500">Execution skipped — this ticket is a confirmed duplicate.</p>
+                            <p className="text-sm text-slate-600 mt-1">Refer to <span className="font-bold text-indigo-600">{pipeline.isDuplicateOf}</span> for all active resolution steps and autonomous execution trace.</p>
                           </div>
                         </div>
                       </div>
@@ -1562,21 +2122,21 @@ const AgentView = ({
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="mb-2">
-                            <span className="text-[9px] font-bold text-green-500 uppercase tracking-wider">Agent</span>
-                            <p className="text-xs font-bold text-slate-800">Autonomous Execution</p>
+                            <span className="text-sm font-bold text-green-500 uppercase tracking-wider">Agent</span>
+                            <p className="text-sm font-bold text-slate-800">Autonomous Execution</p>
                           </div>
                           {resolutionComment.telemetry && resolutionComment.telemetry.length > 0 ? (
                             <div className="mt-3">
                               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
                                 <Terminal className="w-3 h-3 text-slate-400" />
-                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Execution Trace</span>
+                                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Execution Trace</span>
                                 {!resolutionComment.telemetryComplete && (
-                                  <span className="ml-auto flex items-center gap-1 text-[9px] text-red-400 font-semibold animate-pulse">
+                                  <span className="ml-auto flex items-center gap-1 text-sm text-red-400 font-semibold animate-pulse">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-400 inline-block" />Running
                                   </span>
                                 )}
                                 {resolutionComment.telemetryComplete && (
-                                  <span className="ml-auto flex items-center gap-1 text-[9px] text-green-500 font-semibold">
+                                  <span className="ml-auto flex items-center gap-1 text-sm text-green-500 font-semibold">
                                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />Complete
                                   </span>
                                 )}
@@ -1592,9 +2152,9 @@ const AgentView = ({
                                     </div>
                                     <div className="flex-1 pb-3">
                                       <div className="flex items-center gap-2 flex-wrap">
-                                        <span className={`text-[11px] font-medium leading-snug transition-colors duration-200 ${step.status === 'done' ? 'text-slate-700' : step.status === 'running' ? 'text-red-600' : 'text-slate-400'}`}>{step.text}</span>
-                                        {step.status === 'running' && <span className="text-[8px] bg-red-50 text-red-500 px-1.5 py-0.5 rounded border border-red-100 font-bold uppercase tracking-wider animate-pulse">Processing</span>}
-                                        {step.status === 'done' && <span className="text-[8px] bg-green-50 text-green-600 px-1.5 py-0.5 rounded border border-green-100 font-bold uppercase tracking-wider">Done</span>}
+                                        <span className={`text-sm font-medium leading-snug transition-colors duration-200 ${step.status === 'done' ? 'text-slate-700' : step.status === 'running' ? 'text-red-600' : 'text-slate-400'}`}>{step.text}</span>
+                                        {step.status === 'running' && <span className="text-sm bg-red-50 text-red-500 px-1.5 py-0.5 rounded border border-red-100 font-bold uppercase tracking-wider animate-pulse">Processing</span>}
+                                        {step.status === 'done' && <span className="text-sm bg-green-50 text-green-600 px-1.5 py-0.5 rounded border border-green-100 font-bold uppercase tracking-wider">Done</span>}
                                       </div>
                                       {step.subSteps && step.subSteps.length > 0 && (
                                         <div className="mt-2 relative pl-4">
@@ -1602,7 +2162,7 @@ const AgentView = ({
                                           {step.subSteps.map((sub, j) => (
                                             <div key={j} className="flex items-center gap-2 mb-1.5">
                                               <div className={`w-2 h-2 rounded-full flex-shrink-0 border transition-all duration-200 ${sub.status === 'done' ? 'bg-green-400 border-green-400' : 'bg-red-300 border-red-300 animate-pulse'}`} />
-                                              <span className={`text-[10px] leading-snug transition-colors duration-200 ${sub.status === 'done' ? 'text-slate-500' : 'text-red-400'}`}>{sub.text}</span>
+                                              <span className={`text-sm leading-snug transition-colors duration-200 ${sub.status === 'done' ? 'text-slate-500' : 'text-red-400'}`}>{sub.text}</span>
                                               {sub.status === 'done' && <Check className="w-2.5 h-2.5 text-green-400 flex-shrink-0" strokeWidth={3} />}
                                             </div>
                                           ))}
@@ -1616,20 +2176,20 @@ const AgentView = ({
                                     <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-500 flex items-center justify-center flex-shrink-0">
                                       <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                                     </div>
-                                    <span className="text-xs font-bold text-green-600">All steps executed</span>
+                                    <span className="text-sm font-bold text-green-600">All steps executed</span>
                                   </div>
                                 )}
                               </div>
                             </div>
                           ) : (resolutionComment.routedAfterEnrichment || resolutionComment.awaitingApproval) ? (
                             <div>
-                              <p className="text-[11px] font-semibold text-slate-600 mb-2">Apply above resolutions to close the ticket?</p>
-                              <button onClick={() => handleAgentApply(agentTicket.id, resolutionIdx)} className="px-4 py-1.5 bg-green-600 text-white text-xs font-bold rounded-lg hover:bg-green-700 transition-colors flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> Apply Fix</button>
+                              <p className="text-sm font-semibold text-slate-600 mb-2">Apply above resolutions to close the ticket?</p>
+                              <button onClick={() => handleAgentApply(agentTicket.id, resolutionIdx)} className="px-4 py-1.5 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-700 transition-colors flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> Apply Fix</button>
                             </div>
                           ) : resolutionComment.applying ? (
-                            <span className="text-xs font-semibold text-blue-500 flex items-center gap-1.5">Applying fix <ThinkingDots /></span>
+                            <span className="text-sm font-semibold text-blue-500 flex items-center gap-1.5">Applying fix <ThinkingDots /></span>
                           ) : resolutionComment.approved ? (
-                            <span className="text-xs font-bold text-green-600 flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> Fix applied — resolution steps executed successfully.</span>
+                            <span className="text-sm font-bold text-green-600 flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> Fix applied — resolution steps executed successfully.</span>
                           ) : null}
                         </div>
                       </div>
@@ -1640,26 +2200,26 @@ const AgentView = ({
               </div>
 
               {/* Col 3: Record Info + Support Navigator */}
-              <div className="w-72 border-l border-slate-200 bg-white overflow-y-auto flex-shrink-0">
+              <div className="flex-[2] border-l border-slate-200 bg-white overflow-y-auto min-w-0">
                 <div className="p-4 border-b border-slate-100">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">SLAs &amp; Timings</p>
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">SLAs &amp; Timings</p>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500">Response SLA</span>
-                      <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">Completed</span>
+                      <span className="text-sm text-slate-500">Response SLA</span>
+                      <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">Completed</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500">Resolution SLA</span>
+                      <span className="text-sm text-slate-500">Resolution SLA</span>
                       {(() => {
                         const sla = null;
                         return sla
-                          ? <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">{sla}</span>
-                          : <span className="text-[10px] text-slate-400">No matching SLA</span>;
+                          ? <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">{sla}</span>
+                          : <span className="text-sm text-slate-400">No matching SLA</span>;
                       })()}
                     </div>
                     <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-100 mt-1">
-                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-1">Opened</p>
-                      <p className="text-xs font-semibold text-slate-700">{agentTicket.createdAt}</p>
+                      <p className="text-sm text-slate-400 font-bold uppercase tracking-wider mb-1">Opened</p>
+                      <p className="text-sm font-semibold text-slate-700">{agentTicket.createdAt}</p>
                     </div>
                   </div>
                 </div>
@@ -1668,50 +2228,137 @@ const AgentView = ({
                     <div className="w-5 h-5 bg-indigo-500 rounded flex items-center justify-center flex-shrink-0">
                       <Zap className="w-3 h-3 text-white" />
                     </div>
-                    <p className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Support Ops Assistant</p>
-                    <span className="text-[9px] text-slate-400 ml-auto">Answers generated by AI</span>
+                    <p className="text-sm font-bold text-slate-700 uppercase tracking-wider">Support Ops Assistant</p>
+                    <span className="text-sm text-slate-400 ml-auto">Answers generated by AI</span>
                   </div>
                   <div className="bg-indigo-50 rounded-xl p-3 mb-3 border border-indigo-100">
-                    <p className="text-xs font-semibold text-indigo-900 mb-1">Hi! 👋</p>
-                    <p className="text-[11px] text-indigo-700 leading-relaxed">I've analyzed this ticket through the AI pipeline. Here's what I found:</p>
+                    <p className="text-sm font-semibold text-indigo-900 mb-1">Hi! 👋</p>
+                    <p className="text-sm text-indigo-700 leading-relaxed">I've analyzed this ticket through the AI pipeline. Here's what I found:</p>
                   </div>
                   <div className="space-y-2.5 mb-4">
                     <div className="flex gap-2 items-start">
                       <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5"><Cpu className="w-2.5 h-2.5 text-blue-600" /></div>
-                      <p className="text-[11px] text-slate-600 leading-snug">
+                      <p className="text-sm text-slate-600 leading-snug">
                         {pipeline?.enrichment ? `Enrichment triggered — requester asked for ${pipeline.enrichment.missingFields.length} missing field(s).` : 'Ticket had complete context — no enrichment needed.'}
                       </p>
                     </div>
                     <div className="flex gap-2 items-start">
                       <div className="w-4 h-4 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5"><BookOpen className="w-2.5 h-2.5 text-purple-600" /></div>
-                      <p className="text-[11px] text-slate-600 leading-snug">
+                      <p className="text-sm text-slate-600 leading-snug">
                         {pipeline?.sopMatch ? `Scenario: "${pipeline.sopMatch.scenario}" via ${pipeline.sopMatch.sop}.` : 'No matching SOP scenario found.'}
                       </p>
                     </div>
                     <div className="flex gap-2 items-start">
                       <div className="w-4 h-4 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5"><Database className="w-2.5 h-2.5 text-amber-600" /></div>
-                      <p className="text-[11px] text-slate-600 leading-snug">
+                      <p className="text-sm text-slate-600 leading-snug">
                         {pipeline?.historicalMatch ? `Past match: ${pipeline.historicalMatch.pastResolution.ticketRef} (${pipeline.historicalMatch.pastResolution.similarity}).` : 'No historical match found.'}
                       </p>
                     </div>
                     {pipeline?.escalation && (
                       <div className="flex gap-2 items-start">
                         <div className="w-4 h-4 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5"><UserCheck className="w-2.5 h-2.5 text-orange-600" /></div>
-                        <p className="text-[11px] text-slate-600 leading-snug">Escalated to {pipeline.escalation.escalation.agent} ({pipeline.escalation.escalation.department}).</p>
+                        <p className="text-sm text-slate-600 leading-snug">Escalated to {pipeline.escalation.escalation.agent} ({pipeline.escalation.escalation.department}).</p>
                       </div>
                     )}
                   </div>
                   <div className="pt-3 border-t border-slate-100">
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">Ask Knowledge Base</p>
-                    {agentKBMessages.length > 0 && (
-                      <div className="mb-2 space-y-2 max-h-52 overflow-y-auto">
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Ask Knowledge Base</p>
+                    {(agentKBMessages.length > 0 || kbSearchTicketId) && (
+                      <div className="mb-2 space-y-2 max-h-[28rem] overflow-y-auto">
                         {agentKBMessages.map((m, i) => (
                           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[85%] px-3 py-2 rounded-xl text-[11px] leading-relaxed whitespace-pre-wrap ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-slate-100 text-slate-700 rounded-bl-sm'}`}>
+                            <div className={`max-w-[85%] px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-slate-100 text-slate-700 rounded-bl-sm'}`}>
                               {m.text}
                             </div>
                           </div>
                         ))}
+                        {/* Incident KB lookup telemetry */}
+                        {kbSearchTicketId && (
+                          <div className="mt-1 space-y-2">
+                            {/* Single unified search telemetry card */}
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <div className="w-4 h-4 rounded bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                                  <Database className="w-2.5 h-2.5 text-indigo-600" />
+                                </div>
+                                <span className="text-sm font-semibold text-slate-700">Searching Knowledge Base</span>
+                                {kbSearchDone
+                                  ? <span className="ml-auto text-xs font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Record Found</span>
+                                  : <span className="ml-auto flex items-center gap-1 text-xs text-indigo-500 font-medium">Searching <ThinkingDots color="indigo" /></span>
+                                }
+                              </div>
+                              <div className="space-y-1 pl-6">
+                                {kbSearchStepsShown.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5">
+                                    <CheckCircle className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+                                    <span className="text-xs text-slate-500">{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {/* Incident result card */}
+                            {kbResultReady && kbSearchTicketId === 'GSD-076' && (
+                              <div className="p-3 bg-white rounded-lg border border-indigo-200 shadow-sm">
+                                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-indigo-100">
+                                  <span className="text-sm font-bold text-indigo-700">{GSD076_KB.id}</span>
+                                  <span className="text-xs bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full">{GSD076_KB.status}</span>
+                                  <span className="ml-auto text-xs text-slate-400">{GSD076_KB.createdAt}</span>
+                                </div>
+                                <p className="text-sm font-semibold text-slate-800 mb-2 leading-snug">{GSD076_KB.summary}</p>
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mb-2.5">
+                                  {[
+                                    { label: 'Reporter', value: GSD076_KB.reporter },
+                                    { label: 'Assigned To', value: GSD076_KB.assignedTo },
+                                    { label: 'Department', value: GSD076_KB.department },
+                                    { label: 'Program', value: GSD076_KB.program },
+                                    { label: 'Site', value: GSD076_KB.site },
+                                    { label: 'Priority', value: GSD076_KB.priority },
+                                    { label: 'Resolved At', value: GSD076_KB.resolvedAt },
+                                    { label: 'Resolution Time', value: GSD076_KB.resolutionTime },
+                                  ].map(({ label, value }) => (
+                                    <div key={label}>
+                                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">{label}</p>
+                                      <p className="text-xs text-slate-700 font-medium">{value}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="mb-2.5">
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">CTI</p>
+                                  <div className="flex gap-1.5 flex-wrap">
+                                    {[GSD076_KB.cti.category, GSD076_KB.cti.type, GSD076_KB.cti.item].map(v => (
+                                      <span key={v} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">{v}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="mb-2.5">
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Description</p>
+                                  <p className="text-xs text-slate-600 leading-relaxed">{GSD076_KB.description}</p>
+                                </div>
+                                <div className="mb-2.5">
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Root Cause</p>
+                                  <p className="text-xs text-slate-600 leading-relaxed">{GSD076_KB.rootCause}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Resolution Steps</p>
+                                  <ol className="space-y-1">
+                                    {GSD076_KB.resolutionSteps.map((step, i) => (
+                                      <li key={i} className="flex gap-2 items-start">
+                                        <span className="w-4 h-4 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
+                                        <span className="text-xs text-slate-700 leading-snug">{step}</span>
+                                      </li>
+                                    ))}
+                                  </ol>
+                                </div>
+                              </div>
+                            )}
+                            {/* Fallback for unknown incident IDs */}
+                            {kbResultReady && kbSearchTicketId !== 'GSD-076' && (
+                              <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
+                                <p className="text-sm text-amber-700">No record found for <span className="font-bold">{kbSearchTicketId}</span> in Buganizer or GUTS. Verify the ticket ID and try again.</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                     <div className="flex gap-2 items-end">
@@ -1720,8 +2367,8 @@ const AgentView = ({
                         onChange={e => setAgentKBInput(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleAgentKBSend())}
                         rows={2}
-                        placeholder="Ask about SOP, past tickets…"
-                        className="flex-1 px-3 py-2 text-[11px] border border-slate-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-slate-700 placeholder-slate-400"
+                        placeholder="Ask anything..."
+                        className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-slate-700 placeholder-slate-400"
                       />
                       <button onClick={handleAgentKBSend} className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex-shrink-0">
                         <Send className="w-3.5 h-3.5" />
@@ -1745,21 +2392,21 @@ const AgentView = ({
 
                   {/* Classification */}
                   <div className="col-span-2 bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Server className="w-3 h-3" /> Classification</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Server className="w-3 h-3" /> Classification</p>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-3.5">
                       {[
                         { label: 'Category', value: info.category },
                         { label: 'Subcategory', value: info.subcategory },
                         { label: 'Configuration Item', value: info.ci },
                         { label: 'Affected Service', value: info.service },
-                        { label: 'Priority', value: '2 — High', color: 'text-orange-600' },
+                        { label: 'Priority', value: '2 — High', color: 'text-orange-600 font-semibold' },
                         { label: 'Impact', value: '3 — Low' },
-                        { label: 'Urgency', value: '2 — High', color: 'text-orange-600' },
+                        { label: 'Urgency', value: '2 — High', color: 'text-orange-600 font-semibold' },
                         { label: 'State', value: agentTicket.status, color: 'text-green-600' },
                       ].map(({ label, value, color }) => (
                         <div key={label}>
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
-                          <p className={`text-xs font-semibold ${color || 'text-slate-700'}`}>{value}</p>
+                          <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
+                          <p className={`text-sm font-semibold ${color || 'text-slate-700'}`}>{value}</p>
                         </div>
                       ))}
                     </div>
@@ -1767,12 +2414,12 @@ const AgentView = ({
 
                   {/* Contact */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Phone className="w-3 h-3" /> Reporter</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Phone className="w-3 h-3" /> Reporter</p>
                     <div className="flex items-center gap-2.5 mb-3">
                       <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-sm flex-shrink-0">{agentTicket.email[0].toUpperCase()}</div>
                       <div>
-                        <p className="text-xs font-semibold text-slate-800 leading-snug">{agentTicket.email}</p>
-                        <p className="text-[10px] text-slate-400">Employee</p>
+                        <p className="text-sm font-semibold text-slate-800 leading-snug">{agentTicket.email}</p>
+                        <p className="text-sm text-slate-400">Employee</p>
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -1783,8 +2430,8 @@ const AgentView = ({
                         { label: 'Opened', value: agentTicket.createdAt },
                       ].map(({ label, value }) => (
                         <div key={label}>
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{label}</p>
-                          <p className="text-[11px] text-slate-700">{value}</p>
+                          <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">{label}</p>
+                          <p className="text-sm text-slate-700">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -1792,7 +2439,7 @@ const AgentView = ({
 
                   {/* Assignment */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><UserCheck className="w-3 h-3" /> Assignment</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><UserCheck className="w-3 h-3" /> Assignment</p>
                     <div className="space-y-3">
                       {[
                         { label: 'Assignment Group', value: info.assignmentGroup },
@@ -1800,8 +2447,8 @@ const AgentView = ({
                         { label: 'Escalation Tier', value: info.escalationTier },
                       ].map(({ label, value }) => (
                         <div key={label}>
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
-                          <p className="text-xs font-semibold text-slate-700">{value}</p>
+                          <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
+                          <p className="text-sm font-semibold text-slate-700">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -1809,7 +2456,7 @@ const AgentView = ({
 
                   {/* SLA */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Clock className="w-3 h-3" /> SLA Timings</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Clock className="w-3 h-3" /> SLA Timings</p>
                     <div className="space-y-2.5">
                       {[
                         { label: 'Response SLA', value: 'Completed', color: 'text-green-600 bg-green-50 border-green-100' },
@@ -1817,8 +2464,8 @@ const AgentView = ({
                         { label: 'Business Elapsed', value: '1h 12m', color: 'text-slate-600 bg-slate-50 border-slate-100' },
                       ].map(({ label, value, color }) => (
                         <div key={label} className="flex items-center justify-between">
-                          <span className="text-[11px] text-slate-500">{label}</span>
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${color}`}>{value}</span>
+                          <span className="text-sm text-slate-500">{label}</span>
+                          <span className={`text-sm font-bold px-2 py-0.5 rounded-full border ${color}`}>{value}</span>
                         </div>
                       ))}
                     </div>
@@ -1826,26 +2473,26 @@ const AgentView = ({
 
                   {/* Tags */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Tag className="w-3 h-3" /> AI-Generated Tags</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Tag className="w-3 h-3" /> AI-Generated Tags</p>
                     <div className="flex flex-wrap gap-1.5">
                       {info.tags.map(tag => (
-                        <span key={tag} className="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full font-medium">#{tag}</span>
+                        <span key={tag} className="text-sm bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full font-medium">#{tag}</span>
                       ))}
                     </div>
                   </div>
 
                   {/* Related Tickets */}
                   <div className="col-span-3 bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Link className="w-3 h-3" /> Related Records</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Link className="w-3 h-3" /> Related Records</p>
                     {related.length === 0 ? (
-                      <p className="text-xs text-slate-400 italic">No related tickets found</p>
+                      <p className="text-sm text-slate-400 italic">No related tickets found</p>
                     ) : (
                       <div className="flex flex-col gap-2">
                         {related.map(r => (
                           <div key={r.id} className="flex items-center gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-100">
-                            <span className="text-[9px] font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">{r.type}</span>
-                            <span className="text-[10px] font-bold text-indigo-600">{r.id}</span>
-                            <span className="text-[11px] text-slate-600">{r.label}</span>
+                            <span className="text-sm font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">{r.type}</span>
+                            <span className="text-sm font-bold text-indigo-600">{r.id}</span>
+                            <span className="text-sm text-slate-600">{r.label}</span>
                             <ExternalLink className="w-3 h-3 text-slate-300 ml-auto" />
                           </div>
                         ))}
@@ -1865,7 +2512,7 @@ const AgentView = ({
   );
 };
 
-// ── Scenario library & matching helpers ──────────────────────────────────────
+// â"€â"€ Scenario library & matching helpers â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 const SCENARIO_LIBRARY = [
   {
     scenario: 'Email Notification Failure',
@@ -1900,7 +2547,7 @@ const SCENARIO_LIBRARY = [
   {
     scenario: 'Snowflake User Account Locked',
     sop: 'SOP-SF-007',
-    solution: '1. Admin logs into Snowflake console and navigates to Admin → Users & Roles\n2. Locate the locked user account and click "Unlock User" to restore access\n3. Reset the user\'s temporary password and communicate via secure IT channel\n4. Review INFORMATION_SCHEMA.LOGIN_HISTORY to identify failed authentication attempts and their source\n5. Verify MFA enforcement policy and IP allowlist configuration for the user role\n6. Confirm user can log in with new credentials from their browser and environment\n7. Update incident record and close ticket with resolution summary',
+    solution: '1. Admin logs into Snowflake console and navigates to Admin -> Users & Roles\n2. Locate the locked user account and click "Unlock User" to restore access\n3. Reset the user\'s temporary password and communicate via secure IT channel\n4. Review INFORMATION_SCHEMA.LOGIN_HISTORY to identify failed authentication attempts and their source\n5. Verify MFA enforcement policy and IP allowlist configuration for the user role\n6. Confirm user can log in with new credentials from their browser and environment\n7. Update incident record and close ticket with resolution summary',
   },
 ];
 
@@ -1982,7 +2629,7 @@ function matchPastResolution(text) {
   return best?.hits > 0 ? best : null;
 }
 
-// ── Root App component ────────────────────────────────────────────────────────
+// â"€â"€ Root App component â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 const App = () => {
   const [tickets, setTickets] = useState([]);
   const [thinkingTicketId, setThinkingTicketId] = useState(null);
@@ -2057,3 +2704,4 @@ const App = () => {
 };
 
 export default App;
+
