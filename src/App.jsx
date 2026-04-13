@@ -10,9 +10,9 @@ import {
 
 const SAMPLE_TICKETS = [
   {
-    id: 't/233838887',
+    id: 'b/452279135',
     email: 'user@cognizant.com',
-    description: '[GTECH CONSUMER][PH-REMOTE-GEN]: Dashboard Issue',
+    description: 'DatabridgeStepFailed: Your step "SaleforceToCapacitor - UAT" has failed to run',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -97,6 +97,16 @@ const SAMPLE_TICKETS = [
     isSample: true,
     comments: [],
   },
+  {
+    id: 'b/448326226',
+    email: 'prasadbabuk@google.com',
+    description: 'DatabridgeStepFailed: Your step "SaleforceToCapacitor -UAT" has failed run',
+    status: 'Open',
+    createdAt: '11 Apr 2026, 10:30 AM',
+    hasUpdate: true,
+    isSample: true,
+    comments: [],
+  },
 ];
 
 const ThinkingDots = ({ color = 'blue' }) => (
@@ -125,17 +135,6 @@ const CTI_STEPS = [
   'Validating CTI triple against historical ticket corpus...',
   'Finalising category, type, and item classification...',
 ];
-const GSD100_PRE_STEPS = [
-  'Reading ticket description and reporter details...',
-  'Checking ticket against existing knowledge base...',
-  'Evaluating available context information...',
-  'Identifying required missing fields...',
-];
-const GSD100_CHECK_STEPS = [
-  'Processing reporter context...',
-  'Validating provided information against ticket...',
-  'Context validated — proceeding to classification...',
-];
 const GSD100_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
@@ -143,41 +142,7 @@ const GSD100_DUP_STEPS = [
   'Querying resolved ticket history...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
-  'No tickets found above confidence threshold...',
-];
-const GSD100_REC_STEPS = [
-  'Loading similar ticket corpus from vector store...',
-  'Fetching t/233838810 (94% match) from incident archive...',
-  'Extracting resolution transcript from t/233838810...',
-  'Parsing resolution steps from closed ticket...',
-  'Mapping steps to current ticket context...',
-  'Validating resolution applicability...',
-];
-const GSD100_REC_RESOLUTION = [
-  "Verify user's Speakeasy access role in admin panel under Accounts -> Permissions.",
-  'Submit access grant request to Speakeasy admin at speakeasy-admin@internal with ticket reference.',
-  'Confirm dashboard URL with user after access is granted (Speakeasy -> Reports -> Historical).',
-  'Add user to the Listnr Adwords GCC distribution group for ongoing access.',
-];
-const GSD100_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / Speakeasy historical dashboard / access...',
-  'Locating SOP for Speakeasy historical dashboard access requests...',
-  'Retrieving RUNBOOK-CC-047 from knowledge base...',
-  'Validating runbook version and current applicability...',
-];
-const GSD100_RUNBOOK_RESOLUTION = [
-  'Confirm user identity and site: Cognizant Gurgaon - Adwords GCC (verified via context).',
-  'Log access request in Speakeasy admin portal -> Contact: speakeasy-support@internal.',
-  'Assign dashboard role: viewer_historical via Admin -> Role Assignment panel.',
-  'Notify user once role is propagated (typically 15-30 min after assignment).',
-  'Verify access: ask user to navigate Speakeasy -> Reports -> Historical Dashboard.',
-];
-const GSD100_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Speakeasy dashboard entries...',
-  'Checking error-code catalogue for access-related entries...',
-  'Scanning step-by-step guides for dashboard permission issues...',
-  'Cross-referencing troubleshoot tags: contact-center, dashboard, access...',
+  'Duplicate ticket identified — b/448326226 (96% match)...',
 ];
 const GSD103_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
@@ -250,6 +215,40 @@ const GSD104_DUP_STEPS = [
   '3 tickets found above confidence threshold...',
 ];
 
+const B448_DUP_STEPS = [
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for DataBridge pipeline failures...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+
+const B448_RCA_STEPS = [
+  'Connecting to pipeline execution logs...',
+  'Fetching SalesforceToCapacitor - UAT run logs from Databridge...',
+  'Parsing error stack trace from failed pipeline run...',
+  'Identifying root cause: NullPointerException at file path resolution...',
+  'Cross-referencing PermissionDeniedException against IAM policies...',
+  'Querying MPM package version for corp/salesforcehub/integrations/sawmill...',
+  'Checking UAT label applied to MPM build — includes cl/816241916...',
+  'Comparing build date: pre-2025-10-31 (missing fix) vs required version...',
+  'Root cause confirmed — MPM version mismatch and file permission error...',
+];
+
+const B448_REC_STEPS = [
+  'Querying g3doc for SalesforceToCapacitor pipeline configuration guides...',
+  'Searching Yaqs for MPM UAT label update procedures...',
+  'Scanning MoMA for cl/816241916 fix documentation and known issues...',
+  'Fetching resolution steps from similar resolved DataBridge incidents...',
+  'Applying RCA finding #1: MPM version mismatch — mapping fix steps for cl/816241916...',
+  'Applying RCA finding #2: relative sub-transformation path — mapping absolute path correction...',
+  'Applying RCA finding #3: PermissionDeniedException — mapping IAM policy remediation steps...',
+  'Compiling standard resolution steps from knowledge platform...',
+  'Validating compiled steps against current pipeline configuration...',
+];
+
 // Knowledge Base — t/239635757 incident record
 const GSD076_KB = {
   id: 't/239635757',
@@ -311,23 +310,10 @@ const AgentView = ({
   const [s4Steps, setS4Steps] = useState([]);
   const [s4Done, setS4Done] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [gsd100CtiSteps, setGsd100CtiSteps] = useState([]);
-  const [gsd100CtiDone, setGsd100CtiDone] = useState(false);
   const [gsd100DupSteps, setGsd100DupSteps] = useState([]);
   const [gsd100DupDone, setGsd100DupDone] = useState(false);
-
-  const [gsd100PreSteps, setGsd100PreSteps] = useState([]);
-  const [gsd100PreDone, setGsd100PreDone] = useState(false);
-  const [gsd100CheckSteps, setGsd100CheckSteps] = useState([]);
-  const [gsd100CheckDone, setGsd100CheckDone] = useState(false);
-  const [gsd100ContextSubmitted, setGsd100ContextSubmitted] = useState(false);
-  const [gsd100ContextVisible, setGsd100ContextVisible] = useState(false);
-  const [gsd100RecSteps, setGsd100RecSteps] = useState([]);
+  const [gsd100InvestigateDone, setGsd100InvestigateDone] = useState(false);
   const [gsd100RecDone, setGsd100RecDone] = useState(false);
-  const [gsd100RunbookSteps, setGsd100RunbookSteps] = useState([]);
-  const [gsd100RunbookDone, setGsd100RunbookDone] = useState(false);
-  const [gsd100TroubleshootSteps, setGsd100TroubleshootSteps] = useState([]);
-  const [gsd100TroubleshootDone, setGsd100TroubleshootDone] = useState(false);
   const [gsd103ContextSteps, setGsd103ContextSteps] = useState([]);
   const [gsd103ContextDone, setGsd103ContextDone] = useState(false);
   const [gsd103CtiSteps, setGsd103CtiSteps] = useState([]);
@@ -347,6 +333,12 @@ const AgentView = ({
   const [gsd104CtiDone, setGsd104CtiDone] = useState(false);
   const [gsd104DupSteps, setGsd104DupSteps] = useState([]);
   const [gsd104DupDone, setGsd104DupDone] = useState(false);
+  const [b448DupSteps, setB448DupSteps] = useState([]);
+  const [b448DupDone, setB448DupDone] = useState(false);
+  const [b448RcaSteps, setB448RcaSteps] = useState([]);
+  const [b448RcaDone, setB448RcaDone] = useState(false);
+  const [b448RecSteps, setB448RecSteps] = useState([]);
+  const [b448RecDone, setB448RecDone] = useState(false);
 
   // KB incident search state
   const [kbSearchTicketId, setKbSearchTicketId] = useState(null);
@@ -390,75 +382,54 @@ const AgentView = ({
     }
   }, [routingTicketId, agentSelectedTicketId]);
 
-  // t/233838887: pre-step animation (runs as soon as ticket is selected)
+  // b/452279135: duplicate scan animation (fires immediately on ticket selection)
   useEffect(() => {
-    if (agentSelectedTicketId !== 't/233838887') return;
-    setGsd100PreSteps([]);
-    setGsd100PreDone(false);
-    setGsd100CheckSteps([]);
-    setGsd100CheckDone(false);
-    setGsd100ContextSubmitted(false);
-    setGsd100ContextVisible(false);
-    setGsd100CtiSteps([]);
-    setGsd100CtiDone(false);
+    if (agentSelectedTicketId !== 'b/452279135') return;
     setGsd100DupSteps([]);
     setGsd100DupDone(false);
-
-    setGsd100RecSteps([]);
+    setGsd100InvestigateDone(false);
     setGsd100RecDone(false);
-    setGsd100RunbookSteps([]);
-    setGsd100RunbookDone(false);
-    setGsd100TroubleshootSteps([]);
-    setGsd100TroubleshootDone(false);
     const timers = [];
-    GSD100_PRE_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100PreSteps(prev => [...prev, step]), 300 + i * 700));
+    GSD100_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100DupSteps(prev => [...prev, step]), 300 + i * 800));
     });
-    timers.push(setTimeout(() => setGsd100PreDone(true), 300 + GSD100_PRE_STEPS.length * 700));
+    const dupDoneAt = 300 + GSD100_DUP_STEPS.length * 800;
+    timers.push(setTimeout(() => setGsd100DupDone(true), dupDoneAt));
+    timers.push(setTimeout(() => setGsd100InvestigateDone(true), dupDoneAt + 1800));
+    timers.push(setTimeout(() => setGsd100RecDone(true), dupDoneAt + 2800));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/233838887 CTI + duplicate + recommendation animation — triggered after context submitted
-  useEffect(() => {
-    if (!gsd100ContextSubmitted) return;
-    const timers = [];
-    GSD100_CHECK_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100CheckSteps(prev => [...prev, step]), 300 + i * 700));
-    });
-    const checkDoneAt = 300 + GSD100_CHECK_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd100CheckDone(true), checkDoneAt));
-    const ctiStart = checkDoneAt + 500;
-    CTI_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
-    });
-    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd100CtiDone(true), ctiDoneAt));
-    const dupStart = ctiDoneAt + 600;
-    GSD100_DUP_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100DupSteps(prev => [...prev, step]), dupStart + i * 900));
-    });
-    const dupDoneAt = dupStart + GSD100_DUP_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd100DupDone(true), dupDoneAt));
-    const recStart = dupDoneAt + 3500;
-    GSD100_REC_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100RecSteps(prev => [...prev, step]), recStart + i * 700));
-    });
-    const recDoneAt = recStart + GSD100_REC_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd100RecDone(true), recDoneAt));
-    const runbookStart = recDoneAt + 800;
-    GSD100_RUNBOOK_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
-    });
-    const runbookDoneAt = runbookStart + GSD100_RUNBOOK_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd100RunbookDone(true), runbookDoneAt));
-    const troubleshootStart = runbookDoneAt + 800;
-    GSD100_TROUBLESHOOT_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
-    });
-    timers.push(setTimeout(() => setGsd100TroubleshootDone(true), troubleshootStart + GSD100_TROUBLESHOOT_STEPS.length * 700));
-    return () => timers.forEach(clearTimeout);
-  }, [gsd100ContextVisible]);
 
+  // b/448326226: dup scan (no dup) → RCA → recommendation animation
+  useEffect(() => {
+    if (agentSelectedTicketId !== 'b/448326226') return;
+    setB448DupSteps([]);
+    setB448DupDone(false);
+    setB448RcaSteps([]);
+    setB448RcaDone(false);
+    setB448RecSteps([]);
+    setB448RecDone(false);
+    const timers = [];
+    B448_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setB448DupSteps(prev => [...prev, step]), 300 + i * 800));
+    });
+    const dupDoneAt = 300 + B448_DUP_STEPS.length * 800;
+    timers.push(setTimeout(() => setB448DupDone(true), dupDoneAt));
+    const rcaStart = dupDoneAt + 1200;
+    B448_RCA_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setB448RcaSteps(prev => [...prev, step]), rcaStart + i * 700));
+    });
+    const rcaDoneAt = rcaStart + B448_RCA_STEPS.length * 700;
+    timers.push(setTimeout(() => setB448RcaDone(true), rcaDoneAt));
+    const recStart = rcaDoneAt + 1200;
+    B448_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setB448RecSteps(prev => [...prev, step]), recStart + i * 700));
+    });
+    const recDoneAt = recStart + B448_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setB448RecDone(true), recDoneAt));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
 
   // t/239828919 context validation + CTI + duplicate + recommendation animation
   useEffect(() => {
@@ -709,7 +680,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 't/233838887' && t.id !== 't/239828919' && t.id !== 't/238603185') {
+                if (!hasBeenRouted && t.id !== 'b/452279135' && t.id !== 't/239828919' && t.id !== 't/238603185' && t.id !== 'b/448326226') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -789,19 +760,6 @@ const AgentView = ({
                 <div className="p-4 border-b border-slate-100">
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Summary</p>
                   <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
-                  {agentTicket.id === 't/233838887' && gsd100ContextVisible && (() => {
-                    const _eIdx = agentComments.indexOf(pipeline?.enrichment);
-                    const _ctx = agentComments.find((c, i) => c.role === 'user' && i > _eIdx);
-                    return (
-                      <div className="bg-blue-50 rounded-lg p-3 border border-blue-100 mb-4">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs font-bold text-blue-600">Context Provided</span>
-                          <span className="text-xs text-slate-400">13 Apr 2026, 1:05 PM</span>
-                        </div>
-                        <p className="text-sm text-slate-700 leading-relaxed italic whitespace-pre-wrap">"{_ctx?.text}"</p>
-                      </div>
-                    );
-                  })()}
                   <div className="grid grid-cols-2 gap-x-3 gap-y-3">
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Number</p><p className="text-sm font-semibold text-indigo-600 mt-0.5">{agentTicket.id}</p></div>
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-sm font-semibold text-orange-600 mt-0.5">2 — High</p></div>
@@ -815,9 +773,10 @@ const AgentView = ({
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Caller</p>
                   {(() => {
                     const callerMap = {
-                      't/233838887': 'Rahul Sharma',
+                      'b/452279135': 'Rahul Sharma',
                       't/239828919': 'Ashi Verma',
                       't/238603185': 'Ravi Kumar',
+                      'b/448326226': 'Prasad Babuk',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
@@ -864,7 +823,7 @@ const AgentView = ({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <div>
-                            <p className="text-sm font-bold text-slate-800">Triage & Categorize Agent</p>
+                            <p className="text-sm font-bold text-slate-800">Triage Agent</p>
                           </div>
                           {isThinking ? (
                             <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
@@ -880,12 +839,19 @@ const AgentView = ({
                               : gsd104ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
+                          ) : agentTicket?.id === 'b/452279135' ? (
+                            gsd100DupDone
+                              ? <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Found</span>
+                              : gsd100DupSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Scanning <ThinkingDots /></span>
+                                : null
+                          ) : agentTicket?.id === 'b/448326226' ? (
+                            b448DupDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> No Duplicate</span>
+                              : b448DupSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Scanning <ThinkingDots /></span>
+                                : null
                           ) : pipeline?.enrichment ? (() => {
-                            if (agentTicket?.id === 't/233838887') {
-                              if (gsd100ContextSubmitted) return <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>;
-                              if (gsd100PreDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
-                              return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>;
-                            }
                             const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                             const hasReply = agentComments.some((c, i) => c.role === 'user' && i > enrichmentIdx);
                             return hasReply
@@ -1080,166 +1046,72 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && pipeline?.enrichment && !isThinking ? (() => {
+                        {agentTicket.id === 'b/452279135' && gsd100DupSteps.length > 0 && (
+                          <div className="mt-2">
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                {!gsd100DupDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-2.5 h-2.5" /> Duplicate Found</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd100DupSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              {gsd100DupDone && (
+                                <div className="mt-2 pt-2 border-t border-slate-200">
+                                  <div className="bg-white rounded-lg border border-orange-200 p-2.5">
+                                    <div className="flex items-center justify-between mb-1.5">
+                                      <span className="text-sm font-bold text-indigo-600">b/448326226</span>
+                                      <div className="flex items-center gap-1.5">
+                                        <Clock className="w-3 h-3 text-slate-400" />
+                                        <span className="text-sm text-slate-400">11 Apr 2026, 10:30 AM</span>
+                                      </div>
+                                    </div>
+                                    <p className="text-sm text-slate-600 leading-snug">DatabridgeStepFailed: Your step "SaleforceToCapacitor -UAT" has failed run</p>
+                                    <div className="mt-1.5">
+                                      <span className="text-sm bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full font-bold border border-orange-100">Open</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {agentTicket.id === 'b/448326226' && !isThinking && b448DupSteps.length > 0 && (
+                          <div className="mt-2">
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                {!b448DupDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No Duplicate</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {b448DupSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              {b448DupDone && (
+                                <div className="mt-2 pt-2 border-t border-slate-200">
+                                  <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {agentTicket.id !== 'b/452279135' && agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && agentTicket.id !== 'b/448326226' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
                           return (
                             <div className="mt-2 space-y-2">
-                              {/* t/233838887: pre-check telemetry */}
-                              {agentTicket.id === 't/233838887' && gsd100PreSteps.length > 0 && (
-                                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                  <div className="flex items-center justify-between mb-1.5">
-                                    <div>
-                                      <p className="text-sm font-bold text-slate-600">Checking Context</p>
-                                      <p className="text-sm text-slate-400">13 Apr 2026, 9:15 AM</p>
-                                    </div>
-                                    {!gsd100PreDone
-                                      ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
-                                      : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> Done</span>}
-                                  </div>
-                                  <div className="space-y-1 font-mono">
-                                    {gsd100PreSteps.map((step, i) => (
-                                      <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                        <span className="text-slate-400">*</span><span>{step}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {agentTicket.id === 't/233838887' && gsd100PreDone && (
-                                <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
-                                  <p className="text-sm font-bold text-orange-600 mb-2">Required Details Missing</p>
-                                  <div className="space-y-2">
-                                    {pipeline.enrichment.enrichmentQuestions.map((q, i) => (
-                                      <div key={i} className={`p-2 rounded-md border text-sm ${gsd100ContextSubmitted ? 'bg-green-50 border-green-200' : 'bg-white border-orange-200'}`}>
-                                        <p className={`font-bold mb-0.5 flex items-center gap-1 ${gsd100ContextSubmitted ? 'text-green-700' : 'text-orange-700'}`}>
-                                          {gsd100ContextSubmitted && <CheckCircle className="w-2.5 h-2.5" />}* {q.field}
-                                        </p>
-                                        <p className={gsd100ContextSubmitted ? 'text-green-600' : 'text-slate-600'}>{q.detail}</p>
-                                      </div>
-                                    ))}
-                                  </div>
-                                  {!gsd100ContextSubmitted && (
-                                    <div className="mt-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center gap-3">
-                                      <p className="text-sm text-slate-600 font-medium flex-1">Do you want to update these comments in this ticket?</p>
-                                      <button
-                                        onClick={() => {
-                                          setGsd100ContextSubmitted(true);
-                                          setTimeout(() => setGsd100ContextVisible(true), 1800);
-                                        }}
-                                        className="flex-shrink-0 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-1"
-                                      >
-                                        <CheckCircle className="w-3 h-3" /> Approve
-                                      </button>
-                                      <button
-                                        onClick={() => {}}
-                                        className="flex-shrink-0 px-3 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center gap-1"
-                                      >
-                                        Reject
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              {agentTicket.id === 't/233838887' && gsd100ContextVisible && (
-                                <>
-                                  <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
-                                    <div className="flex items-center justify-between mb-1">
-                                      <p className="text-sm font-bold text-blue-600">Context provided by reporter:</p>
-                                      <span className="text-sm text-slate-400">13 Apr 2026, 1:05 PM</span>
-                                    </div>
-                                    <p className="text-sm text-slate-700 leading-relaxed italic whitespace-pre-wrap">"{agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx)?.text}"</p>
-                                  </div>
-                                  {/* second checking context */}
-                                  {gsd100CheckSteps.length > 0 && (
-                                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                      <div className="flex items-center justify-between mb-1.5">
-                                        <div>
-                                          <p className="text-sm font-bold text-slate-600">Checking Context</p>
-                                          <p className="text-sm text-slate-400">13 Apr 2026, 1:06 PM</p>
-                                        </div>
-                                        {!gsd100CheckDone
-                                          ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
-                                          : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Provided</span>}
-                                      </div>
-                                      <div className="space-y-1 font-mono">
-                                        {gsd100CheckSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                            <span className="text-slate-400">*</span><span>{step}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
-                                </>
-                              )}
-                              {/* t/233838887: CTI detection + duplicate identification (only after context submitted) */}
-                              {agentTicket.id === 't/233838887' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
-                                <div className="space-y-2">
-                                  {/* CTI Section */}
-                                  <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
-                                    <div className="flex items-center justify-between mb-2">
-                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
-                                      {!gsd100CtiDone ? (
-                                        <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
-                                      ) : (
-                                        <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>
-                                      )}
-                                    </div>
-                                    <div className="space-y-1 font-mono">
-                                      {gsd100CtiSteps.map((step, i) => (
-                                        <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                          <span className="text-violet-400">*</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    {gsd100CtiDone && (
-                                      <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
-                                        </div>
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-sm font-semibold text-slate-700">Speakeasy historical dashboard</p>
-                                        </div>
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                          <p className="text-sm font-semibold text-slate-700">access</p>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                  {/* Duplicate Identification Section */}
-                                  {gsd100DupSteps.length > 0 && (
-                                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
-                                        {!gsd100DupDone ? (
-                                          <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
-                                        ) : (
-                                          <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>
-                                        )}
-                                      </div>
-                                      <div className="space-y-1 font-mono">
-                                        {gsd100DupSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                            <span className="text-slate-400">*</span>
-                                            <span>{step}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                      {gsd100DupDone && (
-                                        <div className="mt-2 pt-2 border-t border-slate-200">
-                                          <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
                               {/* t/239828919: CTI detection + duplicate identification */}
                               {agentTicket.id === 't/239828919' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
                                 <div className="space-y-2">
@@ -1330,12 +1202,134 @@ const AgentView = ({
                               )}
                             </div>
                           );
-                        })() : agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && !isThinking && (
-                          <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
-                        )}
+                        })() : null}
                       </div>
                     </div>
                   </div>
+
+                  {/* Investigate Agent Card — only for b/452279135 */}
+                  {agentTicket?.id === 'b/452279135' && (
+                    <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
+                          <Search className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="text-sm font-bold text-slate-800">Investigate Agent</p>
+                            {gsd100InvestigateDone
+                              ? <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>
+                              : gsd100DupDone
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : <span className="text-sm text-slate-400 font-medium">Pending...</span>}
+                          </div>
+                          {gsd100InvestigateDone && (
+                            <div className="mt-2">
+                              <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
+                                <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
+                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448326226</span> for root cause.</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Investigate Agent Card — b/448326226 RCA */}
+                  {agentTicket?.id === 'b/448326226' && (
+                    <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
+                          <Search className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="text-sm font-bold text-slate-800">Investigate Agent</p>
+                            {b448RcaDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> RCA Complete</span>
+                              : b448DupDone
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : <span className="text-sm text-slate-400 font-medium">Pending...</span>}
+                          </div>
+                          {b448RcaSteps.length > 0 && (
+                            <div className="mt-2">
+                              <div className="p-2.5 bg-purple-50 rounded-lg border border-purple-100">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-purple-700">Root Cause Analysis</p>
+                                  {!b448RcaDone
+                                    ? <span className="flex items-center gap-1 text-sm text-purple-500 font-medium">Analysing <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Complete</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {b448RcaSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-purple-400">*</span>
+                                      <span>{step}</span>
+                                      {i === 1 && (
+                                        <a
+                                          href="#"
+                                          onClick={e => e.preventDefault()}
+                                          title="View pipeline run logs"
+                                          className="ml-1 flex items-center gap-0.5 text-indigo-500 hover:text-indigo-700 underline underline-offset-2 font-medium transition-colors"
+                                        >
+                                          <ExternalLink className="w-3 h-3" />
+                                          <span className="text-xs">View logs</span>
+                                        </a>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                                {b448RcaDone && (
+                                  <div className="mt-3 pt-2 border-t border-purple-100">
+                                    <p className="text-sm font-bold text-purple-800 mb-2">Error Logs:</p>
+                                    <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 mb-3 overflow-x-auto">
+                                      <p className="text-slate-400">{'[2026-04-11 10:28:14] INFO  Databridge pipeline started: SalesforceToCapacitor-UAT'}</p>
+                                      <p className="text-slate-400">{'[2026-04-11 10:28:15] INFO  Loading MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline'}</p>
+                                      <p className="text-slate-400">{'[2026-04-11 10:28:16] INFO  UAT label resolved → build: 2025-09-14 (cl/814203001)'}</p>
+                                      <p className="text-yellow-400">{'[2026-04-11 10:28:17] WARN  Build predates required fix cl/816241916 (2025-10-07)'}</p>
+                                      <p className="text-slate-400">{'[2026-04-11 10:28:18] INFO  Initialising sub-transformation: ShgSawmillIntegrationPipelineUAT'}</p>
+                                      <p className="text-yellow-400">{'[2026-04-11 10:28:19] WARN  Sub-transformation path is relative — attempting to resolve against working dir'}</p>
+                                      <p className="text-red-400">{'[2026-04-11 10:28:20] ERROR Step "SaleforceToCapacitor - UAT" FAILED'}</p>
+                                      <p className="text-red-400 mt-1">{'java.lang.RuntimeException: Step execution failed'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.databridge.StepRunner.execute(StepRunner.java:241)'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.databridge.PipelineExecutor.runStep(PipelineExecutor.java:189)'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.databridge.PipelineExecutor.run(PipelineExecutor.java:112)'}</p>
+                                      <p className="text-red-400 mt-1">{'Caused by: com.google.io.file.PermissionDeniedException:'}</p>
+                                      <p className="text-red-400 pl-4">{'/google_src/files/head/depot/google3/corp/'}</p>
+                                      <p className="text-red-400 pl-4">{'salesforcehub/integrations/sawmill/'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.io.file.FileSystem.open(FileSystem.java:88)'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.sawmill.SawmillConfig.load(SawmillConfig.java:55)'}</p>
+                                      <p className="text-red-400 mt-1">{'Caused by: java.lang.NullPointerException: Cannot match any'}</p>
+                                      <p className="text-red-400 pl-4">{'file paths with file pattern'}</p>
+                                      <p className="text-red-400 pl-4">{'/placer/test/scratch/home/shg-databridge-sawm*'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.placer.FileResolver.resolve(FileResolver.java:134)'}</p>
+                                      <p className="text-red-400 pl-4">{'at com.google.sawmill.SawmillConfig.resolveSubTransform(SawmillConfig.java:201)'}</p>
+                                      <p className="text-slate-500 mt-1">{'[2026-04-11 10:28:20] INFO  Pipeline terminated. Exit code: 1'}</p>
+                                    </div>
+                                    <p className="text-sm font-bold text-purple-800 mb-2">Root Cause:</p>
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-start gap-2">
+                                        <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">1</span>
+                                        <p className="text-sm text-slate-700"><span className="font-semibold">PermissionDeniedException:</span> The SalesforceToCapacitor - UAT step uses MPM package <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">salesforce_sawmill_d_v7_pipeline</span>. The UAT label is applied to an MPM build from before 2025-10-31, which does not include fix <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">cl/816241916</span>.</p>
+                                      </div>
+                                      <div className="flex items-start gap-2">
+                                        <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">2</span>
+                                        <p className="text-sm text-slate-700"><span className="font-semibold">NullPointerException:</span> Sub-transformation path is configured as relative, not absolute — file pattern resolution fails at <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">/placer/test/scratch/home/shg-databridge-sawm*</span>.</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* S4 Card */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
@@ -1351,8 +1345,10 @@ const AgentView = ({
                           {(() => {
                             const isRouting = routingTicketId === agentSelectedTicketId;
                             if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/233838887' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/233838887' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/452279135' && gsd100RecDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
+                            if (agentTicket?.id === 'b/452279135' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Analysing <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/448326226' && b448RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'b/448326226' && b448RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
                             if (agentTicket?.id === 't/239828919' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
                             if (agentTicket?.id === 't/239828919' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
                             if (agentTicket?.id === 't/238603185' && gsd104DupDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
@@ -1360,6 +1356,7 @@ const AgentView = ({
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
+                            if (agentTicket?.id === 'b/448326226' || agentTicket?.id === 'b/452279135') return null;
                             if (s4Done || pipeline) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">No Match</span>;
                             return null;
                           })()}
@@ -1374,32 +1371,56 @@ const AgentView = ({
                             ))}
                           </div>
                         )}
-                        {/* t/233838887 Recommendation Agent — similar ticket, runbook, troubleshoot */}
-                        {agentTicket?.id === 't/233838887' && gsd100RecSteps.length > 0 && (
+                        {/* b/452279135 Recommendation Agent — duplicate */}
+                        {agentTicket?.id === 'b/452279135' && gsd100RecDone && (
+                          <div className="mt-2">
+                            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
+                              <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
+                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448326226</span> for resolution.</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        {/* b/448326226 Recommendation Agent — knowledge platform search + resolution steps */}
+                        {agentTicket?.id === 'b/448326226' && b448RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
-                            {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
-                                {!gsd100RecDone
+                                <p className="text-sm font-bold text-amber-700">Knowledge Platform Search</p>
+                                {!b448RecDone
                                   ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
                                   : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                               </div>
                               <div className="space-y-1 font-mono">
-                                {gsd100RecSteps.map((step, i) => (
+                                {b448RecSteps.map((step, i) => (
                                   <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                     <span className="text-amber-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
-                              {gsd100RecDone && (
-                                <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/233838810 · 94% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/233838810):</p>
-                                  <div className="space-y-1.5">
-                                    {GSD100_REC_RESOLUTION.map((step, i) => (
+                              {b448RecDone && (
+                                <div className="mt-3 pt-2 border-t border-amber-200">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <p className="text-sm font-semibold text-amber-700">Sources:</p>
+                                    {['g3doc', 'Yaqs', 'MoMA'].map(src => (
+                                      <span key={src} className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-semibold border border-amber-200">{src}</span>
+                                    ))}
+                                  </div>
+                                  <p className="text-sm font-bold text-amber-800 mb-2">Standard Resolution Steps:</p>
+                                  <div className="space-y-2">
+                                    {[
+                                      'Open the SalesforceToCapacitor - UAT pipeline configuration and identify the MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline.',
+                                      'Apply the UAT label to the latest MPM version that includes cl/816241916 (built after 2025-10-31) to replace the stale build.',
+                                      'Update the sub-transformation path from relative to absolute in the pipeline step configuration to fix the NullPointerException.',
+                                      'Validate IAM permissions for the pipeline service account on /google_src/files/head/depot/google3/corp/salesforcehub/integrations/sawmill/.',
+                                      'Re-trigger the SalesforceToCapacitor - UAT pipeline run and monitor execution logs in Databridge.',
+                                      'Confirm successful completion with no PermissionDeniedException or NullPointerException in the run log.',
+                                      'Notify the reporter (prasadbabuk@google.com) once pipeline is confirmed healthy and close the ticket.',
+                                    ].map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                        <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                         <span>{step}</span>
                                       </div>
                                     ))}
@@ -1407,61 +1428,6 @@ const AgentView = ({
                                 </div>
                               )}
                             </div>
-                            {/* Scenario Runbook */}
-                            {gsd100RunbookSteps.length > 0 && (
-                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-CC-047)</p>
-                                  {!gsd100RunbookDone
-                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd100RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-blue-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd100RunbookDone && (
-                                  <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-CC-047):</p>
-                                    <div className="space-y-1.5">
-                                      {GSD100_RUNBOOK_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            {/* Troubleshoot Guide */}
-                            {gsd100TroubleshootSteps.length > 0 && (
-                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
-                                  {!gsd100TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd100TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-slate-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd100TroubleshootDone && (
-                                  <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-sm text-slate-500 font-medium">No troubleshoot guide steps found for this issue type.</p>
-                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
                           </div>
                         )}
                         {/* t/239828919 Recommendation Agent — similar ticket, runbook (found), troubleshoot (no steps) */}
@@ -1566,7 +1532,7 @@ const AgentView = ({
                             </div>
                           </div>
                         )}
-                        {agentTicket?.id !== 't/233838887' && agentTicket?.id !== 't/239828919' && agentTicket?.id !== 't/238603185' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {agentTicket?.id !== 'b/452279135' && agentTicket?.id !== 't/239828919' && agentTicket?.id !== 't/238603185' && agentTicket?.id !== 'b/448326226' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
