@@ -10,9 +10,9 @@ import {
 
 const SAMPLE_TICKETS = [
   {
-    id: 'GSD-100',
+    id: 't/233838887',
     email: 'user@cognizant.com',
-    description: 'Dashboard Issue',
+    description: '[GTECH CONSUMER][PH-REMOTE-GEN]: Dashboard Issue',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -44,43 +44,9 @@ const SAMPLE_TICKETS = [
     ],
   },
   {
-    id: 'GSD-101',
-    email: 'user@cognizant.com',
-    description: 'Duplicate verint profile',
-    status: 'Open',
-    createdAt: '13 Apr 2026, 9:15 AM',
-    hasUpdate: true,
-    isSample: true,
-    comments: [
-      {
-        author: 'AI Agent',
-        role: 'bot',
-        timestamp: '9:16 AM',
-        missingFields: [
-          { label: 'Affected agent email / employee ID' },
-          { label: 'Profile to keep active' },
-          { label: 'Single or multiple agents affected' },
-          { label: 'Project & site location' },
-        ],
-        enrichmentQuestions: [
-          { field: 'Affected agent email or employee ID', detail: 'Could you provide the affected agent\'s email address or employee ID?' },
-          { field: 'Profile to keep active', detail: 'Which profile should be kept active?' },
-          { field: 'Single or multiple agents affected', detail: 'Is this affecting a single agent or multiple agents?' },
-          { field: 'Project & site location', detail: 'Please provide the project and site location.' },
-        ],
-      },
-      {
-        author: 'user@cognizant.com',
-        role: 'user',
-        timestamp: '9:20 AM',
-        text: 'email id : jow@companty.com\nkeep ID 12324 active and remove 1234-A\nit is just single agent\nYoutube Paid Product support at MNL site',
-      },
-    ],
-  },
-  {
-    id: 'GSD-103',
+    id: 't/239828919',
     email: 'ashi@company.com',
-    description: 'unable to update ashi@company.com',
+    description: 'I am unable to update Verint for axelsylvain@google.com please fix it',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:30 AM',
     hasUpdate: true,
@@ -112,9 +78,9 @@ const SAMPLE_TICKETS = [
     ],
   },
   {
-    id: 'GSD-103',
+    id: 't/239828919',
     email: 'ashi@company.com',
-    description: 'I am unable to update Verint for ashi@company.com please fix it',
+    description: 'I am unable to update Verint for axelsylvain@google.com please fix it',
     status: 'Open',
     createdAt: '13 Apr 2026, 10:30 AM',
     hasUpdate: true,
@@ -122,7 +88,7 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 'GSD-104',
+    id: 't/238603185',
     email: 'gcpteam@company.com',
     description: 'Hi Speak easy is not working for GCP Generalists today. it wont launch please fix this ASAP as agent cannot take calls',
     status: 'Open',
@@ -181,8 +147,8 @@ const GSD100_DUP_STEPS = [
 ];
 const GSD100_REC_STEPS = [
   'Loading similar ticket corpus from vector store...',
-  'Fetching GSD-072 (94% match) from incident archive...',
-  'Extracting resolution transcript from GSD-072...',
+  'Fetching t/233838810 (94% match) from incident archive...',
+  'Extracting resolution transcript from t/233838810...',
   'Parsing resolution steps from closed ticket...',
   'Mapping steps to current ticket context...',
   'Validating resolution applicability...',
@@ -213,50 +179,6 @@ const GSD100_TROUBLESHOOT_STEPS = [
   'Scanning step-by-step guides for dashboard permission issues...',
   'Cross-referencing troubleshoot tags: contact-center, dashboard, access...',
 ];
-const GSD101_REC_STEPS = [
-  'Loading similar ticket corpus from vector store...',
-  'Fetching GSD-089 (87% match) from incident archive...',
-  'Extracting resolution transcript from GSD-089...',
-  'Parsing resolution steps from closed ticket...',
-  'Mapping steps to current ticket context...',
-  'Validating resolution applicability...',
-];
-const GSD101_REC_RESOLUTION = [
-  'Identify duplicate Verint profiles for the agent (jow@companty.com) in admin console.',
-  'Deactivate profile 1234-A in Verint admin -> User Management -> Set status: Inactive.',
-  'Confirm profile 12324 remains active with correct role and schedule assignments.',
-  'Notify agent and team lead once the duplicate profile is removed and verified.',
-];
-const GSD101_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / wfm-verint / others...',
-  'Searching SOP index for Verint duplicate profile resolution...',
-  'Scanning RUNBOOK-WFM-* entries for profile management procedures...',
-  'Validating runbook coverage for this issue type...',
-];
-const GSD101_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Verint profile issues...',
-  'Checking error-code catalogue for duplicate profile entries...',
-  'Scanning step-by-step guides for WFM profile management...',
-  'Cross-referencing troubleshoot tags: wfm-verint, profile, duplicate...',
-];
-const GSD101_TROUBLESHOOT_RESOLUTION = [
-  'Log in to Verint WFM admin console with admin credentials.',
-  'Navigate to User Management -> search agent by email: jow@companty.com.',
-  'Identify both profiles (12324 and 1234-A) and confirm which is the active one.',
-  'Select profile 1234-A -> set status to Inactive -> Save changes.',
-  'Verify profile 12324 retains all schedule and adherence history.',
-  'Confirm fix with the agent and close the ticket once verified.',
-];
-const GSD101_DUP_STEPS = [
-  'Scanning active incident queue for similar issues...',
-  'Embedding ticket description for semantic similarity...',
-  'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for Verint profile issues...',
-  'Computing cosine similarity scores across corpus...',
-  'Applying 80% confidence threshold filter...',
-  'No tickets found above confidence threshold...',
-];
 const GSD103_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
@@ -268,8 +190,8 @@ const GSD103_DUP_STEPS = [
 ];
 const GSD103_REC_STEPS = [
   'Loading similar ticket corpus from vector store...',
-  'Fetching GSD-076 (91% match) from incident archive...',
-  'Extracting resolution transcript from GSD-076...',
+  'Fetching t/239635757 (91% match) from incident archive...',
+  'Extracting resolution transcript from t/239635757...',
   'Parsing resolution steps from closed ticket...',
   'Mapping steps to current ticket context...',
   'Validating resolution applicability...',
@@ -327,39 +249,10 @@ const GSD104_DUP_STEPS = [
   'Applying 80% confidence threshold filter...',
   '3 tickets found above confidence threshold...',
 ];
-const GSD104_REC_STEPS = [
-  'Loading similar ticket corpus from vector store...',
-  'Embedding current ticket for similarity matching...',
-  'Scanning resolved tickets for Speakeasy / Barkeep issues...',
-  'Computing cosine similarity scores across corpus...',
-  'Filtering matches above 80% confidence threshold...',
-  'No resolved tickets matched above threshold...',
-];
-const GSD104_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / barkeep / app launch...',
-  'Locating SOP for Barkeep application launch failures...',
-  'Retrieving RUNBOOK-CC-031 from knowledge base...',
-  'Validating runbook version and current applicability...',
-];
-const GSD104_RUNBOOK_RESOLUTION = [
-  'Confirm affected agents and site: GCP Generalists — Barcelona TP, Colombia Bogota.',
-  'Check Barkeep / Speakeasy service status at ops-status.internal for active outage alert.',
-  'If outage confirmed, escalate to Barkeep ops team via barkeep-ops@internal with ticket reference.',
-  'If no active outage, instruct agents to clear browser cache and retry launching Speakeasy.',
-  'Verify VPN connectivity for remote agents at all affected sites.',
-  'Confirm fix with team lead once agents can take calls and close all related duplicate tickets.',
-];
-const GSD104_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Barkeep app launch issues...',
-  'Checking error-code catalogue for Speakeasy launch failures...',
-  'Scanning step-by-step guides for contact-center app launch errors...',
-  'Cross-referencing troubleshoot tags: contact-center, barkeep, app-launch...',
-];
 
-// Knowledge Base — GSD-076 incident record
+// Knowledge Base — t/239635757 incident record
 const GSD076_KB = {
-  id: 'GSD-076',
+  id: 't/239635757',
   summary: 'Unable to update Verint profile for agent slivester@company.com',
   reporter: 'ashi@company.com',
   createdAt: '10 Apr 2026, 2:14 PM',
@@ -387,15 +280,16 @@ const GSD076_KB = {
 };
 
 const KB_SEARCH_STEPS = [
-  'Initialising knowledge base search for incident GSD-076...',
+  'Initialising knowledge base search for incident t/239635757...',
   'Connecting to Buganizer incident archive...',
-  'Querying Buganizer index for ticket ID GSD-076...',
-  'GSD-076 metadata retrieved from Buganizer...',
+  'Querying Buganizer index for ticket ID t/239635757...',
+  'Ticket not found in Buganizer...',
   'Connecting to GUTS (Google Universal Ticket System)...',
-  'Querying GUTS for GSD-076 resolution record and root cause...',
+  'Querying GUTS for t/239635757 resolution record and root cause...',
   'Fetching resolution transcript and linked KB articles from GUTS...',
-  'Cross-referencing Buganizer and GUTS records for consistency...',
-  'Full incident record assembled from both sources...',
+  'Searching MOMA for t/239635757 incident record...',
+  'Querying YAX knowledge index for t/239635757...',
+  'Full incident record assembled from GUTS, MOMA and YAX...',
 ];
 
 const AgentView = ({
@@ -434,17 +328,6 @@ const AgentView = ({
   const [gsd100RunbookDone, setGsd100RunbookDone] = useState(false);
   const [gsd100TroubleshootSteps, setGsd100TroubleshootSteps] = useState([]);
   const [gsd100TroubleshootDone, setGsd100TroubleshootDone] = useState(false);
-  const [gsd101CtiSteps, setGsd101CtiSteps] = useState([]);
-  const [gsd101CtiDone, setGsd101CtiDone] = useState(false);
-  const [gsd101DupSteps, setGsd101DupSteps] = useState([]);
-  const [gsd101DupDone, setGsd101DupDone] = useState(false);
-  const [gsd101CommentUpdated, setGsd101CommentUpdated] = useState(false);
-  const [gsd101RecSteps, setGsd101RecSteps] = useState([]);
-  const [gsd101RecDone, setGsd101RecDone] = useState(false);
-  const [gsd101RunbookSteps, setGsd101RunbookSteps] = useState([]);
-  const [gsd101RunbookDone, setGsd101RunbookDone] = useState(false);
-  const [gsd101TroubleshootSteps, setGsd101TroubleshootSteps] = useState([]);
-  const [gsd101TroubleshootDone, setGsd101TroubleshootDone] = useState(false);
   const [gsd103ContextSteps, setGsd103ContextSteps] = useState([]);
   const [gsd103ContextDone, setGsd103ContextDone] = useState(false);
   const [gsd103CtiSteps, setGsd103CtiSteps] = useState([]);
@@ -464,12 +347,6 @@ const AgentView = ({
   const [gsd104CtiDone, setGsd104CtiDone] = useState(false);
   const [gsd104DupSteps, setGsd104DupSteps] = useState([]);
   const [gsd104DupDone, setGsd104DupDone] = useState(false);
-  const [gsd104RecSteps, setGsd104RecSteps] = useState([]);
-  const [gsd104RecDone, setGsd104RecDone] = useState(false);
-  const [gsd104RunbookSteps, setGsd104RunbookSteps] = useState([]);
-  const [gsd104RunbookDone, setGsd104RunbookDone] = useState(false);
-  const [gsd104TroubleshootSteps, setGsd104TroubleshootSteps] = useState([]);
-  const [gsd104TroubleshootDone, setGsd104TroubleshootDone] = useState(false);
 
   // KB incident search state
   const [kbSearchTicketId, setKbSearchTicketId] = useState(null);
@@ -513,9 +390,9 @@ const AgentView = ({
     }
   }, [routingTicketId, agentSelectedTicketId]);
 
-  // GSD-100: pre-step animation (runs as soon as ticket is selected)
+  // t/233838887: pre-step animation (runs as soon as ticket is selected)
   useEffect(() => {
-    if (agentSelectedTicketId !== 'GSD-100') return;
+    if (agentSelectedTicketId !== 't/233838887') return;
     setGsd100PreSteps([]);
     setGsd100PreDone(false);
     setGsd100CheckSteps([]);
@@ -541,7 +418,7 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // GSD-100 CTI + duplicate + recommendation animation — triggered after context submitted
+  // t/233838887 CTI + duplicate + recommendation animation — triggered after context submitted
   useEffect(() => {
     if (!gsd100ContextSubmitted) return;
     const timers = [];
@@ -582,56 +459,10 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [gsd100ContextVisible]);
 
-  // GSD-101 CTI + duplicate animation
-  useEffect(() => {
-    if (agentSelectedTicketId !== 'GSD-101') return;
-    setGsd101CtiSteps([]);
-    setGsd101CtiDone(false);
-    setGsd101DupSteps([]);
-    setGsd101DupDone(false);
-    setGsd101CommentUpdated(false);
-    setGsd101RecSteps([]);
-    setGsd101RecDone(false);
-    setGsd101RunbookSteps([]);
-    setGsd101RunbookDone(false);
-    setGsd101TroubleshootSteps([]);
-    setGsd101TroubleshootDone(false);
-    const timers = [];
-    CTI_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd101CtiSteps(prev => [...prev, step]), 400 + i * 900));
-    });
-    const ctiDoneAt = 400 + CTI_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd101CtiDone(true), ctiDoneAt));
-    const dupStart = ctiDoneAt + 600;
-    GSD101_DUP_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd101DupSteps(prev => [...prev, step]), dupStart + i * 900));
-    });
-    const dupDoneAt = dupStart + GSD101_DUP_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd101DupDone(true), dupDoneAt));
-    // Recommendation Agent
-    const recStart = dupDoneAt + 3500;
-    GSD101_REC_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd101RecSteps(prev => [...prev, step]), recStart + i * 700));
-    });
-    const recDoneAt = recStart + GSD101_REC_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd101RecDone(true), recDoneAt));
-    const runbookStart = recDoneAt + 800;
-    GSD101_RUNBOOK_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd101RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
-    });
-    const runbookDoneAt = runbookStart + GSD101_RUNBOOK_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd101RunbookDone(true), runbookDoneAt));
-    const troubleshootStart = runbookDoneAt + 800;
-    GSD101_TROUBLESHOOT_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd101TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
-    });
-    timers.push(setTimeout(() => setGsd101TroubleshootDone(true), troubleshootStart + GSD101_TROUBLESHOOT_STEPS.length * 700));
-    return () => timers.forEach(clearTimeout);
-  }, [agentSelectedTicketId]);
 
-  // GSD-103 context validation + CTI + duplicate + recommendation animation
+  // t/239828919 context validation + CTI + duplicate + recommendation animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 'GSD-103') return;
+    if (agentSelectedTicketId !== 't/239828919') return;
     setGsd103ContextSteps([]);
     setGsd103ContextDone(false);
     setGsd103CtiSteps([]);
@@ -684,21 +515,15 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // GSD-104 context validation + CTI + duplicate animation
+  // t/238603185 context validation + CTI + duplicate animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 'GSD-104') return;
+    if (agentSelectedTicketId !== 't/238603185') return;
     setGsd104ContextSteps([]);
     setGsd104ContextDone(false);
     setGsd104CtiSteps([]);
     setGsd104CtiDone(false);
     setGsd104DupSteps([]);
     setGsd104DupDone(false);
-    setGsd104RecSteps([]);
-    setGsd104RecDone(false);
-    setGsd104RunbookSteps([]);
-    setGsd104RunbookDone(false);
-    setGsd104TroubleshootSteps([]);
-    setGsd104TroubleshootDone(false);
     const timers = [];
     GSD104_CONTEXT_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd104ContextSteps(prev => [...prev, step]), 300 + i * 700));
@@ -717,23 +542,6 @@ const AgentView = ({
     });
     const dupDoneAt = dupStart + GSD104_DUP_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd104DupDone(true), dupDoneAt));
-    const recStart = dupDoneAt + 3500;
-    GSD104_REC_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd104RecSteps(prev => [...prev, step]), recStart + i * 700));
-    });
-    const recDoneAt = recStart + GSD104_REC_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd104RecDone(true), recDoneAt));
-    const runbookStart = recDoneAt + 800;
-    GSD104_RUNBOOK_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd104RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
-    });
-    const runbookDoneAt = runbookStart + GSD104_RUNBOOK_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd104RunbookDone(true), runbookDoneAt));
-    const troubleshootStart = runbookDoneAt + 800;
-    GSD104_TROUBLESHOOT_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd104TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
-    });
-    timers.push(setTimeout(() => setGsd104TroubleshootDone(true), troubleshootStart + GSD104_TROUBLESHOOT_STEPS.length * 700));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
@@ -785,10 +593,10 @@ const AgentView = ({
     if (!q) return;
     setAgentKBMessages(prev => [...prev, { role: 'user', text: q, timestamp: new Date().toLocaleTimeString() }]);
     setAgentKBInput('');
-    // Detect incident lookup query (e.g. "tell me about incident GSD-076")
-    const incidentMatch = q.match(/GSD-(\d+)/i);
+    // Detect incident lookup query (e.g. "tell me about incident t/239635757")
+    const incidentMatch = q.match(/t\/(\d+)/i);
     if (incidentMatch) {
-      const incidentId = `GSD-${incidentMatch[1]}`;
+      const incidentId = `t/${incidentMatch[1]}`;
       setKbSearchTicketId(prev => (prev === incidentId ? null : prev)); // force re-trigger if same
       setTimeout(() => setKbSearchTicketId(incidentId), 10);
       return;
@@ -901,7 +709,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 'GSD-100' && t.id !== 'GSD-101' && t.id !== 'GSD-103' && t.id !== 'GSD-104') {
+                if (!hasBeenRouted && t.id !== 't/233838887' && t.id !== 't/239828919' && t.id !== 't/238603185') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -981,6 +789,19 @@ const AgentView = ({
                 <div className="p-4 border-b border-slate-100">
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Summary</p>
                   <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
+                  {agentTicket.id === 't/233838887' && gsd100ContextVisible && (() => {
+                    const _eIdx = agentComments.indexOf(pipeline?.enrichment);
+                    const _ctx = agentComments.find((c, i) => c.role === 'user' && i > _eIdx);
+                    return (
+                      <div className="bg-blue-50 rounded-lg p-3 border border-blue-100 mb-4">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs font-bold text-blue-600">Context Provided</span>
+                          <span className="text-xs text-slate-400">13 Apr 2026, 1:05 PM</span>
+                        </div>
+                        <p className="text-sm text-slate-700 leading-relaxed italic whitespace-pre-wrap">"{_ctx?.text}"</p>
+                      </div>
+                    );
+                  })()}
                   <div className="grid grid-cols-2 gap-x-3 gap-y-3">
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Number</p><p className="text-sm font-semibold text-indigo-600 mt-0.5">{agentTicket.id}</p></div>
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-sm font-semibold text-orange-600 mt-0.5">2 — High</p></div>
@@ -994,10 +815,9 @@ const AgentView = ({
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Caller</p>
                   {(() => {
                     const callerMap = {
-                      'GSD-100': 'Rahul Sharma',
-                      'GSD-101': 'Priya Menon',
-                      'GSD-103': 'Ashi Verma',
-                      'GSD-104': 'Ravi Kumar',
+                      't/233838887': 'Rahul Sharma',
+                      't/239828919': 'Ashi Verma',
+                      't/238603185': 'Ravi Kumar',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
@@ -1014,14 +834,7 @@ const AgentView = ({
                 <div className="p-4">
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Assigned To</p>
                   {(() => {
-                    const assigneeMap = {
-                      'GSD-100': { agent: 'Shivam Gupta', department: 'L1 Contact Center Support' },
-                      'GSD-101': { agent: 'Ankit Rawat', department: 'L2 WFM Operations' },
-                      'GSD-103': { agent: 'Neha Joshi', department: 'L2 WFM Operations' },
-                      'GSD-104': { agent: 'Arjun Singh', department: 'L1 Contact Center Support' },
-                    };
-                    const assignee = assigneeMap[agentTicket.id];
-                    if (!assignee) return <p className="text-sm text-slate-400 italic">Unassigned</p>;
+                    const assignee = { agent: 'Shivam Gupta', department: 'L1 Contact Center Support' };
                     return (
                       <div className="flex items-center gap-2.5">
                         <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm flex-shrink-0">
@@ -1055,20 +868,20 @@ const AgentView = ({
                           </div>
                           {isThinking ? (
                             <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
-                          ) : agentTicket?.id === 'GSD-103' ? (
+                          ) : agentTicket?.id === 't/239828919' ? (
                             gsd103ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd103ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 'GSD-104' ? (
+                          ) : agentTicket?.id === 't/238603185' ? (
                             gsd104ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd104ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
                           ) : pipeline?.enrichment ? (() => {
-                            if (agentTicket?.id === 'GSD-100') {
+                            if (agentTicket?.id === 't/233838887') {
                               if (gsd100ContextSubmitted) return <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>;
                               if (gsd100PreDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
                               return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>;
@@ -1082,8 +895,8 @@ const AgentView = ({
                             <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
                           )}
                         </div>
-                        {/* GSD-103: context validation + CTI + duplicate (no duplicate found) */}
-                        {agentTicket.id === 'GSD-103' && !isThinking && gsd103ContextSteps.length > 0 && (
+                        {/* t/239828919: context validation + CTI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/239828919' && !isThinking && gsd103ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
@@ -1163,8 +976,8 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* GSD-104: context validation + CTI + duplicate found */}
-                        {agentTicket.id === 'GSD-104' && !isThinking && gsd104ContextSteps.length > 0 && (
+                        {/* t/238603185: context validation + CTI + duplicate found */}
+                        {agentTicket.id === 't/238603185' && !isThinking && gsd104ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
@@ -1240,9 +1053,9 @@ const AgentView = ({
                                     <p className="text-sm font-semibold text-orange-700 mb-2">3 duplicate tickets identified:</p>
                                     <div className="space-y-2">
                                       {[
-                                        { id: 'GSD-099', time: '13 Apr 2026, 9:45 AM' },
-                                        { id: 'GSD-097', time: '13 Apr 2026, 8:52 AM' },
-                                        { id: 'GSD-095', time: '13 Apr 2026, 8:10 AM' },
+                                        { id: 't/238602912', time: '13 Apr 2026, 9:45 AM' },
+                                        { id: 't/238603568', time: '13 Apr 2026, 8:52 AM' },
+                                        { id: 't/238603166', time: '13 Apr 2026, 8:10 AM' },
                                       ].map(dup => (
                                         <div key={dup.id} className="bg-white rounded-lg border border-orange-200 p-2.5 shadow-sm">
                                           <div className="flex items-center justify-between mb-1.5">
@@ -1267,14 +1080,14 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket.id !== 'GSD-103' && agentTicket.id !== 'GSD-104' && pipeline?.enrichment && !isThinking ? (() => {
+                        {agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
                           return (
                             <div className="mt-2 space-y-2">
-                              {/* GSD-100: pre-check telemetry */}
-                              {agentTicket.id === 'GSD-100' && gsd100PreSteps.length > 0 && (
+                              {/* t/233838887: pre-check telemetry */}
+                              {agentTicket.id === 't/233838887' && gsd100PreSteps.length > 0 && (
                                 <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                   <div className="flex items-center justify-between mb-1.5">
                                     <div>
@@ -1294,7 +1107,7 @@ const AgentView = ({
                                   </div>
                                 </div>
                               )}
-                              {agentTicket.id === 'GSD-100' && gsd100PreDone && (
+                              {agentTicket.id === 't/233838887' && gsd100PreDone && (
                                 <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
                                   <p className="text-sm font-bold text-orange-600 mb-2">Required Details Missing</p>
                                   <div className="space-y-2">
@@ -1329,7 +1142,7 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {agentTicket.id === 'GSD-100' && gsd100ContextVisible && (
+                              {agentTicket.id === 't/233838887' && gsd100ContextVisible && (
                                 <>
                                   <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
                                     <div className="flex items-center justify-between mb-1">
@@ -1361,8 +1174,8 @@ const AgentView = ({
                                   )}
                                 </>
                               )}
-                              {/* GSD-100: CTI detection + duplicate identification (only after context submitted) */}
-                              {agentTicket.id === 'GSD-100' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
+                              {/* t/233838887: CTI detection + duplicate identification (only after context submitted) */}
+                              {agentTicket.id === 't/233838887' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
                                 <div className="space-y-2">
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
@@ -1427,8 +1240,8 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {/* GSD-103: CTI detection + duplicate identification */}
-                              {agentTicket.id === 'GSD-103' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
+                              {/* t/239828919: CTI detection + duplicate identification */}
+                              {agentTicket.id === 't/239828919' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
                                 <div className="space-y-2">
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
@@ -1515,97 +1328,9 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {/* GSD-101: CTI detection + duplicate identification */}
-                              {agentTicket.id === 'GSD-101' && enrichmentResolved && gsd101CtiSteps.length > 0 && (
-                                <div className="space-y-2">
-                                  {/* CTI Section */}
-                                  <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
-                                    <div className="flex items-center justify-between mb-2">
-                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
-                                      {!gsd101CtiDone
-                                        ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
-                                        : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
-                                    </div>
-                                    <div className="space-y-1 font-mono">
-                                      {gsd101CtiSteps.map((step, i) => (
-                                        <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                          <span className="text-violet-400">*</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    {gsd101CtiDone && (
-                                      <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
-                                        </div>
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
-                                        </div>
-                                        <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                          <p className="text-sm font-semibold text-slate-700">others</p>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                  {/* Duplicate Identification Section */}
-                                  {gsd101DupSteps.length > 0 && (
-                                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
-                                        {!gsd101DupDone
-                                          ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
-                                          : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
-                                      </div>
-                                      <div className="space-y-1 font-mono">
-                                        {gsd101DupSteps.map((step, i) => (
-                                          <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                            <span className="text-slate-400">*</span>
-                                            <span>{step}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                      {gsd101DupDone && (
-                                        <>
-                                          <div className="mt-2 pt-2 border-t border-slate-200">
-                                            <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
-                                          </div>
-                                          {!gsd101CommentUpdated ? (
-                                            <div className="mt-3">
-                                              <p className="text-sm text-slate-600 font-medium mb-2">Do you want to update these comments in this ticket?</p>
-                                              <div className="flex gap-2">
-                                                <button
-                                                  onClick={() => setGsd101CommentUpdated(true)}
-                                                  className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1"
-                                                >
-                                                  <CheckCircle className="w-3 h-3" /> Approve
-                                                </button>
-                                                <button
-                                                  onClick={() => {}}
-                                                  className="flex-1 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center justify-center gap-1"
-                                                >
-                                                  Reject
-                                                </button>
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            <div className="mt-3 flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
-                                              <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                                              <span className="font-semibold">Comments updated in ticket</span>
-                                            </div>
-                                          )}
-                                        </>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
                             </div>
                           );
-                        })() : agentTicket.id !== 'GSD-103' && agentTicket.id !== 'GSD-104' && !isThinking && (
+                        })() : agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && !isThinking && (
                           <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
                         )}
                       </div>
@@ -1626,15 +1351,12 @@ const AgentView = ({
                           {(() => {
                             const isRouting = routingTicketId === agentSelectedTicketId;
                             if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-100' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-100' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-101' && gsd101TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-101' && gsd101DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-103' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-103' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-104' && gsd104TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'GSD-104' && gsd104DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'GSD-104' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/233838887' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/233838887' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/239828919' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/239828919' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/238603185' && gsd104DupDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
+                            if (agentTicket?.id === 't/238603185' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
@@ -1652,8 +1374,8 @@ const AgentView = ({
                             ))}
                           </div>
                         )}
-                        {/* GSD-100 Recommendation Agent — similar ticket, runbook, troubleshoot */}
-                        {agentTicket?.id === 'GSD-100' && gsd100RecSteps.length > 0 && (
+                        {/* t/233838887 Recommendation Agent — similar ticket, runbook, troubleshoot */}
+                        {agentTicket?.id === 't/233838887' && gsd100RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
@@ -1672,8 +1394,8 @@ const AgentView = ({
                               </div>
                               {gsd100RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-072 · 94% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-072):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/233838810 · 94% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/233838810):</p>
                                   <div className="space-y-1.5">
                                     {GSD100_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1742,98 +1464,8 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* GSD-101 Recommendation Agent — similar ticket, runbook (no steps), troubleshoot */}
-                        {agentTicket?.id === 'GSD-101' && gsd101RecSteps.length > 0 && (
-                          <div className="mt-2 space-y-3">
-                            {/* Similar Ticket Resolution */}
-                            <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
-                              <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
-                                {!gsd101RecDone
-                                  ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
-                                  : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
-                              </div>
-                              <div className="space-y-1 font-mono">
-                                {gsd101RecSteps.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                    <span className="text-amber-400">*</span><span>{step}</span>
-                                  </div>
-                                ))}
-                              </div>
-                              {gsd101RecDone && (
-                                <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-089 · 87% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-089):</p>
-                                  <div className="space-y-1.5">
-                                    {GSD101_REC_RESOLUTION.map((step, i) => (
-                                      <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                        <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
-                                        <span>{step}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                            {/* Scenario Runbook — no steps found */}
-                            {gsd101RunbookSteps.length > 0 && (
-                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-slate-600">Scenario Runbook</p>
-                                  {!gsd101RunbookDone
-                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> No Steps Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd101RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-slate-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd101RunbookDone && (
-                                  <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-sm text-slate-500 font-medium">No resolution steps found in scenario runbook for this issue type.</p>
-                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or troubleshoot guide below.</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            {/* Troubleshoot Guide — steps found */}
-                            {gsd101TroubleshootSteps.length > 0 && (
-                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-blue-700">Troubleshoot Guide</p>
-                                  {!gsd101TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Steps Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd101TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-blue-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd101TroubleshootDone && (
-                                  <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Troubleshoot Guide Steps:</p>
-                                    <div className="space-y-1.5">
-                                      {GSD101_TROUBLESHOOT_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        {/* GSD-103 Recommendation Agent — similar ticket, runbook (found), troubleshoot (no steps) */}
-                        {agentTicket?.id === 'GSD-103' && gsd103RecSteps.length > 0 && (
+                        {/* t/239828919 Recommendation Agent — similar ticket, runbook (found), troubleshoot (no steps) */}
+                        {agentTicket?.id === 't/239828919' && gsd103RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
@@ -1852,8 +1484,8 @@ const AgentView = ({
                               </div>
                               {gsd103RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">GSD-076 · 91% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from GSD-076):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/239635757 · 91% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/239635757):</p>
                                   <div className="space-y-1.5">
                                     {GSD103_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1922,89 +1554,19 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* GSD-104 Recommendation Agent — no similar ticket, runbook found, troubleshoot no steps */}
-                        {agentTicket?.id === 'GSD-104' && gsd104RecSteps.length > 0 && (
-                          <div className="mt-2 space-y-3">
-                            {/* Similar Ticket — not found */}
-                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                              <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm font-bold text-slate-600">Resolution from Similar Ticket</p>
-                                {!gsd104RecDone
-                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                  : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Match Found</span>}
+                        {/* t/238603185 Recommendation Agent — duplicate ticket */}
+                        {agentTicket?.id === 't/238603185' && gsd104DupDone && (
+                          <div className="mt-2">
+                            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
+                              <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
+                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/238603166</span> for resolution.</p>
                               </div>
-                              <div className="space-y-1 font-mono">
-                                {gsd104RecSteps.map((step, i) => (
-                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                    <span className="text-slate-400">*</span><span>{step}</span>
-                                  </div>
-                                ))}
-                              </div>
-                              {gsd104RecDone && (
-                                <div className="mt-2 pt-2 border-t border-slate-200">
-                                  <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found above 80% confidence threshold.</p>
-                                  <p className="text-sm text-slate-400 mt-0.5">Refer to scenario runbook below for resolution guidance.</p>
-                                </div>
-                              )}
                             </div>
-                            {/* Scenario Runbook — found */}
-                            {gsd104RunbookSteps.length > 0 && (
-                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-CC-031)</p>
-                                  {!gsd104RunbookDone
-                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd104RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-blue-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd104RunbookDone && (
-                                  <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (RUNBOOK-CC-031):</p>
-                                    <div className="space-y-1.5">
-                                      {GSD104_RUNBOOK_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            {/* Troubleshoot Guide — no steps */}
-                            {gsd104TroubleshootSteps.length > 0 && (
-                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
-                                  {!gsd104TroubleshootDone
-                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd104TroubleshootSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-slate-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd104TroubleshootDone && (
-                                  <div className="mt-2 pt-2 border-t border-slate-200">
-                                    <p className="text-sm text-slate-500 font-medium">Could not find any resolution steps in the troubleshoot guide for this issue type.</p>
-                                    <p className="text-sm text-slate-400 mt-0.5">Refer to scenario runbook steps above.</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
                           </div>
                         )}
-                        {agentTicket?.id !== 'GSD-100' && agentTicket?.id !== 'GSD-101' && agentTicket?.id !== 'GSD-103' && agentTicket?.id !== 'GSD-104' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {agentTicket?.id !== 't/233838887' && agentTicket?.id !== 't/239828919' && agentTicket?.id !== 't/238603185' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
@@ -2297,7 +1859,7 @@ const AgentView = ({
                               </div>
                             </div>
                             {/* Incident result card */}
-                            {kbResultReady && kbSearchTicketId === 'GSD-076' && (
+                            {kbResultReady && kbSearchTicketId === 't/239635757' && (
                               <div className="p-3 bg-white rounded-lg border border-indigo-200 shadow-sm">
                                 <div className="flex items-center gap-2 mb-2 pb-2 border-b border-indigo-100">
                                   <span className="text-sm font-bold text-indigo-700">{GSD076_KB.id}</span>
@@ -2352,7 +1914,7 @@ const AgentView = ({
                               </div>
                             )}
                             {/* Fallback for unknown incident IDs */}
-                            {kbResultReady && kbSearchTicketId !== 'GSD-076' && (
+                            {kbResultReady && kbSearchTicketId !== 't/239635757' && (
                               <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                                 <p className="text-sm text-amber-700">No record found for <span className="font-bold">{kbSearchTicketId}</span> in Buganizer or GUTS. Verify the ticket ID and try again.</p>
                               </div>
@@ -2553,7 +2115,7 @@ const SCENARIO_LIBRARY = [
 
 const PAST_RESOLUTIONS = [
   {
-    ticketRef: 'GSD-103',
+    ticketRef: 't/239828919',
     similarity: '94%',
     resolvedOn: '12 Mar 2026',
     keywords: ['email', 'notification', 'inbox', 'smtp', 'mail'],
