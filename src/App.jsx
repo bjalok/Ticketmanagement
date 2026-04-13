@@ -1294,7 +1294,7 @@ const AgentView = ({
                                   </div>
                                 </div>
                               )}
-                              {agentTicket.id === 'GSD-100' && gsd100PreDone && !gsd100ContextSubmitted && (
+                              {agentTicket.id === 'GSD-100' && gsd100PreDone && (
                                 <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
                                   <p className="text-sm font-bold text-orange-600 mb-2">Required Details Missing</p>
                                   <div className="space-y-2">
@@ -1348,7 +1348,7 @@ const AgentView = ({
                                         </div>
                                         {!gsd100CheckDone
                                           ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
-                                          : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> Context Validated</span>}
+                                          : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Provided</span>}
                                       </div>
                                       <div className="space-y-1 font-mono">
                                         {gsd100CheckSteps.map((step, i) => (
