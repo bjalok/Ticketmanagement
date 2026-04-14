@@ -68,7 +68,7 @@ const SAMPLE_TICKETS = [
     email: 'mdb.databridge-workflow-controller@google.com',
     description: 'DatabridgeStepFailed: Your step "[PROD] Salesforce to Gin Integration - Google Play Merchandising Prod" has failed to run',
     status: 'Open',
-    createdAt: '20 Mar 2026, 3:00 PM',
+    createdAt: '20 Jan 2026, 3:00 PM',
     hasUpdate: true,
     isSample: true,
     comments: [],
@@ -225,7 +225,7 @@ const B446_LIFECYCLE_STEPS = [
   'Verifying step-level execution status for EventLogFileCSV endpoint...',
   'Detecting failure in Recent Run — UserCodeException on EventLogFileCSV READ-BY-ID...',
   'Confirming same API error pattern — endpoint returning 5 consecutive failures...',
-  'Ticket has been open for 2 months — issue is persistent and unresolved...',
+  'Ticket has been open for 50 days — issue is persistent and unresolved...',
 ];
 
 const AgentView = ({
@@ -608,7 +608,7 @@ Recent Run at 03:47 AM completed successfully — transient failure confirmed. T
 
 Reporter: mdb.databridge-workflow-controller@google.com
 Status: Open
-Created: 20 Mar 2026, 3:00 PM
+Created: 20 Jan 2026, 3:00 PM
 Priority: P2 | Severity: S2 | Type: Bug
 Description: DatabridgeStepFailed — [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod pipeline has failed to run.
 
@@ -624,7 +624,7 @@ Resolution Steps (Recommendation Agent):
 5. Notify reporter once pipeline is confirmed healthy and close the ticket.
 
 LifecycleOps Status:
-Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has been open for 2 months — issue is active, recurring, and requires immediate escalation.`;
+Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has been open for 50 days — issue is active, recurring, and requires immediate escalation.`;
         setAgentKBMessages(prev => [...prev, { role: 'bot', text: answer, timestamp: new Date().toLocaleTimeString() }]);
         return;
       }
@@ -1754,7 +1754,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* LifecycleOps Agent Card — b/446740953: Recent Run also failed, open 2 months */}
+                  {/* LifecycleOps Agent Card — b/446740953: Recent Run also failed, open 50 days */}
                   {agentTicket?.id === 'b/446740953' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
@@ -1788,12 +1788,12 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                 </div>
                                 {b446LifecycleDone && (
                                   <div className="mt-3 pt-2 border-t border-teal-100 space-y-3">
-                                    {/* Open 2 months alert */}
+                                    {/* Open 50 days alert */}
                                     <div className="flex items-start gap-2.5 p-2.5 bg-orange-50 rounded-lg border border-orange-200">
                                       <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                                       <div>
-                                        <p className="text-sm font-bold text-orange-700 mb-0.5">Ticket Open for 2 Months</p>
-                                        <p className="text-sm text-slate-600">This ticket has been open since <span className="font-semibold">20 Mar 2026</span> with no resolution. Immediate escalation required.</p>
+                                        <p className="text-sm font-bold text-orange-700 mb-0.5">Ticket Open for 105 Days</p>
+                                        <p className="text-sm text-slate-600">This ticket has been open since <span className="font-semibold">20 Jan 2026</span> with no resolution (50 days). Immediate escalation required.</p>
                                       </div>
                                     </div>
                                     {/* Recent Run failure banner */}
@@ -1801,7 +1801,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                       <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
                                       <div>
                                         <p className="text-sm font-bold text-red-700 mb-0.5">Recent Run Failed</p>
-                                        <p className="text-sm text-slate-600">Pipeline run on <span className="font-semibold">20 May 2026 at 15:30 PM</span> encountered the same EventLogFileCSV endpoint failure — issue is active and unresolved.</p>
+                                        <p className="text-sm text-slate-600">Pipeline run on <span className="font-semibold">11 Mar 2026 at 15:30 PM</span> (50 days after ticket was opened) encountered the same EventLogFileCSV endpoint failure — issue is active and unresolved.</p>
                                       </div>
                                     </div>
                                     {/* Failed run log */}
@@ -1826,7 +1826,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     {/* Reopen recommendation */}
                                     <div className="p-2.5 bg-red-50 rounded-lg border border-red-200">
                                       <p className="text-sm font-bold text-red-700 mb-1.5">Lifecycle Recommendation</p>
-                                      <p className="text-sm text-slate-600">Issue is active and recurring. This ticket has been open for <span className="font-semibold text-red-700">2 months</span> — immediate escalation and resolution required.</p>
+                                      <p className="text-sm text-slate-600">Issue is active and recurring. This ticket has been open for <span className="font-semibold text-red-700">50 days</span> — immediate escalation and resolution required.</p>
                                     </div>
                                   </div>
                                 )}
