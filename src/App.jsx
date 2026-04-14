@@ -344,15 +344,12 @@ const GSD076_KB = {
 
 const KB_SEARCH_STEPS = [
   'Initialising knowledge base search for incident t/239635757...',
-  'Connecting to Buganizer incident archive...',
-  'Querying Buganizer index for ticket ID t/239635757...',
-  'Ticket not found in Buganizer...',
   'Connecting to GUTS (Google Universal Ticket System)...',
   'Querying GUTS for t/239635757 resolution record and root cause...',
   'Fetching resolution transcript and linked KB articles from GUTS...',
-  'Searching MOMA for t/239635757 incident record...',
-  'Querying YAX knowledge index for t/239635757...',
-  'Full incident record assembled from GUTS, MOMA and YAX...',
+  'Searching MoMA for t/239635757 incident record...',
+  'Querying Yaqs knowledge index for t/239635757...',
+  'Full incident record assembled from GUTS, MoMA and Yaqs...',
 ];
 
 const AgentView = ({
@@ -885,13 +882,20 @@ const AgentView = ({
         <div className="flex-1 flex flex-col overflow-hidden">
 
           {/* Ticket Title Bar */}
-          <div className="bg-white border-b border-slate-200 px-5 py-3 flex items-start gap-4 flex-shrink-0">
+          <div className="bg-white border-b border-slate-200 px-5 py-3 flex items-center gap-4 flex-shrink-0">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-sm font-bold text-indigo-600">{agentTicket.id}</span>
                 <span className="text-sm text-slate-400">{agentTicket.createdAt}</span>
               </div>
               <p className="text-sm font-semibold text-slate-800 line-clamp-1">{agentTicket.description}</p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">SG</div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-semibold text-slate-700">Shivam Gupta</span>
+                <span className="text-xs text-slate-400">L1 Contact Center Support</span>
+              </div>
             </div>
           </div>
 
@@ -2232,7 +2236,7 @@ const AgentView = ({
                             {/* Fallback for unknown incident IDs */}
                             {kbResultReady && kbSearchTicketId !== 't/239635757' && (
                               <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
-                                <p className="text-sm text-amber-700">No record found for <span className="font-bold">{kbSearchTicketId}</span> in Buganizer or GUTS. Verify the ticket ID and try again.</p>
+                                <p className="text-sm text-amber-700">No record found for <span className="font-bold">{kbSearchTicketId}</span> in GUTS. Verify the ticket ID and try again.</p>
                               </div>
                             )}
                           </div>
