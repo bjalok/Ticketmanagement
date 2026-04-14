@@ -2015,10 +2015,21 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     {agentKBMessages.length > 0 && (
                       <div className="mb-2 space-y-2 max-h-[28rem] overflow-y-auto">
                         {agentKBMessages.map((m, i) => (
-                          <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`w-full px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-slate-100 text-slate-700 rounded-bl-sm'}`}>
-                              {m.steps && m.steps.length > 0 && (
-                                <div className="space-y-1 font-mono mb-2">
+                          <div key={i} className="flex flex-col gap-2">
+                            {/* User message */}
+                            {m.role === 'user' && (
+                              <div className="flex justify-end">
+                                <div className="w-full px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap bg-indigo-600 text-white rounded-br-sm">
+                                  {m.text}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Bot: telemetry card */}
+                            {m.role === 'bot' && m.steps && m.steps.length > 0 && (
+                              <div className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm">
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Knowledge Base Search</p>
+                                <div className="space-y-1 font-mono">
                                   {m.steps.map((step, si) => (
                                     <div key={si} className="flex items-center gap-1.5 text-xs text-slate-500">
                                       <span className="text-slate-400">*</span>
@@ -2029,33 +2040,46 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div className="flex items-center gap-1 text-xs text-slate-400 font-medium mt-1">Scanning <ThinkingDots /></div>
                                   )}
                                 </div>
-                              )}
-                              {m.text || null}
-                              {m.links && m.links.length > 0 && (
-                                <div className="mt-2.5 space-y-1.5">
-                                  {m.links.map((link, li) => (
-                                    <div key={li} className="flex items-start gap-1.5">
-                                      <span className="text-slate-400 text-xs flex-shrink-0 mt-0.5">{li + 1}.</span>
-                                      <div className="flex-1 min-w-0">
-                                        <a href="#" onClick={e => e.preventDefault()}
-                                          className="text-indigo-600 hover:text-indigo-800 font-semibold text-xs underline underline-offset-2 inline-flex items-center gap-0.5">
-                                          <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
-                                          {link.id}
-                                        </a>
-                                        <span className="text-xs text-slate-500"> · {link.date}</span>
-                                        <div className="flex items-center gap-1.5 mt-0.5">
-                                          <span className="text-xs text-slate-500">Priority: {link.priority}</span>
-                                          <span className="text-xs text-slate-300">·</span>
-                                          <span className="text-xs text-slate-500">Type: {link.type}</span>
-                                          <span className="text-xs text-slate-300">·</span>
-                                          <span className="text-xs text-slate-500">Severity: {link.severity}</span>
+                              </div>
+                            )}
+
+                            {/* Bot: answer card */}
+                            {m.role === 'bot' && m.done && (m.text || (m.links && m.links.length > 0)) && (
+                              <div className="w-full px-3 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-sm leading-relaxed">
+                                {m.text && <p className="whitespace-pre-wrap mb-2">{m.text}</p>}
+                                {m.links && m.links.length > 0 && (
+                                  <div className="space-y-1.5">
+                                    {m.links.map((link, li) => (
+                                      <div key={li} className="flex items-start gap-1.5">
+                                        <span className="text-slate-400 text-xs flex-shrink-0 mt-0.5">{li + 1}.</span>
+                                        <div className="flex-1 min-w-0">
+                                          <a href="#" onClick={e => e.preventDefault()}
+                                            className="text-indigo-600 hover:text-indigo-800 font-semibold text-xs underline underline-offset-2 inline-flex items-center gap-0.5">
+                                            <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
+                                            {link.id}
+                                          </a>
+                                          <span className="text-xs text-slate-500"> · {link.date}</span>
+                                          <div className="flex items-center gap-1.5 mt-0.5">
+                                            <span className="text-xs text-slate-500">Priority: {link.priority}</span>
+                                            <span className="text-xs text-slate-300">·</span>
+                                            <span className="text-xs text-slate-500">Type: {link.type}</span>
+                                            <span className="text-xs text-slate-300">·</span>
+                                            <span className="text-xs text-slate-500">Severity: {link.severity}</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Bot: plain text answer (no telemetry) */}
+                            {m.role === 'bot' && !m.steps && (
+                              <div className="w-full px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap bg-slate-100 text-slate-700 rounded-bl-sm">
+                                {m.text}
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
