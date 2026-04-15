@@ -5,14 +5,14 @@ import {
   Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink
 } from 'lucide-react';
 
-// Pre-existing sample tickets shown in agent queue
+// Pre-existing sample tickets shown in agent queue 
 
 
 const SAMPLE_TICKETS = [
   {
-    id: 't/233838887',
+    id: 't/23887',
     email: 'user@cognizant.com',
-    description: '[GTECH CONSUMER][PH-REMOTE-GEN]: Dashboard Issue',
+    description: '[XXX CONSUMER][YY-ZZZ-GEN]: Dashboard Issue',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -39,14 +39,14 @@ const SAMPLE_TICKETS = [
         author: 'user@cognizant.com',
         role: 'user',
         timestamp: '9:05 AM',
-        text: 'its access related issue\nI am looking at Speakeasy historical Dashboard related to Listnr\nThis is from Adwords GCC at Cognizant Gurgaon',
+        text: 'its access related issue\nI am looking at AC historical Dashboard related to XXX\nThis is from YYY GCC at ZZZ Gurgaon',
       },
     ],
   },
   {
-    id: 't/239828919',
+    id: 't/23919',
     email: 'ashi@company.com',
-    description: '[WFM Verint][GTECH CONSUMER][GOC Manila Hive] I am unable to update Verint for axelsylvain@google.com please fix it',
+    description: '[XXX YYY][XXX CONSUMER][XX YY Hive] I am unable to update RRR for alsylvain@company.com please fix it',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:30 AM',
     hasUpdate: true,
@@ -78,9 +78,9 @@ const SAMPLE_TICKETS = [
     ],
   },
   {
-    id: 't/239828919',
+    id: 't/23919',
     email: 'ashi@company.com',
-    description: '[WFM Verint][GTECH CONSUMER][GOC Manila Hive] I am unable to update Verint for axelsylvain@google.com please fix it',
+    description: '[XXX YYY][XXX CONSUMER][XX YY Hive] I am unable to update RRR for alsylvain@company.com please fix it',
     status: 'Open',
     createdAt: '13 Apr 2026, 10:30 AM',
     hasUpdate: true,
@@ -88,9 +88,9 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 't/238603185',
-    email: 'gcpteam@company.com',
-    description: '[CLOUD DEMAND EXECUTION - G SUITE][Barcelona] GCP Generalists, TP, Colombia Bogota : Speak easy is not working. it wont launch please fix this ASAP as agent cannot take calls',
+    id: 't/23885',
+    email: 'XYZteam@company.com',
+    description: '[XXX DEMAND YYY - G FFF][ABC] GCP GGGG, TP, FGR GFT : Speak easy is not working. it wont launch please fix this ASAP as agent cannot take calls',
     status: 'Open',
     createdAt: '13 Apr 2026, 11:00 AM',
     hasUpdate: true,
@@ -98,9 +98,9 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 't/235370408',
+    id: 't/23408',
     email: 'reporter@cognizant.com',
-    description: '[Google_GBO_Waze.GWAZE][Cognizant, PH-MNL]: Request to block specific phone number(abusive caller)',
+    description: '[XXX_GGG_TYR.GWAZE][CCC, ER-MMM]: Request to block specific phone number(abusive caller)',
     status: 'Open',
     createdAt: '14 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -130,7 +130,7 @@ const CTI_STEPS = [
   'Parsing ticket summary and reporter context...',
   'Tokenising key phrases from user reply...',
   'Matching against CTI taxonomy database...',
-  'Scoring category confidence across contact-center classes...',
+  'Scoring category confidence across c-c classes...',
   'Cross-referencing program and site metadata...',
   'Validating CTI triple against historical ticket corpus...',
   'Finalising category, type, and item classification...',
@@ -157,57 +157,57 @@ const GSD100_DUP_STEPS = [
 ];
 const GSD100_REC_STEPS = [
   'Loading similar ticket corpus from vector store...',
-  'Fetching t/233838810 (94% match) from incident archive...',
-  'Extracting resolution transcript from t/233838810...',
+  'Fetching t/23810 (94% match) from incident archive...',
+  'Extracting resolution transcript from t/23810...',
   'Parsing resolution steps from closed ticket...',
   'Mapping steps to current ticket context...',
   'Validating resolution applicability...',
 ];
 const GSD100_REC_RESOLUTION = [
-  "Verify user's Speakeasy access role in admin panel under Accounts -> Permissions.",
-  'Submit access grant request to Speakeasy admin at speakeasy-admin@internal with ticket reference.',
-  'Confirm dashboard URL with user after access is granted (Speakeasy -> Reports -> Historical).',
+  "Verify user's AC access role in admin panel under Accounts -> Permissions.",
+  'Submit access grant request to AC admin at AC-admin@internal with ticket reference.',
+  'Confirm dashboard URL with user after access is granted (AC -> Reports -> Historical).',
   'Add user to the Listnr Adwords GCC distribution group for ongoing access.',
 ];
 const GSD100_RUNBOOK_STEPS = [
   'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / Speakeasy historical dashboard / access...',
-  'Locating SOP for Speakeasy historical dashboard access requests...',
+  'Matching CTI: c-c / AC historical dashboard / access...',
+  'Locating SOP for AC historical dashboard access requests...',
   'Retrieving RUNBOOK-CC-047 from knowledge base...',
   'Validating runbook version and current applicability...',
 ];
 const GSD100_RUNBOOK_RESOLUTION = [
-  'Confirm user identity and site: Cognizant Gurgaon - Adwords GCC (verified via context).',
-  'Log access request in Speakeasy admin portal -> Contact: speakeasy-support@internal.',
+  'Confirm user identity and site: YYY Gurgaon - XXX GCC (verified via context).',
+  'Log access request in AC admin portal -> Contact: AC-support@internal.',
   'Assign dashboard role: viewer_historical via Admin -> Role Assignment panel.',
   'Notify user once role is propagated (typically 15-30 min after assignment).',
-  'Verify access: ask user to navigate Speakeasy -> Reports -> Historical Dashboard.',
+  'Verify access: ask user to navigate AC -> Reports -> Historical Dashboard.',
 ];
 const GSD100_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Speakeasy dashboard entries...',
+  'Searching troubleshoot guide index for AC dashboard entries...',
   'Checking error-code catalogue for access-related entries...',
   'Scanning step-by-step guides for dashboard permission issues...',
-  'Cross-referencing troubleshoot tags: contact-center, dashboard, access...',
+  'Cross-referencing troubleshoot tags: c-c, dashboard, access...',
 ];
 const GSD103_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
   'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for Verint profile issues...',
+  'Querying resolved ticket history for VV profile issues...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
   'No tickets found above confidence threshold...',
 ];
 const GSD103_REC_STEPS = [
   'Loading similar ticket corpus from vector store...',
-  'Fetching t/239635757 (91% match) from incident archive...',
-  'Extracting resolution transcript from t/239635757...',
+  'Fetching t/23757 (91% match) from incident archive...',
+  'Extracting resolution transcript from t/23757...',
   'Parsing resolution steps from closed ticket...',
   'Mapping steps to current ticket context...',
   'Validating resolution applicability...',
 ];
 const GSD103_REC_RESOLUTION = [
-  'Log in to Verint WFM admin console with admin credentials.',
+  'Log in to VV WFM admin console with admin credentials.',
   'Navigate to User Management -> New Profile and enter agent details: axelsylvain@google.com.',
   'Assign the correct program: CPS, and set site and role permissions accordingly.',
   'Save the new profile and verify login access for the agent.',
@@ -215,24 +215,24 @@ const GSD103_REC_RESOLUTION = [
 ];
 const GSD103_RUNBOOK_STEPS = [
   'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / wfm-verint / create new profile...',
-  'Locating SOP for Verint new agent profile creation...',
+  'Matching CTI: c-c / ABC-XYZ / create new profile...',
+  'Locating SOP for VV new agent profile creation...',
   'Retrieving RUNBOOK-WFM-012 from knowledge base...',
   'Validating runbook version and current applicability...',
 ];
 const GSD103_RUNBOOK_RESOLUTION = [
   'Confirm agent details: name, email (slivester@company.com), program (CPS), and site.',
-  'Log in to Verint WFM admin portal -> User Management -> Create New User.',
+  'Log in to VV WFM admin portal -> User Management -> Create New User.',
   'Fill in required fields: email, program assignment (CPS), role, and site location.',
   'Set initial password and send credentials via secure IT channel.',
   'Verify profile creation by searching agent email in User Management.',
   'Notify requesting supervisor/admin once profile is active and accessible.',
 ];
 const GSD103_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for Verint profile creation issues...',
+  'Searching troubleshoot guide index for VV profile creation issues...',
   'Checking error-code catalogue for new profile creation failures...',
   'Scanning step-by-step guides for WFM user provisioning...',
-  'Cross-referencing troubleshoot tags: wfm-verint, create-profile, CPS...',
+  'Cross-referencing troubleshoot tags: ABC-XYZ, create-profile, CPS...',
 ];
 const GSD103_CONTEXT_STEPS = [
   'Reading ticket description and reporter details...',
@@ -250,7 +250,7 @@ const GSD104_CONTEXT_STEPS = [
   'Verifying program, site, and system details in description...',
   'All required fields present — context complete...',
 ];
-// t/235370408 — abusive caller phone block
+// t/23408 — abusive caller phone block
 const GSD105_CONTEXT_STEPS = [
   'Reading ticket description and reporter details...',
   'Parsing ticket summary and key phrases...',
@@ -270,8 +270,8 @@ const GSD105_DUP_STEPS = [
 ];
 const GSD105_REC_STEPS = [
   'Loading similar ticket corpus from vector store...',
-  'Fetching t/234452068 (93% match) from incident archive...',
-  'Extracting resolution transcript from t/234452068...',
+  'Fetching t/23068 (93% match) from incident archive...',
+  'Extracting resolution transcript from t/23068...',
   'Parsing resolution steps from closed ticket...',
   'Mapping steps to current ticket context...',
   'Linking resolution to: To block Number in RPC studio runbook...',
@@ -285,7 +285,7 @@ const GSD105_REC_RESOLUTION = [
 ];
 const GSD105_RUNBOOK_STEPS = [
   'Querying scenario runbook library for CTI match...',
-  'Matching CTI: contact-center / speakeasy-config / abusive-user-block...',
+  'Matching CTI: c-c / easy-config / abusive-user-block...',
   'Locating SOP for blocking abusive phone numbers in RPC studio...',
   'Retrieving "To block Number in RPC studio runbook" from knowledge base...',
   'Validating runbook version and current applicability...',
@@ -299,24 +299,24 @@ const GSD105_RUNBOOK_RESOLUTION = [
 const GSD105_TROUBLESHOOT_STEPS = [
   'Searching troubleshoot guide index for RPC abusive block entries...',
   'Checking error-code catalogue for phone number block request failures...',
-  'Scanning step-by-step guides for speakeasy abusive caller blocking...',
-  'Cross-referencing troubleshoot tags: contact-center, speakeasy-config, abusive-block...',
+  'Scanning step-by-step guides for AC abusive caller blocking...',
+  'Cross-referencing troubleshoot tags: c-c, easy-config, abusive-block...',
 ];
 
 const GSD104_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
   'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for Speakeasy issues...',
+  'Querying resolved ticket history for AC issues...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
   '3 tickets found above confidence threshold...',
 ];
 
-// Knowledge Base — t/239635757 incident record
+// Knowledge Base — t/23757 incident record
 const GSD076_KB = {
-  id: 't/239635757',
-  summary: 'Unable to update Verint profile for agent slivester@company.com',
+  id: 't/23757',
+  summary: 'Unable to update VV profile for agent slivester@company.com',
   reporter: 'ashi@company.com',
   createdAt: '10 Apr 2026, 2:14 PM',
   resolvedAt: '10 Apr 2026, 4:47 PM',
@@ -324,11 +324,11 @@ const GSD076_KB = {
   priority: 'HIGH',
   program: 'CPS',
   site: 'Cognizant Bangalore',
-  cti: { category: 'contact-center', type: 'wfm-verint', item: 'update profile' },
-  description: 'Supervisor ashi@company.com reported that she is unable to update the Verint WFM profile for agent slivester@company.com. The update operation fails silently — no error message, and changes are not saved. This is preventing the agent from being assigned the correct schedule for the upcoming week.',
+  cti: { category: 'c-c', type: 'ABC-XYZ', item: 'update profile' },
+  description: 'Supervisor ashi@company.com reported that she is unable to update the VV WFM profile for agent slivester@company.com. The update operation fails silently — no error message, and changes are not saved. This is preventing the agent from being assigned the correct schedule for the upcoming week.',
   rootCause: 'The agent profile had a stale session lock from a failed bulk-import job run two days prior. The lock prevented any single-profile edits from persisting.',
   resolutionSteps: [
-    'Logged in to Verint WFM admin console with elevated admin credentials.',
+    'Logged in to VV WFM admin console with elevated admin credentials.',
     'Navigated to User Management → searched agent by email: slivester@company.com.',
     'Identified a stale session lock on the profile (lock timestamp: 8 Apr 2026, 11:22 AM).',
     'Released the lock via Admin Tools → Session Manager → Force Release.',
@@ -343,12 +343,12 @@ const GSD076_KB = {
 };
 
 const KB_SEARCH_STEPS = [
-  'Initialising knowledge base search for incident t/239635757...',
+  'Initialising knowledge base search for incident t/23757...',
   'Connecting to GUTS (Google Universal Ticket System)...',
-  'Querying GUTS for t/239635757 resolution record and root cause...',
+  'Querying GUTS for t/23757 resolution record and root cause...',
   'Fetching resolution transcript and linked KB articles from GUTS...',
-  'Searching MoMA for t/239635757 incident record...',
-  'Querying Yaqs knowledge index for t/239635757...',
+  'Searching MoMA for t/23757 incident record...',
+  'Querying Yaqs knowledge index for t/23757...',
   'Full incident record assembled from GUTS, MoMA and Yaqs...',
 ];
 
@@ -462,9 +462,9 @@ const AgentView = ({
     }
   }, [routingTicketId, agentSelectedTicketId]);
 
-  // t/233838887: pre-step animation (runs as soon as ticket is selected)
+  // t/23887: pre-step animation (runs as soon as ticket is selected)
   useEffect(() => {
-    if (agentSelectedTicketId !== 't/233838887') return;
+    if (agentSelectedTicketId !== 't/23887') return;
     setGsd100PreSteps([]);
     setGsd100PreDone(false);
     setGsd100CheckSteps([]);
@@ -490,7 +490,7 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/233838887 CTI + duplicate + recommendation animation — triggered after context submitted
+  // t/23887 CTI + duplicate + recommendation animation — triggered after context submitted
   useEffect(() => {
     if (!gsd100ContextSubmitted) return;
     const timers = [];
@@ -532,9 +532,9 @@ const AgentView = ({
   }, [gsd100ContextVisible]);
 
 
-  // t/239828919 context validation + CTI + duplicate + recommendation animation
+  // t/23919 context validation + CTI + duplicate + recommendation animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 't/239828919') return;
+    if (agentSelectedTicketId !== 't/23919') return;
     setGsd103ContextSteps([]);
     setGsd103ContextDone(false);
     setGsd103CtiSteps([]);
@@ -587,9 +587,9 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/238603185 context validation + CTI + duplicate animation
+  // t/23885 context validation + CTI + duplicate animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 't/238603185') return;
+    if (agentSelectedTicketId !== 't/23885') return;
     setGsd104ContextSteps([]);
     setGsd104ContextDone(false);
     setGsd104CtiSteps([]);
@@ -617,9 +617,9 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/235370408 context validation + CTI + duplicate + recommendation animation
+  // t/23408 context validation + CTI + duplicate + recommendation animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 't/235370408') return;
+    if (agentSelectedTicketId !== 't/23408') return;
     setGsd105ContextSteps([]);
     setGsd105ContextDone(false);
     setGsd105CtiSteps([]);
@@ -718,7 +718,7 @@ const AgentView = ({
     if (!q) return;
     setAgentKBMessages(prev => [...prev, { role: 'user', text: q, timestamp: new Date().toLocaleTimeString() }]);
     setAgentKBInput('');
-    // Detect incident lookup query (e.g. "tell me about incident t/239635757")
+    // Detect incident lookup query (e.g. "tell me about incident t/23757")
     const incidentMatch = q.match(/t\/(\d+)/i);
     if (incidentMatch) {
       const incidentId = `t/${incidentMatch[1]}`;
@@ -834,7 +834,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 't/233838887' && t.id !== 't/239828919' && t.id !== 't/238603185' && t.id !== 't/235370408') {
+                if (!hasBeenRouted && t.id !== 't/23887' && t.id !== 't/23919' && t.id !== 't/23885' && t.id !== 't/23408') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -921,7 +921,7 @@ const AgentView = ({
                 <div className="p-4 border-b border-slate-100">
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Summary</p>
                   <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
-                  {agentTicket.id === 't/233838887' && gsd100ContextVisible && (() => {
+                  {agentTicket.id === 't/23887' && gsd100ContextVisible && (() => {
                     const _eIdx = agentComments.indexOf(pipeline?.enrichment);
                     const _ctx = agentComments.find((c, i) => c.role === 'user' && i > _eIdx);
                     return (
@@ -945,10 +945,10 @@ const AgentView = ({
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Caller</p>
                   {(() => {
                     const callerMap = {
-                      't/233838887': 'Rahul Sharma',
-                      't/239828919': 'Ashi Verma',
-                      't/238603185': 'Ravi Kumar',
-                      't/235370408': 'Cognizant PH-MNL',
+                      't/23887': 'Rahul Sharma',
+                      't/23919': 'Ashi Verma',
+                      't/23885': 'Ravi Kumar',
+                      't/23408': 'Czant PP-MMM',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
@@ -999,26 +999,26 @@ const AgentView = ({
                           </div>
                           {isThinking ? (
                             <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
-                          ) : agentTicket?.id === 't/239828919' ? (
+                          ) : agentTicket?.id === 't/23919' ? (
                             gsd103ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd103ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 't/238603185' ? (
+                          ) : agentTicket?.id === 't/23885' ? (
                             gsd104ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd104ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 't/235370408' ? (
+                          ) : agentTicket?.id === 't/23408' ? (
                             gsd105ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd105ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
                           ) : pipeline?.enrichment ? (() => {
-                            if (agentTicket?.id === 't/233838887') {
+                            if (agentTicket?.id === 't/23887') {
                               if (gsd100ContextSubmitted) return <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Provided</span>;
                               if (gsd100PreDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Enrichment Needed</span>;
                               return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>;
@@ -1032,8 +1032,8 @@ const AgentView = ({
                             <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
                           )}
                         </div>
-                        {/* t/239828919: context validation + CTI + duplicate (no duplicate found) */}
-                        {agentTicket.id === 't/239828919' && !isThinking && gsd103ContextSteps.length > 0 && (
+                        {/* t/23919: context validation + CTI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/23919' && !isThinking && gsd103ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
@@ -1074,11 +1074,11 @@ const AgentView = ({
                                   <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                      <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                      <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                      <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
+                                      <p className="text-sm font-semibold text-slate-700">ABC-XYZ</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
@@ -1113,8 +1113,8 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/238603185: context validation + CTI + duplicate found */}
-                        {agentTicket.id === 't/238603185' && !isThinking && gsd104ContextSteps.length > 0 && (
+                        {/* t/23885: context validation + CTI + duplicate found */}
+                        {agentTicket.id === 't/23885' && !isThinking && gsd104ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
@@ -1155,7 +1155,7 @@ const AgentView = ({
                                   <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                      <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                      <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
@@ -1192,7 +1192,7 @@ const AgentView = ({
                                       {[
                                         { id: 't/238602912', time: '13 Apr 2026, 9:45 AM' },
                                         { id: 't/238603568', time: '13 Apr 2026, 8:52 AM' },
-                                        { id: 't/238603166', time: '13 Apr 2026, 8:10 AM' },
+                                        { id: 't/23166', time: '13 Apr 2026, 8:10 AM' },
                                       ].map(dup => (
                                         <div key={dup.id} className="bg-white rounded-lg border border-orange-200 p-2.5 shadow-sm">
                                           <div className="flex items-center justify-between mb-1.5">
@@ -1203,10 +1203,10 @@ const AgentView = ({
                                             </div>
                                           </div>
                                           <p className="text-sm font-semibold text-slate-700 mb-1">Speak easy not working</p>
-                                          <p className="text-sm text-slate-500 leading-snug">CLOUD DEMAND EXECUTION-GSUITE Barcelona GCP Generalists TP Colombia Bogata : Speakeasy not Working</p>
+                                          <p className="text-sm text-slate-500 leading-snug">XXX DEMAND YYY-GGGT VGT GCP Generalists TP VGTR BBB : AC not Working</p>
                                           <div className="mt-1.5 flex items-center gap-2">
                                             <span className="text-sm bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full font-bold border border-orange-100">Open</span>
-                                            <span className="text-sm text-slate-400">gcpteam@company.com</span>
+                                            <span className="text-sm text-slate-400">XYZteam@company.com</span>
                                           </div>
                                         </div>
                                       ))}
@@ -1217,8 +1217,8 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/235370408: context validation + CTI + duplicate (no duplicate found) */}
-                        {agentTicket.id === 't/235370408' && !isThinking && gsd105ContextSteps.length > 0 && (
+                        {/* t/23408: context validation + CTI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/23408' && !isThinking && gsd105ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
@@ -1259,11 +1259,11 @@ const AgentView = ({
                                   <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                      <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                      <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                      <p className="text-sm font-semibold text-slate-700">speakeasy config</p>
+                                      <p className="text-sm font-semibold text-slate-700">AC config</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
@@ -1298,14 +1298,14 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && agentTicket.id !== 't/235370408' && pipeline?.enrichment && !isThinking ? (() => {
+                        {agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23408' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
                           return (
                             <div className="mt-2 space-y-2">
-                              {/* t/233838887: pre-check telemetry */}
-                              {agentTicket.id === 't/233838887' && gsd100PreSteps.length > 0 && (
+                              {/* t/23887: pre-check telemetry */}
+                              {agentTicket.id === 't/23887' && gsd100PreSteps.length > 0 && (
                                 <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                   <div className="flex items-center justify-between mb-1.5">
                                     <div>
@@ -1325,7 +1325,7 @@ const AgentView = ({
                                   </div>
                                 </div>
                               )}
-                              {agentTicket.id === 't/233838887' && gsd100PreDone && (
+                              {agentTicket.id === 't/23887' && gsd100PreDone && (
                                 <div className="p-2.5 bg-orange-50 rounded-lg border border-orange-100">
                                   <p className="text-sm font-bold text-orange-600 mb-2">Required Details Missing</p>
                                   <div className="space-y-2">
@@ -1360,7 +1360,7 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {agentTicket.id === 't/233838887' && gsd100ContextVisible && (
+                              {agentTicket.id === 't/23887' && gsd100ContextVisible && (
                                 <>
                                   <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-100">
                                     <div className="flex items-center justify-between mb-1">
@@ -1392,8 +1392,8 @@ const AgentView = ({
                                   )}
                                 </>
                               )}
-                              {/* t/233838887: CTI detection + duplicate identification (only after context submitted) */}
-                              {agentTicket.id === 't/233838887' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
+                              {/* t/23887: CTI detection + duplicate identification (only after context submitted) */}
+                              {agentTicket.id === 't/23887' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
                                 <div className="space-y-2">
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
@@ -1417,11 +1417,11 @@ const AgentView = ({
                                       <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                          <p className="text-sm font-semibold text-slate-700">c-c</p>
                                         </div>
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-sm font-semibold text-slate-700">Speakeasy historical dashboard</p>
+                                          <p className="text-sm font-semibold text-slate-700">AC historical dashboard</p>
                                         </div>
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
@@ -1458,8 +1458,8 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {/* t/239828919: CTI detection + duplicate identification */}
-                              {agentTicket.id === 't/239828919' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
+                              {/* t/23919: CTI detection + duplicate identification */}
+                              {agentTicket.id === 't/23919' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
                                 <div className="space-y-2">
                                   {/* CTI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
@@ -1481,11 +1481,11 @@ const AgentView = ({
                                       <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
-                                          <p className="text-sm font-semibold text-slate-700">contact-center</p>
+                                          <p className="text-sm font-semibold text-slate-700">c-c</p>
                                         </div>
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-sm font-semibold text-slate-700">wfm-verint</p>
+                                          <p className="text-sm font-semibold text-slate-700">ABC-XYZ</p>
                                         </div>
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
@@ -1548,7 +1548,7 @@ const AgentView = ({
                               )}
                             </div>
                           );
-                        })() : agentTicket.id !== 't/239828919' && agentTicket.id !== 't/238603185' && agentTicket.id !== 't/235370408' && !isThinking && (
+                        })() : agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23408' && !isThinking && (
                           <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
                         )}
                       </div>
@@ -1569,14 +1569,14 @@ const AgentView = ({
                           {(() => {
                             const isRouting = routingTicketId === agentSelectedTicketId;
                             if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/233838887' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/233838887' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/239828919' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/239828919' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/238603185' && gsd104DupDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
-                            if (agentTicket?.id === 't/238603185' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/235370408' && gsd105TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/235370408' && gsd105DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23887' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23887' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23919' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23919' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23885' && gsd104DupDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
+                            if (agentTicket?.id === 't/23885' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23408' && gsd105TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23408' && gsd105DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
@@ -1594,8 +1594,8 @@ const AgentView = ({
                             ))}
                           </div>
                         )}
-                        {/* t/233838887 Recommendation Agent — similar ticket, runbook, troubleshoot */}
-                        {agentTicket?.id === 't/233838887' && gsd100RecSteps.length > 0 && (
+                        {/* t/23887 Recommendation Agent — similar ticket, runbook, troubleshoot */}
+                        {agentTicket?.id === 't/23887' && gsd100RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
@@ -1614,8 +1614,8 @@ const AgentView = ({
                               </div>
                               {gsd100RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/233838810 · 94% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/233838810):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/23810 · 94% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/23810):</p>
                                   <div className="space-y-1.5">
                                     {GSD100_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1684,8 +1684,8 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/239828919 Recommendation Agent — similar ticket, runbook (found), troubleshoot (no steps) */}
-                        {agentTicket?.id === 't/239828919' && gsd103RecSteps.length > 0 && (
+                        {/* t/23919 Recommendation Agent — similar ticket, runbook (found), troubleshoot (no steps) */}
+                        {agentTicket?.id === 't/23919' && gsd103RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
@@ -1704,8 +1704,8 @@ const AgentView = ({
                               </div>
                               {gsd103RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/239635757 · 91% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/239635757):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/23757 · 91% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/23757):</p>
                                   <div className="space-y-1.5">
                                     {GSD103_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1774,20 +1774,20 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/238603185 Recommendation Agent — duplicate ticket */}
-                        {agentTicket?.id === 't/238603185' && gsd104DupDone && (
+                        {/* t/23885 Recommendation Agent — duplicate ticket */}
+                        {agentTicket?.id === 't/23885' && gsd104DupDone && (
                           <div className="mt-2">
                             <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
                               <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                               <div>
                                 <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
-                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/238603166</span> for resolution.</p>
+                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/23166</span> for resolution.</p>
                               </div>
                             </div>
                           </div>
                         )}
-                        {/* t/235370408 Recommendation Agent — similar ticket, runbook, troubleshoot */}
-                        {agentTicket?.id === 't/235370408' && gsd105RecSteps.length > 0 && (
+                        {/* t/23408 Recommendation Agent — similar ticket, runbook, troubleshoot */}
+                        {agentTicket?.id === 't/23408' && gsd105RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             {/* Similar Ticket Resolution */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
@@ -1806,8 +1806,8 @@ const AgentView = ({
                               </div>
                               {gsd105RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/234452068 · 93% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/234452068):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/23068 · 93% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/23068):</p>
                                   <div className="space-y-1.5">
                                     {GSD105_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1886,7 +1886,7 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket?.id !== 't/233838887' && agentTicket?.id !== 't/239828919' && agentTicket?.id !== 't/238603185' && agentTicket?.id !== 't/235370408' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {agentTicket?.id !== 't/23887' && agentTicket?.id !== 't/23919' && agentTicket?.id !== 't/23885' && agentTicket?.id !== 't/23408' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
@@ -2179,7 +2179,7 @@ const AgentView = ({
                               </div>
                             </div>
                             {/* Incident result card */}
-                            {kbResultReady && kbSearchTicketId === 't/239635757' && (
+                            {kbResultReady && kbSearchTicketId === 't/23757' && (
                               <div className="p-3 bg-white rounded-lg border border-indigo-200 shadow-sm">
                                 <div className="flex items-center gap-2 mb-2 pb-2 border-b border-indigo-100">
                                   <span className="text-sm font-bold text-indigo-700">{GSD076_KB.id}</span>
@@ -2234,7 +2234,7 @@ const AgentView = ({
                               </div>
                             )}
                             {/* Fallback for unknown incident IDs */}
-                            {kbResultReady && kbSearchTicketId !== 't/239635757' && (
+                            {kbResultReady && kbSearchTicketId !== 't/23757' && (
                               <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                                 <p className="text-sm text-amber-700">No record found for <span className="font-bold">{kbSearchTicketId}</span> in GUTS. Verify the ticket ID and try again.</p>
                               </div>
@@ -2433,7 +2433,7 @@ const SCENARIO_LIBRARY = [
 
 const PAST_RESOLUTIONS = [
   {
-    ticketRef: 't/239828919',
+    ticketRef: 't/23919',
     similarity: '94%',
     resolvedOn: '12 Mar 2026',
     keywords: ['email', 'notification', 'inbox', 'smtp', 'mail'],
