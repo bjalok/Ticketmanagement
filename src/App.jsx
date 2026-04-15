@@ -10,9 +10,9 @@ import {
 
 const SAMPLE_TICKETS = [
   {
-    id: 'b/452279135',
+    id: 'b/457135',
     email: 'user@cognizant.com',
-    description: 'DatabridgeStepFailed: Your step "SaleforceToCapacitor - UAT" has failed to run',
+    description: 'DatabridgeStepFailed: Your step "SFToCP" has failed to run',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -44,9 +44,9 @@ const SAMPLE_TICKETS = [
     ],
   },
   {
-    id: 'b/448326226',
-    email: 'prasadbabuk@google.com',
-    description: 'DatabridgeStepFailed: Your step "SaleforceToCapacitor -UAT" has failed run',
+    id: 'b/448226',
+    email: 'XXX',
+    description: 'DatabridgeStepFailed: Your step "SFToCP" has failed run',
     status: 'Open',
     createdAt: '11 Apr 2026, 10:30 AM',
     hasUpdate: true,
@@ -54,9 +54,9 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 'b/471136666',
+    id: 'b/471166',
     email: 'subbu@company.com',
-    description: 'DatabridgeStepFailed: Your step "[PROD] Salesforce to Gin Integration - Android BD Prod" has failed run',
+    description: 'DatabridgeStepFailed: Your step "[PROD] Salesforce to XXX Integration" has failed run',
     status: 'Open',
     createdAt: '6 Apr 2026, 3:05 AM',
     hasUpdate: true,
@@ -64,9 +64,9 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 'b/446740953',
+    id: 'b/440953',
     email: 'mdb.databridge-workflow-controller@google.com',
-    description: 'DatabridgeStepFailed: Your step "[PROD] Salesforce to Gin Integration - Google Play Merchandising Prod" has failed to run',
+    description: 'DatabridgeStepFailed: Your step "[PROD] Salesforce to YYY Integration" has failed to run',
     status: 'Open',
     createdAt: '20 Jan 2026, 3:00 PM',
     hasUpdate: true,
@@ -99,7 +99,7 @@ const GSD100_DUP_STEPS = [
   'Querying resolved ticket history...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
-  'Duplicate ticket identified — b/448326226 (96% match)...',
+  'Duplicate ticket identified — b/448226 (96% match)...',
 ];
 
 const B448_DUP_STEPS = [
@@ -114,7 +114,7 @@ const B448_DUP_STEPS = [
 
 const B448_RCA_STEPS = [
   'Connecting to pipeline execution logs...',
-  'Fetching SalesforceToCapacitor - UAT run logs from Databridge...',
+  'Fetching SFTOCP - UAT run logs from Databridge...',
   'Parsing error stack trace from failed pipeline run...',
   'Identifying root cause: NullPointerException at file path resolution...',
   'Cross-referencing PermissionDeniedException against IAM policies...',
@@ -125,7 +125,7 @@ const B448_RCA_STEPS = [
 ];
 
 const B448_REC_STEPS = [
-  'Querying g3doc for SalesforceToCapacitor pipeline configuration guides...',
+  'Querying g3doc for SFTOCP pipeline configuration guides...',
   'Searching Yaqs for MPM UAT label update procedures...',
   'Scanning MoMA for cl/816241916 fix documentation and known issues...',
   'Fetching resolution steps from similar resolved DataBridge incidents...',
@@ -139,7 +139,7 @@ const B448_REC_STEPS = [
 
 
 const B448_LIFECYCLE_STEPS = [
-  'Fetching pipeline execution history for SalesforceToCapacitor - UAT...',
+  'Fetching pipeline execution history for SFTOCP - UAT...',
   'Scanning run records post-failure timestamp (after 10:30 AM)...',
   'Locating Recent Run attempt at 11:15 AM...',
   'Verifying step-level execution status across pipeline steps...',
@@ -152,7 +152,7 @@ const B471_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
   'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for Salesforce to Gin pipeline failures...',
+  'Querying resolved ticket history for Salesforce to XXX pipeline failures...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
   'No tickets found above confidence threshold...',
@@ -160,10 +160,10 @@ const B471_DUP_STEPS = [
 
 const B471_RCA_STEPS = [
   'Connecting to Databridge pipeline execution logs...',
-  'Fetching [PROD] Salesforce to Gin Integration - Android BD Prod run logs...',
+  'Fetching [PROD] Salesforce to XXX Integration run logs...',
   'Parsing error stack trace from failed pipeline run...',
   'Identifying failing step: Convert_Search_Fields 2...',
-  'Extracting failed value: "2495245546" — exceeds INT32 max (2,147,483,647)...',
+  'Extracting failed value: "245546" — exceeds INT32 max (2,17,43,7)...',
   'Tracing exception to StringValue.asInt() in corp/databridge/sdk/propertysheet...',
   'Cross-referencing ConvertTypesDofn field schema definition...',
   'Confirming: Convert_Search_Fields 2 output type configured as INT32...',
@@ -178,7 +178,7 @@ const B471_REC_STEPS = [
 ];
 
 const B471_LIFECYCLE_STEPS = [
-  'Fetching pipeline execution history for [PROD] Salesforce to Gin Integration - Android BD Prod...',
+  'Fetching pipeline execution history for [PROD] Salesforce to XXX Integration...',
   'Scanning run records post-failure timestamp (after 03:01 AM)...',
   'Locating Recent Run attempt at 03:47 AM...',
   'Verifying step-level execution status for Convert_Search_Fields 2...',
@@ -191,7 +191,7 @@ const B446_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
   'Embedding ticket description for semantic similarity...',
   'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for Salesforce to Gin pipeline failures...',
+  'Querying resolved ticket history for Salesforce to XXX pipeline failures...',
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
   'No tickets found above confidence threshold...',
@@ -199,27 +199,27 @@ const B446_DUP_STEPS = [
 
 const B446_RCA_STEPS = [
   'Connecting to Databridge pipeline execution logs...',
-  'Fetching [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod run logs...',
+  'Fetching [PROD] Salesforce to YYY Integration run logs...',
   'Parsing error stack trace from failed pipeline run...',
   'Identifying failing step: EventLogFileCSV endpoint — READ-BY-ID operation...',
   'Detecting UserCodeException wrapping RuntimeException at step execution...',
   'Tracing root: Endpoint "EventLogFileCSV" READ-BY-ID failed — 5 total operation attempts exhausted...',
   'Cross-referencing IllegalStateException — step transformation state invalid at invocation...',
-  'Querying related Gin Integration Setup Request — ticket b/438480218 (setup completed Sep 19)...',
+  'Querying related XXX Integration Setup Request — ticket b/430218 (setup completed Sep 19)...',
   'Root cause confirmed — API endpoint failure on EventLogFileCSV causing pipeline termination...',
 ];
 
 const B446_REC_STEPS = [
-  'Querying g3doc for Salesforce to Gin Integration pipeline configuration guides...',
+  'Querying g3doc for Salesforce to XXX Integration pipeline configuration guides...',
   'Searching Yaqs for EventLogFileCSV endpoint READ-BY-ID failure handling procedures...',
-  'Scanning MoMA for similar UserCodeException incidents in Gin Integration pipelines...',
+  'Scanning MoMA for similar UserCodeException incidents in XXX Integration pipelines...',
   'Applying RCA finding: EventLogFileCSV endpoint unavailability on READ-BY-ID operation...',
-  'Cross-referencing Gin Integration Setup ticket b/438480218 for endpoint configuration...',
+  'Cross-referencing XXX Integration Setup ticket b/430218 for endpoint configuration...',
   'Compiling resolution steps from knowledge platform...',
 ];
 
 const B446_LIFECYCLE_STEPS = [
-  'Fetching pipeline execution history for [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod...',
+  'Fetching pipeline execution history for [PROD] Salesforce to YYY Integration...',
   'Scanning run records post-failure timestamp (after Mar 20, 3:00 PM)...',
   'Locating Recent Run attempt at 15:30 PM...',
   'Verifying step-level execution status for EventLogFileCSV endpoint...',
@@ -313,9 +313,9 @@ const AgentView = ({
     }
   }, [routingTicketId, agentSelectedTicketId]);
 
-  // b/452279135: duplicate scan animation (fires immediately on ticket selection)
+  // b/457135: duplicate scan animation (fires immediately on ticket selection)
   useEffect(() => {
-    if (agentSelectedTicketId !== 'b/452279135') return;
+    if (agentSelectedTicketId !== 'b/457135') return;
     setGsd100DupSteps([]);
     setGsd100DupDone(false);
     setGsd100InvestigateDone(false);
@@ -335,9 +335,9 @@ const AgentView = ({
   }, [agentSelectedTicketId]);
 
 
-  // b/448326226: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
+  // b/448226: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 'b/448326226') return;
+    if (agentSelectedTicketId !== 'b/448226') return;
     setB448DupSteps([]);
     setB448DupDone(false);
     setB448RcaSteps([]);
@@ -372,9 +372,9 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // b/471136666: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
+  // b/471166: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 'b/471136666') return;
+    if (agentSelectedTicketId !== 'b/471166') return;
     setB471DupSteps([]); setB471DupDone(false);
     setB471RcaSteps([]); setB471RcaDone(false);
     setB471RecSteps([]); setB471RecDone(false);
@@ -406,9 +406,9 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // b/446740953: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
+  // b/440953: dup scan (no dup) → RCA → recommendation → LifecycleOps animation
   useEffect(() => {
-    if (agentSelectedTicketId !== 'b/446740953') return;
+    if (agentSelectedTicketId !== 'b/440953') return;
     setB446DupSteps([]); setB446DupDone(false);
     setB446RcaSteps([]); setB446RcaDone(false);
     setB446RecSteps([]); setB446RecDone(false);
@@ -475,10 +475,10 @@ const AgentView = ({
     setTimeout(() => {
       const qLower = q.toLowerCase();
 
-      // Duplicate count question for b/448326226
-      if ((qLower.includes('duplic') || qLower.includes('how many')) && (qLower.includes('448326226') || qLower.includes('b/448326226'))) {
+      // Duplicate count question for b/448226
+      if ((qLower.includes('duplic') || qLower.includes('how many')) && (qLower.includes('448326226') || qLower.includes('b/448226'))) {
         const dupLinks = [
-          { id: 'b/452279135', date: '13 Apr 2026, 9:00 AM', priority: 'P2', type: 'Bug', severity: 'S2' },
+          { id: 'b/457135', date: '13 Apr 2026, 9:00 AM', priority: 'P2', type: 'Bug', severity: 'S2' },
           { id: 'b/453112847', date: '13 Apr 2026, 10:15 AM', priority: 'P2', type: 'Bug', severity: 'S2' },
           { id: 'b/453445023', date: '13 Apr 2026, 11:30 AM', priority: 'P2', type: 'Bug', severity: 'S2' },
           { id: 'b/453889261', date: '13 Apr 2026, 1:45 PM', priority: 'P2', type: 'Bug', severity: 'S2' },
@@ -494,11 +494,11 @@ const AgentView = ({
         ];
         const DUP_TEL_STEPS = [
           'Connecting to Buganizer duplicate detection index...',
-          'Querying tickets matching SalesforceToCapacitor — UAT pipeline failure description...',
+          'Querying tickets matching SFTOCP — UAT pipeline failure description...',
           'Running semantic similarity scan across open + closed ticket corpus...',
           'Applying 80% cosine similarity confidence threshold filter...',
           'Cross-referencing Buganizer incident history (last 90 days)...',
-          'Scanning for known duplicate cluster patterns around b/448326226...',
+          'Scanning for known duplicate cluster patterns around b/448226...',
           '13 matches found — compiling confirmed duplicate ticket list...',
         ];
         const msgId = Date.now();
@@ -522,7 +522,7 @@ const AgentView = ({
           setAgentKBMessages(prev => prev.map(m =>
             m.id === msgId ? {
               ...m,
-              text: '13 duplicate tickets identified for b/448326226 (SalesforceToCapacitor — UAT pipeline failure).\n\nAll detected with ≥80% cosine similarity.',
+              text: '13 duplicate tickets identified for b/448226 (SFTOCP — UAT pipeline failure).\n\nAll detected with ≥80% cosine similarity.',
               done: true,
               links: dupLinks,
             } : m
@@ -532,14 +532,14 @@ const AgentView = ({
       }
 
       // Ticket-specific detail lookup
-      if (qLower.includes('b/448326226') || qLower.includes('448326226')) {
+      if (qLower.includes('b/448226') || qLower.includes('448326226')) {
         const answer =
-`Incident b/448326226
+`Incident b/448226
 
-Reporter: prasadbabuk@google.com
+Reporter: XXX
 Status: Open
 Created: 11 Apr 2026, 10:30 AM
-Description: DatabridgeStepFailed — SalesforceToCapacitor - UAT pipeline has failed to run.
+Description: DatabridgeStepFailed — SFTOCP - UAT pipeline has failed to run.
 
 Root Cause (Investigate Agent):
 • MPM version mismatch — build date 2025-09-14 predates required fix cl/816241916 (2025-10-31).
@@ -550,8 +550,8 @@ Resolution Steps (Recommendation Agent):
 1. Apply UAT label to MPM build that includes cl/816241916 (built after 2025-10-31).
 2. Update sub-transformation path from relative to absolute in pipeline step configuration.
 3. Validate IAM permissions for the pipeline service account.
-4. Re-trigger the SalesforceToCapacitor - UAT pipeline and monitor execution logs.
-5. Notify reporter (prasadbabuk@google.com) once pipeline is confirmed healthy and close the ticket.
+4. Re-trigger the SFTOCP - UAT pipeline and monitor execution logs.
+5. Notify reporter (XXX) once pipeline is confirmed healthy and close the ticket.
 
 LifecycleOps Status:
 Recent Run at 11:15 AM also failed with the same errors. Issue is active and recurring — ticket should be reopened immediately.`;
@@ -559,35 +559,35 @@ Recent Run at 11:15 AM also failed with the same errors. Issue is active and rec
         return;
       }
 
-      if (qLower.includes('b/452279135') || qLower.includes('452279135')) {
+      if (qLower.includes('b/457135') || qLower.includes('452279135')) {
         const answer =
-`Incident b/452279135
+`Incident b/457135
 
 Reporter: user@cognizant.com
 Status: Open
 Created: 13 Apr 2026, 9:00 AM
-Description: DatabridgeStepFailed — SalesforceToCapacitor - UAT pipeline has failed to run.
+Description: DatabridgeStepFailed — SFTOCP - UAT pipeline has failed to run.
 
 Triage Agent:
-Duplicate ticket identified — matches b/448326226 at 96% confidence.
+Duplicate ticket identified — matches b/448226 at 96% confidence.
 
 LifecycleOps Status:
-Confirmed duplicate. Please refer to the parent ticket b/448326226 for resolution.`;
+Confirmed duplicate. Please refer to the parent ticket b/448226 for resolution.`;
         setAgentKBMessages(prev => [...prev, { role: 'bot', text: answer, timestamp: new Date().toLocaleTimeString() }]);
         return;
       }
 
-      if (qLower.includes('b/471136666') || qLower.includes('471136666')) {
+      if (qLower.includes('b/471166') || qLower.includes('471136666')) {
         const answer =
-`Incident b/471136666
+`Incident b/471166
 
 Reporter: subbu@company.com
 Status: Open
 Created: 6 Apr 2026, 3:05 AM
-Description: DatabridgeStepFailed — [PROD] Salesforce to Gin Integration - Android BD Prod has failed run.
+Description: DatabridgeStepFailed — [PROD] Salesforce to XXX Integration has failed run.
 
 Root Cause (Investigate Agent):
-• NumberFormatException — Salesforce ID "2495245546" exceeds INT32 max (2,147,483,647).
+• NumberFormatException — Salesforce ID "245546" exceeds INT32 max (2,147,483,647).
 • Field schema mismatch — Convert_Search_Fields 2 output type is INT32, requires INT64.
 
 Resolution Steps (Recommendation Agent):
@@ -602,23 +602,23 @@ Recent Run at 03:47 AM completed successfully — transient failure confirmed. T
         return;
       }
 
-      if (qLower.includes('b/446740953') || qLower.includes('446740953')) {
+      if (qLower.includes('b/440953') || qLower.includes('446740953')) {
         const answer =
-`Incident b/446740953
+`Incident b/440953
 
 Reporter: mdb.databridge-workflow-controller@google.com
 Status: Open
 Created: 20 Jan 2026, 3:00 PM
 Priority: P2 | Severity: S2 | Type: Bug
-Description: DatabridgeStepFailed — [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod pipeline has failed to run.
+Description: DatabridgeStepFailed — [PROD] Salesforce to YYY Integration pipeline has failed to run.
 
 Root Cause (Investigate Agent):
 • UserCodeException wrapping RuntimeException — Endpoint "EventLogFileCSV" READ-BY-ID operation failed after 5 consecutive attempts.
 • IllegalStateException — Step TransformOfFcEventsData>EventLogFileCSV entered an invalid state due to endpoint failure, causing pipeline termination.
 
 Resolution Steps (Recommendation Agent):
-1. Investigate availability of the EventLogFileCSV API endpoint — check with the Gin Integration team for outage around Mar 20, 3:00 PM.
-2. Review Gin Integration Setup Request ticket b/438480218 (completed Sep 19) for endpoint configuration changes.
+1. Investigate availability of the EventLogFileCSV API endpoint — check with the XXX Integration team for outage around Mar 20, 3:00 PM.
+2. Review XXX Integration Setup Request ticket b/430218 (completed Sep 19) for endpoint configuration changes.
 3. Validate pipeline step configuration for EventLogFileCSV — confirm endpoint URL, credentials, and READ-BY-ID parameters.
 4. Re-trigger the pipeline and monitor EventLogFileCSV endpoint response during execution.
 5. Notify reporter once pipeline is confirmed healthy and close the ticket.
@@ -736,7 +736,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 'b/452279135' && t.id !== 'b/448326226' && t.id !== 'b/471136666' && t.id !== 'b/446740953') {
+                if (!hasBeenRouted && t.id !== 'b/457135' && t.id !== 'b/448226' && t.id !== 'b/471166' && t.id !== 'b/440953') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -820,11 +820,11 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                   <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-lg p-3 mb-4">{agentTicket.description}</p>
                   <div className="grid grid-cols-2 gap-x-3 gap-y-3">
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Number</p><p className="text-sm font-semibold text-indigo-600 mt-0.5">{agentTicket.id}</p></div>
-                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-sm font-semibold text-orange-600 mt-0.5">{agentTicket.id === 'b/448326226' ? 'P1' : 'P2'}</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Priority</p><p className="text-sm font-semibold text-orange-600 mt-0.5">{agentTicket.id === 'b/448226' ? 'P1' : 'P2'}</p></div>
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Opened</p><p className="text-sm text-slate-600 mt-0.5">{agentTicket.createdAt}</p></div>
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">State</p><p className="text-sm font-semibold text-green-600 mt-0.5">{agentTicket.status}</p></div>
                     <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Type</p><p className="text-sm text-slate-600 mt-0.5">Bug</p></div>
-                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Severity</p><p className="text-sm text-slate-600 mt-0.5">{agentTicket.id === 'b/448326226' ? 'S1' : 'S2'}</p></div>
+                    <div><p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Severity</p><p className="text-sm text-slate-600 mt-0.5">{agentTicket.id === 'b/448226' ? 'S1' : 'S2'}</p></div>
                   </div>
                 </div>
 
@@ -865,25 +865,25 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                           </div>
                           {isThinking ? (
                             <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analyzing <ThinkingDots /></span>
-                          ) : agentTicket?.id === 'b/452279135' ? (
+                          ) : agentTicket?.id === 'b/457135' ? (
                             gsd100DupDone
                               ? <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Found</span>
                               : gsd100DupSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Scanning <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 'b/448326226' ? (
+                          ) : agentTicket?.id === 'b/448226' ? (
                             b448DupDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> No Duplicate</span>
                               : b448DupSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Scanning <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 'b/471136666' ? (
+                          ) : agentTicket?.id === 'b/471166' ? (
                             b471DupDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> No Duplicate</span>
                               : b471DupSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Scanning <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 'b/446740953' ? (
+                          ) : agentTicket?.id === 'b/440953' ? (
                             b446DupDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> No Duplicate</span>
                               : b446DupSteps.length > 0
@@ -899,7 +899,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
                           )}
                         </div>
-                        {agentTicket.id === 'b/452279135' && gsd100DupSteps.length > 0 && (
+                        {agentTicket.id === 'b/457135' && gsd100DupSteps.length > 0 && (
                           <div className="mt-2">
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="flex items-center justify-between mb-2">
@@ -919,13 +919,13 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                 <div className="mt-2 pt-2 border-t border-slate-200">
                                   <div className="bg-white rounded-lg border border-orange-200 p-2.5">
                                     <div className="flex items-center justify-between mb-1.5">
-                                      <span className="text-sm font-bold text-indigo-600">b/448326226</span>
+                                      <span className="text-sm font-bold text-indigo-600">b/448226</span>
                                       <div className="flex items-center gap-1.5">
                                         <Clock className="w-3 h-3 text-slate-400" />
                                         <span className="text-sm text-slate-400">11 Apr 2026, 10:30 AM</span>
                                       </div>
                                     </div>
-                                    <p className="text-sm text-slate-600 leading-snug">DatabridgeStepFailed: Your step "SaleforceToCapacitor -UAT" has failed run</p>
+                                    <p className="text-sm text-slate-600 leading-snug">DatabridgeStepFailed: Your step "SFToCP" has failed run</p>
                                     <div className="mt-1.5">
                                       <span className="text-sm bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full font-bold border border-orange-100">Open</span>
                                     </div>
@@ -935,7 +935,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {agentTicket.id === 'b/448326226' && !isThinking && b448DupSteps.length > 0 && (
+                        {agentTicket.id === 'b/448226' && !isThinking && b448DupSteps.length > 0 && (
                           <div className="mt-2">
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="flex items-center justify-between mb-2">
@@ -959,7 +959,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {agentTicket.id === 'b/471136666' && !isThinking && b471DupSteps.length > 0 && (
+                        {agentTicket.id === 'b/471166' && !isThinking && b471DupSteps.length > 0 && (
                           <div className="mt-2">
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="flex items-center justify-between mb-2">
@@ -983,7 +983,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {agentTicket.id === 'b/446740953' && !isThinking && b446DupSteps.length > 0 && (
+                        {agentTicket.id === 'b/440953' && !isThinking && b446DupSteps.length > 0 && (
                           <div className="mt-2">
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="flex items-center justify-between mb-2">
@@ -1011,8 +1011,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   </div>
 
-                  {/* Investigate Agent Card — only for b/452279135 */}
-                  {agentTicket?.id === 'b/452279135' && (
+                  {/* Investigate Agent Card — only for b/457135 */}
+                  {agentTicket?.id === 'b/457135' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
@@ -1033,7 +1033,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                 <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                                 <div>
                                   <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
-                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448326226</span> for root cause.</p>
+                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448226</span> for root cause.</p>
                                 </div>
                               </div>
                             </div>
@@ -1043,8 +1043,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* Investigate Agent Card — b/446740953 RCA (UserCodeException / EventLogFileCSV) */}
-                  {agentTicket?.id === 'b/446740953' && (
+                  {/* Investigate Agent Card — b/440953 RCA (UserCodeException / EventLogFileCSV) */}
+                  {agentTicket?.id === 'b/440953' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
@@ -1089,7 +1089,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <div className="mt-3 pt-2 border-t border-purple-100">
                                     <p className="text-sm font-bold text-purple-800 mb-2">Error Logs:</p>
                                     <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 mb-3 overflow-x-auto">
-                                      <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:00:07] INFO  Databridge pipeline started: [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod'}</p>
+                                      <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:00:07] INFO  Databridge pipeline started: [PROD] Salesforce to YYY Integration'}</p>
                                       <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:00:09] INFO  Initialising step: EventLogFileCSV — operation READ-BY-ID'}</p>
                                       <p className="text-yellow-400 whitespace-nowrap">{'[2026-03-20 15:00:11] WARN  Endpoint "EventLogFileCSV" READ-BY-ID attempt 1/5 — no response'}</p>
                                       <p className="text-yellow-400 whitespace-nowrap">{'[2026-03-20 15:00:14] WARN  Endpoint "EventLogFileCSV" READ-BY-ID attempt 3/5 — timeout'}</p>
@@ -1124,8 +1124,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* Investigate Agent Card — b/448326226 RCA */}
-                  {agentTicket?.id === 'b/448326226' && (
+                  {/* Investigate Agent Card — b/448226 RCA */}
+                  {agentTicket?.id === 'b/448226' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
@@ -1174,13 +1174,13 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <div className="mt-3 pt-2 border-t border-purple-100">
                                     <p className="text-sm font-bold text-purple-800 mb-2">Error Logs:</p>
                                     <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 mb-3 overflow-x-auto">
-                                      <p className="text-slate-400">{'[2026-04-11 10:28:14] INFO  Databridge pipeline started: SalesforceToCapacitor-UAT'}</p>
+                                      <p className="text-slate-400">{'[2026-04-11 10:28:14] INFO  Databridge pipeline started: SFTOCP-UAT'}</p>
                                       <p className="text-slate-400">{'[2026-04-11 10:28:15] INFO  Loading MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline'}</p>
                                       <p className="text-slate-400">{'[2026-04-11 10:28:16] INFO  UAT label resolved → build: 2025-09-14 (cl/814203001)'}</p>
                                       <p className="text-yellow-400">{'[2026-04-11 10:28:17] WARN  Build predates required fix cl/816241916 (2025-10-07)'}</p>
                                       <p className="text-slate-400">{'[2026-04-11 10:28:18] INFO  Initialising sub-transformation: ShgSawmillIntegrationPipelineUAT'}</p>
                                       <p className="text-yellow-400">{'[2026-04-11 10:28:19] WARN  Sub-transformation path is relative — attempting to resolve against working dir'}</p>
-                                      <p className="text-red-400">{'[2026-04-11 10:28:20] ERROR Step "SaleforceToCapacitor - UAT" FAILED'}</p>
+                                      <p className="text-red-400">{'[2026-04-11 10:28:20] ERROR Step "SFToCP" FAILED'}</p>
                                       <p className="text-red-400 mt-1">{'java.lang.RuntimeException: Step execution failed'}</p>
                                       <p className="text-red-400 pl-4">{'at com.google.databridge.StepRunner.execute(StepRunner.java:241)'}</p>
                                       <p className="text-red-400 pl-4">{'at com.google.databridge.PipelineExecutor.runStep(PipelineExecutor.java:189)'}</p>
@@ -1201,7 +1201,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div className="space-y-2.5">
                                       <div className="flex items-start gap-2">
                                         <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">1</span>
-                                        <p className="text-sm text-slate-700"><span className="font-semibold">PermissionDeniedException:</span> The SalesforceToCapacitor - UAT step uses MPM package <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">salesforce_sawmill_d_v7_pipeline</span>. The UAT label is applied to an MPM build from before 2025-10-31, which does not include fix <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">cl/816241916</span>.</p>
+                                        <p className="text-sm text-slate-700"><span className="font-semibold">PermissionDeniedException:</span> The SFTOCP - UAT step uses MPM package <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">salesforce_sawmill_d_v7_pipeline</span>. The UAT label is applied to an MPM build from before 2025-10-31, which does not include fix <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">cl/816241916</span>.</p>
                                       </div>
                                       <div className="flex items-start gap-2">
                                         <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">2</span>
@@ -1218,8 +1218,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* Investigate Agent Card — b/471136666 RCA (transient INT32 overflow) */}
-                  {agentTicket?.id === 'b/471136666' && (
+                  {/* Investigate Agent Card — b/471166 RCA (transient INT32 overflow) */}
+                  {agentTicket?.id === 'b/471166' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0">
@@ -1252,7 +1252,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                         {i === 1 && (
                                           <a href="#" onClick={e => e.preventDefault()} title="View pipeline run logs"
                                             className="inline-flex items-center gap-0.5 text-indigo-500 hover:text-indigo-700 underline underline-offset-2 font-medium transition-colors">
-                                            <ExternalLink className="w-3 h-3" />
+                                            <ExternalLink className="w-3 h-3" />  
                                             <span className="text-xs">View logs</span>
                                           </a>
                                         )}
@@ -1264,11 +1264,11 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <div className="mt-3 pt-2 border-t border-purple-100">
                                     <p className="text-sm font-bold text-purple-800 mb-2">Error Logs:</p>
                                     <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 mb-3 overflow-x-auto">
-                                      <p className="text-slate-400">{'[2026-04-06 03:00:51] INFO  Databridge pipeline started: [PROD] Salesforce to Gin Integration - Android BD Prod'}</p>
+                                      <p className="text-slate-400">{'[2026-04-06 03:00:51] INFO  Databridge pipeline started: [PROD] Salesforce to XXX Integration'}</p>
                                       <p className="text-slate-400">{'[2026-04-06 03:00:52] INFO  Initialising step: Convert_Search_Fields 2'}</p>
                                       <p className="text-slate-400">{'[2026-04-06 03:00:53] INFO  Step Convert_Search_Fields 2 — reading field schema: output type = INT32'}</p>
                                       <p className="text-slate-400">{'[2026-04-06 03:00:54] INFO  Processing Salesforce record batch — 1,423 records'}</p>
-                                      <p className="text-yellow-400">{'[2026-04-06 03:01:07] WARN  Numeric field value "2495245546" approaches INT32 boundary'}</p>
+                                      <p className="text-yellow-400">{'[2026-04-06 03:01:07] WARN  Numeric field value "245546" approaches INT32 boundary'}</p>
                                       <p className="text-red-400">{'[2026-04-06 03:01:08] ERROR Step Convert_Search_Fields 2 FAILED'}</p>
                                       <p className="text-red-400 mt-1">{'E 2026-04-06 03:01:08.846898 PCollectionConsumerRegistry.logAndRethrow:291]'}</p>
                                       <p className="text-red-400">{'Failed to process element for bundle process_bundle_Convert_Search_Fields_2'}</p>
@@ -1280,11 +1280,11 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                       <p className="text-red-400 pl-8">{'.processElement(BaseDofn.java:27)'}</p>
                                       <p className="text-red-400 pl-4">{'at org.apache.beam.fn.harness.data.PCollectionConsumerRegistry'}</p>
                                       <p className="text-red-400 pl-8">{'$MetricTrackingFnDataReceiver.accept(PCollectionConsumerRegistry.java:375)'}</p>
-                                      <p className="text-red-400 mt-1">{'Caused by: java.lang.NumberFormatException: For input string: "2495245546"'}</p>
+                                      <p className="text-red-400 mt-1">{'Caused by: java.lang.NumberFormatException: For input string: "245546"'}</p>
                                       <p className="text-red-400 pl-4">{'at com.google.corp.databridge.sdk.propertysheet.mem.StringValue.asInt(StringValue.kt:88)'}</p>
                                       <p className="text-red-400 pl-4">{'at com.google.corp.pipelines.woodwind.engine.dataflow.steps.utility'}</p>
                                       <p className="text-red-400 pl-8">{'.PropertySheetReader.writeField(ConvertTypesDofn.java:178)'}</p>
-                                      <p className="text-red-400 mt-1">{'Caused by: java.lang.UnsupportedOperationException: cannot convert "2495245546" to int'}</p>
+                                      <p className="text-red-400 mt-1">{'Caused by: java.lang.UnsupportedOperationException: cannot convert "245546" to int'}</p>
                                       <p className="text-red-400 pl-4">{'at com.google.corp.databridge.sdk.propertysheet.mem.StringValue.asInt(StringValue.kt:88)'}</p>
                                       <p className="text-slate-500 mt-1">{'[2026-04-06 03:01:08] INFO  Pipeline terminated. Exit code: 1'}</p>
                                     </div>
@@ -1292,7 +1292,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div className="space-y-2.5">
                                       <div className="flex items-start gap-2">
                                         <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">1</span>
-                                        <p className="text-sm text-slate-700"><span className="font-semibold">NumberFormatException / UnsupportedOperationException:</span> Step <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">Convert_Search_Fields 2</span> has its output type configured as <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">INT32</span>, but the incoming Salesforce ID value <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">2495245546</span> exceeds the INT32 maximum of 2,147,483,647.</p>
+                                        <p className="text-sm text-slate-700"><span className="font-semibold">NumberFormatException / UnsupportedOperationException:</span> Step <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">Convert_Search_Fields 2</span> has its output type configured as <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">INT32</span>, but the incoming Salesforce ID value <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">245546</span> exceeds the INT32 maximum of 2,147,483,647.</p>
                                       </div>
                                       <div className="flex items-start gap-2">
                                         <span className="w-5 h-5 rounded-full bg-red-100 text-red-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">2</span>
@@ -1323,22 +1323,22 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                           {(() => {
                             const isRouting = routingTicketId === agentSelectedTicketId;
                             if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'b/452279135' && gsd100RecDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
-                            if (agentTicket?.id === 'b/452279135' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Analysing <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'b/452279135') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
-                            if (agentTicket?.id === 'b/448326226' && b448RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'b/448326226' && b448RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'b/448326226') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
-                            if (agentTicket?.id === 'b/471136666' && b471RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'b/471136666' && b471RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'b/471136666') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
-                            if (agentTicket?.id === 'b/446740953' && b446RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 'b/446740953' && b446RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 'b/446740953') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
+                            if (agentTicket?.id === 'b/457135' && gsd100RecDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
+                            if (agentTicket?.id === 'b/457135' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Analysing <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/457135') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
+                            if (agentTicket?.id === 'b/448226' && b448RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'b/448226' && b448RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/448226') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
+                            if (agentTicket?.id === 'b/471166' && b471RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'b/471166' && b471RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/471166') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
+                            if (agentTicket?.id === 'b/440953' && b446RecDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 'b/440953' && b446RcaDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 'b/440953') return <span className="text-sm text-slate-400 font-medium">Pending...</span>;
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
-                            if (agentTicket?.id === 'b/448326226' || agentTicket?.id === 'b/452279135' || agentTicket?.id === 'b/471136666') return null;
+                            if (agentTicket?.id === 'b/448226' || agentTicket?.id === 'b/457135' || agentTicket?.id === 'b/471166') return null;
                             if (s4Done || pipeline) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">No Match</span>;
                             return null;
                           })()}
@@ -1353,20 +1353,20 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             ))}
                           </div>
                         )}
-                        {/* b/452279135 Recommendation Agent — duplicate */}
-                        {agentTicket?.id === 'b/452279135' && gsd100RecDone && (
+                        {/* b/457135 Recommendation Agent — duplicate */}
+                        {agentTicket?.id === 'b/457135' && gsd100RecDone && (
                           <div className="mt-2">
                             <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
                               <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                               <div>
                                 <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
-                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448326226</span> for resolution.</p>
+                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448226</span> for resolution.</p>
                               </div>
                             </div>
                           </div>
                         )}
-                        {/* b/448326226 Recommendation Agent — knowledge platform search + resolution steps */}
-                        {agentTicket?.id === 'b/448326226' && b448RecSteps.length > 0 && (
+                        {/* b/448226 Recommendation Agent — knowledge platform search + resolution steps */}
+                        {agentTicket?.id === 'b/448226' && b448RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
@@ -1393,13 +1393,13 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <p className="text-sm font-bold text-amber-800 mb-2">Standard Resolution Steps:</p>
                                   <div className="space-y-2">
                                     {[
-                                      'Open the SalesforceToCapacitor - UAT pipeline configuration and identify the MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline.',
+                                      'Open the SFTOCP - UAT pipeline configuration and identify the MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline.',
                                       'Apply the UAT label to the latest MPM version that includes cl/816241916 (built after 2025-10-31) to replace the stale build.',
                                       'Update the sub-transformation path from relative to absolute in the pipeline step configuration to fix the NullPointerException.',
                                       'Validate IAM permissions for the pipeline service account on /google_src/files/head/depot/google3/corp/salesforcehub/integrations/sawmill/.',
-                                      'Re-trigger the SalesforceToCapacitor - UAT pipeline run and monitor execution logs in Databridge.',
+                                      'Re-trigger the SFTOCP - UAT pipeline run and monitor execution logs in Databridge.',
                                       'Confirm successful completion with no PermissionDeniedException or NullPointerException in the run log.',
-                                      'Notify the reporter (prasadbabuk@google.com) once pipeline is confirmed healthy and close the ticket.',
+                                      'Notify the reporter (XXX) once pipeline is confirmed healthy and close the ticket.',
                                     ].map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
                                         <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-700 font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
@@ -1412,8 +1412,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {/* b/471136666 Recommendation Agent — resolution steps */}
-                        {agentTicket?.id === 'b/471136666' && b471RecSteps.length > 0 && (
+                        {/* b/471166 Recommendation Agent — resolution steps */}
+                        {agentTicket?.id === 'b/471166' && b471RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
@@ -1440,7 +1440,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <p className="text-sm font-bold text-amber-800 mb-2">Resolution Steps:</p>
                                   <div className="space-y-2">
                                     {[
-                                      'Document the INT32 overflow root cause — Salesforce ID "2495245546" exceeds INT32 max (2,147,483,647), triggering NumberFormatException in Convert_Search_Fields 2.',
+                                      'Document the INT32 overflow root cause — Salesforce ID "245546" exceeds INT32 max (2,147,483,647), triggering NumberFormatException in Convert_Search_Fields 2.',
                                       'File a follow-up task to update Convert_Search_Fields 2 output type from INT32 → INT64 in the pipeline schema to prevent recurrence with large Salesforce IDs.',
                                       "Mark this ticket as Transient / Won't Fix for this occurrence — the pipeline self-recovered on retry and no immediate manual intervention is required.",
                                       'Notify the reporter (subbu@company.com) that the root cause has been identified and a permanent schema fix has been scheduled.',
@@ -1456,8 +1456,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {/* b/446740953 Recommendation Agent — resolution steps */}
-                        {agentTicket?.id === 'b/446740953' && b446RecSteps.length > 0 && (
+                        {/* b/440953 Recommendation Agent — resolution steps */}
+                        {agentTicket?.id === 'b/440953' && b446RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
@@ -1484,10 +1484,10 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                   <p className="text-sm font-bold text-amber-800 mb-2">Resolution Steps:</p>
                                   <div className="space-y-2">
                                     {[
-                                      'Investigate the availability of the EventLogFileCSV API endpoint — check with the Gin Integration team whether the endpoint experienced an outage around Mar 20, 3:00 PM.',
-                                      'Review the Gin Integration Setup Request ticket b/438480218 (completed Sep 19) for any endpoint configuration changes that may have broken the READ-BY-ID operation.',
+                                      'Investigate the availability of the EventLogFileCSV API endpoint — check with the XXX Integration team whether the endpoint experienced an outage around Mar 20, 3:00 PM.',
+                                      'Review the XXX Integration Setup Request ticket b/430218 (completed Sep 19) for any endpoint configuration changes that may have broken the READ-BY-ID operation.',
                                       'Validate the pipeline step configuration for EventLogFileCSV — confirm the endpoint URL, authentication credentials, and READ-BY-ID parameters are correct.',
-                                      'Re-trigger the [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod pipeline and monitor EventLogFileCSV endpoint response during execution.',
+                                      'Re-trigger the [PROD] Salesforce to YYY Integration pipeline and monitor EventLogFileCSV endpoint response during execution.',
                                       'Notify the reporter (mdb.databridge-workflow-controller@google.com) once the pipeline is confirmed healthy and close the ticket.',
                                     ].map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1501,7 +1501,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                             </div>
                           </div>
                         )}
-                        {agentTicket?.id !== 'b/452279135' && agentTicket?.id !== 'b/448326226' && agentTicket?.id !== 'b/471136666' && agentTicket?.id !== 'b/446740953' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {agentTicket?.id !== 'b/457135' && agentTicket?.id !== 'b/448226' && agentTicket?.id !== 'b/471166' && agentTicket?.id !== 'b/440953' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
@@ -1586,8 +1586,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   </div>
 
-                  {/* LifecycleOps Agent Card — b/452279135: duplicate ticket */}
-                  {agentTicket?.id === 'b/452279135' && (
+                  {/* LifecycleOps Agent Card — b/457135: duplicate ticket */}
+                  {agentTicket?.id === 'b/457135' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
@@ -1606,7 +1606,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                 <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                                 <div>
                                   <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
-                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448326226</span> for resolution.</p>
+                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">b/448226</span> for resolution.</p>
                                 </div>
                               </div>
                             </div>
@@ -1616,8 +1616,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* LifecycleOps Agent Card — b/448326226: Recent Run also failed */}
-                  {agentTicket?.id === 'b/448326226' && (
+                  {/* LifecycleOps Agent Card — b/448226: Recent Run also failed */}
+                  {agentTicket?.id === 'b/448226' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
@@ -1662,7 +1662,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div>
                                       <p className="text-sm font-bold text-slate-700 mb-1.5">Recent Run Log:</p>
                                       <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 overflow-x-auto">
-                                        <p className="text-slate-400 whitespace-nowrap">{'[2026-04-11 11:15:02] INFO  Databridge pipeline started: SalesforceToCapacitor - UAT'}</p>
+                                        <p className="text-slate-400 whitespace-nowrap">{'[2026-04-11 11:15:02] INFO  Databridge pipeline started: SFTOCP - UAT'}</p>
                                         <p className="text-slate-400 whitespace-nowrap">{'[2026-04-11 11:15:04] INFO  Fetching MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline'}</p>
                                         <p className="text-yellow-400 whitespace-nowrap">{'[2026-04-11 11:15:07] WARN  MPM build date: 2025-09-14 — predates required fix (cl/816241916, 2025-10-31)'}</p>
                                         <p className="text-red-400 whitespace-nowrap">{'[2026-04-11 11:15:09] ERROR Step Transform_Salesforce_Data FAILED'}</p>
@@ -1687,8 +1687,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* LifecycleOps Agent Card — b/471136666 only */}
-                  {agentTicket?.id === 'b/471136666' && (
+                  {/* LifecycleOps Agent Card — b/471166 only */}
+                  {agentTicket?.id === 'b/471166' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
@@ -1733,7 +1733,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div>
                                       <p className="text-sm font-bold text-slate-700 mb-1.5">Recent Run Log:</p>
                                       <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5">
-                                        <p className="text-slate-400">{'[2026-04-06 03:47:12] INFO  Databridge pipeline started: [PROD] Salesforce to Gin Integration - Android BD Prod'}</p>
+                                        <p className="text-slate-400">{'[2026-04-06 03:47:12] INFO  Databridge pipeline started: [PROD] Salesforce to XXX Integration'}</p>
                                         <p className="text-slate-400">{'[2026-04-06 03:47:14] INFO  Step Convert_Search_Fields 2 — processing records...'}</p>
                                         <p className="text-green-400">{'[2026-04-06 03:47:31] INFO  Step Convert_Search_Fields 2 completed — 1,247 records processed'}</p>
                                         <p className="text-green-400">{'[2026-04-06 03:47:45] INFO  Pipeline completed successfully. Exit code: 0'}</p>
@@ -1754,8 +1754,8 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                     </div>
                   )}
 
-                  {/* LifecycleOps Agent Card — b/446740953: Recent Run also failed, open 50 days */}
-                  {agentTicket?.id === 'b/446740953' && (
+                  {/* LifecycleOps Agent Card — b/440953: Recent Run also failed, open 50 days */}
+                  {agentTicket?.id === 'b/440953' && (
                     <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
@@ -1808,7 +1808,7 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                                     <div>
                                       <p className="text-sm font-bold text-slate-700 mb-1.5">Recent Run Log:</p>
                                       <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs space-y-0.5 overflow-x-auto">
-                                        <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:30:14] INFO  Databridge pipeline started: [PROD] Salesforce to Gin Integration - Google Play Merchandising Prod'}</p>
+                                        <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:30:14] INFO  Databridge pipeline started: [PROD] Salesforce to YYY Integration'}</p>
                                         <p className="text-slate-400 whitespace-nowrap">{'[2026-03-20 15:30:16] INFO  Initialising step: EventLogFileCSV — operation READ-BY-ID'}</p>
                                         <p className="text-yellow-400 whitespace-nowrap">{'[2026-03-20 15:30:18] WARN  Endpoint "EventLogFileCSV" READ-BY-ID attempt 1/5 — no response'}</p>
                                         <p className="text-yellow-400 whitespace-nowrap">{'[2026-03-20 15:30:24] WARN  Endpoint "EventLogFileCSV" READ-BY-ID attempt 3/5 — timeout'}</p>
@@ -2122,9 +2122,9 @@ Recent Run at 15:30 PM also failed with the same UserCodeException. Ticket has b
                         { label: 'Subcategory', value: info.subcategory },
                         { label: 'Configuration Item', value: info.ci },
                         { label: 'Affected Service', value: info.service },
-                        { label: 'Priority', value: agentTicket.id === 'b/448326226' ? 'P1' : 'P2', color: 'text-orange-600 font-semibold' },
+                        { label: 'Priority', value: agentTicket.id === 'b/448226' ? 'P1' : 'P2', color: 'text-orange-600 font-semibold' },
                         { label: 'Type', value: 'Bug' },
-                        { label: 'Severity', value: agentTicket.id === 'b/448326226' ? 'S1' : 'S2', color: 'text-orange-600 font-semibold' },
+                        { label: 'Severity', value: agentTicket.id === 'b/448226' ? 'S1' : 'S2', color: 'text-orange-600 font-semibold' },
                         { label: 'State', value: agentTicket.status, color: 'text-green-600' },
                       ].map(({ label, value, color }) => (
                         <div key={label}>
