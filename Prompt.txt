@@ -1,473 +1,398 @@
-Build a single-file React + Tailwind CSS application that simulates an AI-powered 
-ticket management system with animated multi-agent pipeline cards and live telemetry.
+Build a React 19 + Vite + Tailwind CSS 4 ticket management system that simulates an 
+AI-powered support ticket triage and resolution pipeline. The UI is a 3-panel layout 
+with a ticket queue, an agent pipeline view with live telemetry, and a details panel. 
+All processing is simulated — no real API calls.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STACK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-React 18, Tailwind CSS, lucide-react icons:
-Search, Inbox, Cpu, Database, Zap, BookOpen, UserCheck, Check,
-Terminal, CheckCircle, Layers, Send, Tag, Link, Clock,
-AlertTriangle, Server, Phone, ExternalLink, RefreshCw
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- React 19 (single App.jsx, no external router)
+- Tailwind CSS 4 via @tailwindcss/vite plugin
+- Lucide React for all icons
+- Vite 8
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PAGE LAYOUT  (full viewport height, no outer scroll)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-flex row:
-  LEFT  w-64, bg-white, border-r border-slate-200
-    — header: Inbox icon + "QUEUE" (uppercase bold slate-600 tracking-wider)
-              + count badge (indigo-100 text-indigo-600 rounded-full)
-    — search input: slate-50 bg, Search icon inside left
-    — scrollable ticket list (p-2 space-y-1)
-      each ticket = button, on select → indigo-50 bg + indigo-600 left border 2px
-        row1: ticket ID (indigo-600 bold text-sm) + red pulse dot if hasUpdate
-              + "Open" badge (blue-50 text-blue-600 border-blue-100)
-        row2: description line-clamp-2 text-sm slate-600
-        row3: createdAt text-sm slate-400
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Full-height 3-panel flexbox layout (no scroll on the outer shell):
 
-  RIGHT flex-1 flex-col overflow-hidden
-    when nothing selected:
-      centred Layers icon (w-16 h-16 opacity-20) + "Select a ticket from the queue"
+LEFT PANEL (w-64, fixed, bg-white, border-r border-slate-200):
+  - Header: "Queue" title + animated count badge + search input with Search icon
+  - Scrollable list of ticket cards. Each card shows:
+    - Ticket ID (bold, text-indigo-600), created-at time (right-aligned, text-slate-400)
+    - Description (2-line clamp, text-sm text-slate-600)
+    - Status badge ("Open" = green, "Closed" = slate)
+    - If `hasUpdate: true`, show a red pulsing dot (animate-pulse) top-right
+    - Selected state: bg-indigo-50 border-indigo-200
+  - Clicking a ticket triggers the agent pipeline (see WORKFLOW)
 
-    when ticket selected:
-      TITLE BAR  bg-white border-b px-5 py-3 flex items-center gap-4
-        left: ticket ID (indigo bold) + createdAt (slate-400) on one line
-              description below (font-semibold slate-800 line-clamp-1)
-        right (flex-shrink-0): round indigo avatar w-7 h-7 (initials white text-xs bold)
-                                name text-sm font-semibold slate-700
-                                role text-xs slate-400 (e.g. "L1 Contact Center Support")
+CENTER PANEL (flex-1, bg-slate-50, overflow-y-auto):
+  - When no ticket selected: centered empty state with Inbox icon, 
+    "Select a ticket" heading, subtitle
+  - When selected:
+    - Title bar: ticket ID + full description, createdAt, assigned agent chip 
+      (avatar initial + name), "Thinking…" animated badge when processing
+    - Two tabs: "Overview" and "Details"
+    
+    OVERVIEW TAB — 2 columns:
+      Col 1 (w-72): Summary card (bg-white, rounded-xl, shadow-sm)
+        - Shows ticket description, reporter email, status badge
+        - A horizontal divider then a chat-bubble thread:
+          - Bot messages aligned left (bg-slate-100 rounded-xl rounded-bl-sm)
+          - User messages aligned right (bg-indigo-600 text-white rounded-xl rounded-br-sm)
+          - Each bubble: sender name + timestamp above it
+          - Bot can show a list of missing fields as orange tags inside the bubble
 
-      TABS  bg-white border-b px-5 flex gap-1
-        "Overview" | "Details"  active = bg-indigo-600 text-white rounded-full px-3 py-1
+      Col 2 (flex-[3]): AI Agent Pipeline — vertical stack of Agent Cards 
+        (each bg-white rounded-xl border border-slate-200 p-4 shadow-sm)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SHARED COMPONENT — ThinkingDots
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-3 × w-1 h-1 rounded-full bg-{color}-400 animate-bounce
-animationDelay: 0ms / 150ms / 300ms
-Used inline next to status text (e.g. "Analysing", "Scanning", "Searching")
+    DETAILS TAB (shown in the same center panel):
+      Grid of labeled sections: Classification, Reporter Info, Assignment Info, 
+      SLA Timings, AI-Generated Tags, Related Records
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SHARED COMPONENT — Telemetry Step List
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Container: bg-{color}-50 rounded-lg border border-{color}-100/200 p-2.5
-Header row: label bold + status badge (right)
-Steps: font-mono text-sm text-slate-500, each line:
-  <colored asterisk *> <step text>
-  Steps appear one-by-one via setTimeout every 600ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESIGN TOKENS (index.css)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CSS variables on :root:
+  --text: #6b6375         (body text)
+  --text-h: #08060d       (headings)
+  --bg: #fff
+  --border: #e5e4e7
+  --accent: #aa3bff       (purple CTA)
+  --accent-bg: rgba(170,59,255,0.1)
+  --accent-border: rgba(170,59,255,0.5)
 
-After all steps: show result block below a border-t
+Font scale: --fs-xs:13px through --fs-5xl:33px
+Line heights: --lh-tight:1.3  --lh-normal:1.5  --lh-relaxed:1.6
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SAMPLE TICKETS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-── CONTACT CENTER  (t/ prefix) ──────────────
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SHARED UTILITY COMPONENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-t/233838887  user@cognizant.com
-  "[GTECH CONSUMER][PH-REMOTE-GEN]: Dashboard Issue"
-  13 Apr 2026, 9:00 AM  |  needs enrichment
-  AI comment has 4 missing fields + enrichment questions:
-    • Type of issue → "Please clarify if this is a data discrepancy, 
-      a system error, or an access request."
-    • Dashboard & tools involved
-    • Data range & discrepancy details
-    • Program & site
-  User reply (after approve):
-    "its access related issue
-     I am looking at Speakeasy historical Dashboard related to XXX
-     This is from YYY GCC at ZZZ Gurgaon"
+ThinkingDots ({ color = 'blue' }):
+  Three 1×1 dots (bg-{color}-400, rounded-full) with staggered 
+  animate-bounce (delays 0ms, 150ms, 300ms). Renders inline-flex.
 
-t/239828919  ashi@company.com
-  "[WFM Verint][GTECH CONSUMER][GOC Manila Hive] I am unable to 
-  update Verint for axelsylvain@google.com"
-  13 Apr 2026, 9:30 AM  |  needs enrichment
-  Missing: specific update failing, single/multiple agents, error code, program
+StatusBadge patterns (reuse these classname combos):
+  - Success:    text-green-600  bg-green-50   border-green-100  + CheckCircle icon
+  - Warning:    text-orange-600 bg-orange-50  border-orange-100
+  - Processing: text-blue-500 font-medium + <ThinkingDots />
+  - Neutral:    text-slate-500  bg-slate-50   border-slate-200
+  - Duplicate:  text-orange-600 bg-orange-50  border-orange-100 + Copy2 icon
 
-t/238603185  gcpteam@company.com
-  "[CLOUD DEMAND EXECUTION-GSUITE][Barcelona] GCP Generalists, 
-  TP, Colombia Bogota : Speakeasy not Working"
-  13 Apr 2026, 11:00 AM  |  triage finds 3 duplicates
+Icon Wrapper (reuse):
+  w-9 h-9 rounded-xl bg-{color}-50 border border-{color}-100
+  flex items-center justify-center flex-shrink-0
+  Icon inside: w-4 h-4 text-{color}-600
 
-t/235370408  reporter@cognizant.com
-  "[Google_GBO_Waze.GWAZE][Cognizant, PH-MNL]: Request to block 
-  specific phone number (abusive caller)"
-  14 Apr 2026, 9:00 AM  |  context already complete
+Agent Card Shell (reuse):
+  bg-white rounded-xl border border-slate-200 p-4 shadow-sm
+  Inner: flex items-start gap-3
+    [Icon Wrapper] + [div.flex-1 with header row + content]
 
-── DATABRIDGE PIPELINE  (b/ prefix) ────────
+Step List (monospace, used in telemetry):
+  p-2.5 bg-slate-50 rounded-lg border border-slate-200
+  Each step: flex items-center gap-1.5 text-sm text-slate-500 font-mono
+    <span className="text-slate-400">*</span> step text
 
-b/448326226  prasadbabuk@google.com
-  "DatabridgeStepFailed: SalesforceToCapacitor-UAT has failed run"
-  11 Apr 2026, 10:30 AM  |  no duplicate → RCA → lifecycle: PERSISTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AGENT CARDS (rendered in Col 2 of Overview)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Render these cards progressively as state advances.
 
-b/471136666  subbu@company.com
-  "DatabridgeStepFailed: [PROD] Salesforce to Gin - Android BD Prod failed"
-  6 Apr 2026, 3:05 AM   |  no duplicate → RCA → lifecycle: TRANSIENT
+── CARD 1: Triage & Categorize (S1) ──────────
+Icon: Cpu, color: blue
+Title: "Triage & Categorize"
+States:
+  • Ticket just selected + thinking → status = <ThinkingDots />
+  • Enrichment needed → status badge "Enrichment Needed" (orange)
+  • Reporter replied → status badge "Context Provided" (green + CheckCircle)
+  • Fully done → status badge "Complete" (green + CheckCircle)
 
-b/446740953  mdb.databridge-workflow-controller@google.com
-  "DatabridgeStepFailed: [PROD] Salesforce to Gin - Google Play 
-  Merchandising Prod failed"
-  20 Jan 2026, 3:00 PM  |  no duplicate → RCA → lifecycle: OPEN 50 DAYS
+Sub-sections (each in its own p-2.5 rounded-lg bg):
 
-b/452279135  (duplicate of b/448326226)
-  Same DatabridgeStepFailed error → triage flags 96% match
+  Context Validation (bg-violet-50, border-violet-200)
+    - Title: "Context Validation" (text-violet-700)
+    - Shows missing fields as orange pill badges: 
+      text-xs font-medium text-orange-600 bg-orange-50 border border-orange-100 
+      rounded-full px-2 py-0.5
+    - When resolved: green "Context Verified" badge + list of confirmed fields (green)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OVERVIEW TAB — 3 AGENT CARDS  (all tickets)
-Each card: bg-white rounded-xl border border-slate-200 p-4 shadow-sm
-  Left: w-9 h-9 rounded-xl icon bg
-  Right: flex-1 — agent name bold + status badge (top-right)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CTI Detection (bg-violet-50, border-violet-200)
+    - Title: "CTI Detection" (text-violet-700)
+    - Animated step list that builds up (1 step every ~700ms)
+    - Each step: "* Checking [Category/Type/Item]..."
+    - Final result row: 3 chips — Category | Type | Item
+      Each chip: text-xs font-bold text-indigo-700 bg-indigo-50 
+                 border border-indigo-200 rounded px-2 py-0.5
 
-═══ CARD 1 — TRIAGE AGENT  (blue bg-blue-50, Inbox icon) ═══
+  Duplicate Check (bg-slate-50, border-slate-200)
+    - Title: "Duplicate Check"
+    - Step list builds up (7 steps: scanning index, fetching embeddings, etc.)
+    - Result: "Duplicate of #XXXXX" (orange) OR "No duplicate found" (green)
+    - If duplicate: link chip showing referenced ticket ID (amber)
 
-Starts immediately when ticket selected. Three sequential sub-sections:
+  Pre-check Steps + Check Steps (bg-slate-50):
+    - Two groups labeled "Pre-Check" and "Check"
+    - Each group: 4-5 items, animate in one at a time
+    - Items that are "done": text-green-600 with CheckCircle
+    - Item in progress: text-blue-500 with <ThinkingDots />
 
-┌ SUB-SECTION A: "Checking Context"  (bg-slate-50 border-slate-200)
-│ Status: "Analysing" + ThinkingDots → "Done" (Check icon, slate badge)
-│ Telemetry steps (slate * prefix):
-│   Reading ticket description and reporter details...
-│   Checking ticket against existing knowledge base...
-│   Evaluating available context information...
-│   Identifying required missing fields...
-│
-│ IF MISSING FIELDS (contact center enrichment tickets):
-│   After steps: bg-orange-50 border-orange-100 panel
-│     Title: "Required Details Missing" (orange-600 bold)
-│     Each question: white card, orange border
-│       field name bold orange + detail text slate-600
-│     Footer bar (bg-slate-50): "Do you want to update these comments?"
-│       [Approve] button → indigo-600, CheckCircle icon
-│       [Reject]  button → white bg, red-600 text, red border
-│
-│   After Approve click → 1.8s delay → show reporter context panel
-│     bg-blue-50 border-blue-100
-│     "Context provided by reporter:" (blue-600 bold) + timestamp right
-│     Reporter reply text in italic
-│
-│   Then: second "Checking Context" pass (slate-50 border-slate-200)
-│     Steps: Processing reporter context... / Validating... / Context validated
-│     Done badge: green "Context Provided" + CheckCircle
-│
-│ IF CONTEXT ALREADY COMPLETE (b/ tickets, t/235370408):
-│   Skip enrichment, show:
-│   "All required context fields present. Ticket routed to resolution agents."
-└
+── CARD 2: Historical Match (S4) ─────────────
+Icon: Database, color: amber
+Title: "Historical Match Search"
+States:
+  • Searching → <ThinkingDots color="amber" />
+  • Found → "Match Found" amber badge + similarity %
+  • Not found → "No Match" slate badge
+  • Duplicate ticket → "Skipped" slate badge
 
-┌ SUB-SECTION B: "Determining CTI"  (bg-violet-50 border-violet-100)
-│ Appears after context check done (or immediately for complete-context tickets)
-│ Status: "Analysing" + ThinkingDots → "Detected" (CheckCircle, violet badge)
-│ Steps (violet * prefix):
-│   Parsing ticket summary and reporter context...
-│   Tokenising key phrases from user reply...
-│   Matching against CTI taxonomy database...
-│   Scoring category confidence across contact-center classes...
-│   Cross-referencing program and site metadata...
-│   Validating CTI triple against historical ticket corpus...
-│   Finalising category, type, and item classification...
-│
-│ After done: 3-column grid below border-t:
-│   Category | Type | Item
-│   (violet-400 uppercase label + slate-700 value)
-│   Example: "contact-center" | "speakeasy historical dashboard" | "access"
-└
+If match found: nested amber-50 card inside
+  - Similarity %, reference ticket ID, resolution date
+  - "Resolution steps:" header then numbered steps (font-mono, text-sm)
+  - KB article chip links (text-blue-600 underline, text-xs)
 
-┌ SUB-SECTION C: "Identifying Duplicates"  (bg-slate-50 border-slate-200)
-│ Appears after CTI done
-│ Status: "Scanning" + ThinkingDots → "No duplicates" OR "Duplicate Found"
-│ Steps (slate * prefix):
-│   Scanning active incident queue for similar issues...
-│   Embedding ticket description for semantic similarity...
-│   Comparing against open tickets (last 90 days)...
-│   Querying resolved ticket history...
-│   Computing cosine similarity scores across corpus...
-│   Applying 80% confidence threshold filter...
-│   [last step = result]
-│
-│ IF NO DUPLICATE:
-│   italic slate-500: "No duplicate tickets found above 80% confidence threshold."
-│   (For t/239828919 and t/235370408 also show Approve/Reject buttons here)
-│     After Approve: green "Comments updated in ticket" bar (CheckCircle)
-│
-│ IF DUPLICATE FOUND (b/452279135, t/238603185):
-│   Orange badge: "Duplicate Found" + AlertTriangle
-│   White card inside: parent ticket ID + timestamp + description + "Open" badge
-└
+── CARD 3: Scenario Runbook (S3) ──────────────
+Icon: BookOpen, color: blue
+Title: "Scenario Runbook"
+States:
+  • Loading → <ThinkingDots />
+  • Matched → "Matched" green badge
 
-═══ CARD 2 — INVESTIGATE AGENT  (purple bg-purple-50, Search icon) ═══
-Shown for: b/448326226, b/471136666, b/446740953
-For duplicate tickets (b/452279135): show orange "Duplicate Ticket" warning panel only.
-Starts after Triage dup scan completes.
-Status: "Pending..." → "Analysing" + ThinkingDots → "RCA Complete" (green)
+If matched: nested blue-50 card
+  - SOP reference code (font-mono, text-xs, text-blue-600)
+  - Step-by-step runbook (numbered list, text-sm, text-slate-600)
 
-┌ Inside: bg-purple-50 border-purple-100 "Root Cause Analysis" sub-panel
-│ Status right: "Analysing" → "Complete" (purple badge)
-│ Steps (purple * prefix, font-mono):
-│
-│ b/448326226:
-│   Connecting to pipeline execution logs...
-│   Fetching SalesforceToCapacitor-UAT run logs from Databridge... [View logs ↗]
-│   Parsing error stack trace from failed pipeline run...
-│   Identifying root cause: NullPointerException at file path resolution...
-│   Cross-referencing PermissionDeniedException against IAM policies...
-│   Querying MPM package version for corp/salesforcehub/integrations/sawmill...
-│   Checking UAT label applied to MPM build — includes cl/816241916...
-│   Comparing build date: pre-2025-10-31 (missing fix) vs required version...
-│   Root cause confirmed — MPM version mismatch and file permission error...
-│
-│ b/471136666:
-│   Connecting to Databridge pipeline execution logs...
-│   Fetching [PROD] Salesforce to Gin Integration - Android BD Prod run logs... [View logs ↗]
-│   Parsing error stack trace from failed pipeline run...
-│   Identifying failing step: Convert_Search_Fields 2...
-│   Extracting failed value: "2495245546" — exceeds INT32 max (2,147,483,647)...
-│   Tracing exception to StringValue.asInt() in corp/databridge/sdk/propertysheet...
-│   Cross-referencing ConvertTypesDofn field schema definition...
-│   Confirming: Convert_Search_Fields 2 output type configured as INT32...
-│   Root cause confirmed — NumberFormatException due to INT32 overflow...
-│
-│ b/446740953:
-│   Connecting to Databridge pipeline execution logs...
-│   Fetching [PROD] Salesforce to Gin - Google Play Merchandising Prod logs... [View logs ↗]
-│   Parsing error stack trace...
-│   Identifying failing step: EventLogFileCSV endpoint — READ-BY-ID operation...
-│   Detecting UserCodeException wrapping RuntimeException...
-│   Tracing root: Endpoint "EventLogFileCSV" READ-BY-ID — 5 attempts exhausted...
-│   Cross-referencing IllegalStateException — step state invalid at invocation...
-│   Querying related Gin Integration Setup Request ticket b/438480218...
-│   Root cause confirmed — API endpoint failure on EventLogFileCSV...
-│
-│ "View logs" link (step index 1): ExternalLink icon + "View logs" text
-│   text-indigo-500 hover:text-indigo-700 underline underline-offset-2
-│
-│ AFTER STEPS — show two blocks:
-│
-│ [ERROR LOGS block]  bg-gray-900 rounded-lg p-3 font-mono text-xs overflow-x-auto
-│   Color rules:  INFO  → text-slate-400
-│                 WARN  → text-yellow-400
-│                 ERROR → text-red-400
-│                 exit  → text-slate-500
-│   Stack trace lines indented with pl-4 / pl-8
-│   (show realistic log lines matching the root cause)
-│
-│ [ROOT CAUSE block]  numbered list, red circle badges (bg-red-100 text-red-700)
-│   Each item: bold exception name + explanation
-│   Inline code: font-mono text-xs bg-slate-100 px-1 py-0.5 rounded
-└
+── CARD 4: Troubleshoot Guide ─────────────────
+Icon: Wrench (or HelpCircle), color: slate
+Title: "Troubleshoot Guide"
+Only shown when no runbook/history match
+Nested slate-50 card with generic steps
 
-═══ CARD 3 — RECOMMENDATION AGENT  (amber bg-amber-50, Database icon) ═══
-Shown for all tickets except pure duplicates.
-Starts after Investigate Agent (b/ tickets) or after Triage dup scan (t/ tickets).
-Status: "Searching" + ThinkingDots → "Recommendations Ready" (amber badge + CheckCircle)
-         For duplicate: "Duplicate Identified" (orange badge + AlertTriangle)
-         For no match: "No Match" (slate badge)
+── CARD 5: Execution & Telemetry ──────────────
+Icon: Play (or Zap), color: green
+Title: "Execution"
+Only shown after user clicks "Apply" or automatically after routing
 
-FOR CONTACT CENTER TICKETS (t/233838887, t/239828919, t/235370408):
-  Three sequential sub-panels:
+Shows S4_STEPS (6 routing steps) building up:
+  Each step: bold title + indented sub-steps that animate in ~560ms apart
+  Sub-steps done: text-green-600 + CheckCircle icon
+  Sub-step in progress: text-blue-500 + <ThinkingDots />
+  Step header done: green badge; in progress: ThinkingDots
 
-  1. "Resolution from Similar Ticket"  bg-amber-50 border-amber-200
-     Status: "Searching" → "Found" (amber)
-     Steps (amber * prefix):
-       Loading similar ticket corpus from vector store...
-       Fetching [matchId] ([X]% match) from incident archive...
-       Extracting resolution transcript from [matchId]...
-       Parsing resolution steps from closed ticket...
-       Mapping steps to current ticket context...
-       Validating resolution applicability...
-     After done: "[matchId] · X% match" label (amber-600)
-       Numbered steps with amber circle badges (bg-amber-100 text-amber-700)
-     Matches:
-       t/233838887 → t/23810 · 94% match (Speakeasy access steps)
-       t/239828919 → t/23757 · 91% match (Verint profile steps)
-       t/235370408 → t/23068 · 93% match (RPC block steps)
+Bottom when complete: 
+  "Resolution applied" green banner (bg-green-50 border-green-200)
+  with CheckCircle icon + text
 
-  2. "Scenario Runbook (RUNBOOK-XX-XXX)"  bg-blue-50 border-blue-200
-     Status: "Searching" → "Found" (blue)
-     Steps (blue * prefix):
-       Querying scenario runbook library for CTI match...
-       Matching CTI: [category / type / item]...
-       Locating SOP for [scenario description]...
-       Retrieving [RUNBOOK-ID] from knowledge base...
-       Validating runbook version and current applicability...
-     After done: numbered steps with blue circle badges (bg-blue-100 text-blue-700)
-     Runbooks:
-       t/233838887 → RUNBOOK-CC-047 (Speakeasy dashboard access)
-       t/239828919 → RUNBOOK-WFM-012 (Verint new profile)
-       t/235370408 → "To block Number in RPC studio" runbook
+── CARD 6: Escalation (conditional) ───────────
+Icon: ArrowUpRight, color: red or orange
+Title: "Escalated"
+Shown only if no resolution could be found
+Shows escalation agent name, department, tier
+Status badge: "Escalated" (orange)
 
-  3. "Troubleshoot Guide"  bg-slate-50 border-slate-200
-     Steps (slate * prefix):
-       Searching troubleshoot guide index...
-       Checking error-code catalogue...
-       Scanning step-by-step guides...
-       Cross-referencing troubleshoot tags...
-     After done: "No troubleshoot guide steps found for this issue type."
-                 "Refer to similar ticket resolution or runbook steps above."
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKFLOW & STATE MACHINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+State variables needed (all useState):
+  selectedTicketId       — which ticket is active
+  thinkingTicketId       — which ticket is animating the "thinking" state (3s)
+  routingTicketId        — which ticket is in routing/S4 animation
+  agentActiveTab         — 'Overview' | 'Details'
+  searchQuery            — left panel search filter
 
-FOR DUPLICATE TICKETS (t/238603185, b/452279135):
-  Orange warning panel: AlertTriangle icon
-  "Duplicate Ticket" bold orange-700
-  "This is a duplicate ticket. Please refer to parent ticket [ID]"
+Per-ticket animation state groups (keyed by ticket scenario):
+  [prefix]PreSteps[]     — pre-check steps array, builds up
+  [prefix]PreDone        — boolean, all pre-checks done
+  [prefix]ContextSteps[] — CTI detection steps array
+  [prefix]ContextDone    — boolean
+  [prefix]DupSteps[]     — duplicate detection steps array
+  [prefix]DupDone        — boolean
+  s4Steps[]              — routing steps for S4 execution card
+  s4Done                 — boolean
 
-FOR PIPELINE TICKETS (b/448326226, b/471136666, b/446740953):
-  Steps (amber * prefix):
-    Querying g3doc for [pipeline] configuration guides...
-    Searching Yaqs for [issue type] handling procedures...
-    Scanning MoMA for similar incidents and resolutions...
-    Applying RCA finding: [finding description]...
-    (repeat for each RCA finding)
-    Compiling standard resolution steps from knowledge platform...
-    Validating compiled steps against current pipeline configuration...
-  After done: numbered resolution steps list
+CLICK HANDLER on ticket card:
+  1. Set selectedTicketId, reset tab to Overview
+  2. If ticket already fully processed → just show stored results
+  3. Else: setThinkingTicketId(id), after 3000ms:
+       clearThinkingTicketId, call processAIEnrichment()
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LIFECYCLE OPS AGENT CARD  (green, RefreshCw)
-b/ tickets only — appears after Recommendation Agent
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Container: bg-white rounded-xl border border-slate-200 p-4 shadow-sm
-Icon bg: bg-green-50, RefreshCw text-green-600
-Status: "Pending..." → "Checking" + ThinkingDots → outcome badge
+processAIEnrichment(ticketId, description):
+  1. Word-count check: if description < 10 words → inject enrichment comment 
+     (bot message with missingFields array) into ticket comments
+  2. Match scenario with keyword search against SCENARIO_LIBRARY
+  3. Match past resolution with keyword search against PAST_RESOLUTIONS
+  4. Start routing animation: setRoutingTicketId(id)
+  5. Build S4_STEPS execution sequence (6 steps, each 2000ms apart)
+  6. Simultaneously animate CTI detection steps (7 steps, 700ms apart)
+  7. Animate duplicate check steps (7 steps, 700ms apart)
+  8. After all steps done: inject routing comment into ticket.comments
+     (contains scenario, pastResolution, escalation, isDuplicateOf, kbArticlesOnly)
+  9. Clear routingTicketId
 
-Steps (green * prefix, bg-green-50 border-green-100):
+ANIMATION PATTERN (used everywhere):
+  const timers = [];
+  STEPS.forEach((step, i) => {
+    timers.push(setTimeout(
+      () => setState(prev => [...prev, step]),
+      BASE_DELAY + i * INTERVAL
+    ));
+  });
+  timers.push(setTimeout(() => setDone(true), 
+    BASE_DELAY + STEPS.length * INTERVAL));
+  return () => timers.forEach(clearTimeout);
 
-b/448326226 (PERSISTS):
-  Fetching pipeline execution history for SalesforceToCapacitor-UAT...
-  Scanning run records post-failure timestamp (after 10:30 AM)...
-  Locating Recent Run attempt at 11:15 AM...
-  Verifying step-level execution status across pipeline steps...
-  Detecting failure in Recent Run — NullPointerException in sub-transformation...
-  Confirming PermissionDeniedException — same IAM policy error as original...
-  Issue persists — root cause unresolved, not a transient failure...
-→ Result badge: red "Issue Persists — Action Required"
-→ Result panel: "Recent Run at 11:15 AM failed with same errors. 
-   Ticket should remain open and be actioned immediately."
+Timing constants:
+  SUB_FIRST_DELAY = 380ms   (first sub-step after parent appears)
+  SUB_INTERVAL    = 560ms   (between sub-steps)
+  STEP_NO_SUB_DONE = 850ms  (step with no sub-steps completes after)
+  NEXT_GAP        = 180ms   (gap between parent steps)
+  S4 routing total ≈ 7500ms + (6 steps × 2000ms) + 1200ms cleanup = ~20.7s
 
-b/471136666 (TRANSIENT):
-  Fetching pipeline execution history for [PROD] Salesforce to Gin - Android BD...
-  Scanning run records post-failure timestamp (after 03:01 AM)...
-  Locating Recent Run attempt at 03:47 AM...
-  Verifying step-level execution status for Convert_Search_Fields 2...
-  Confirming pipeline exit code: 0 — no errors detected...
-  Cross-checking Salesforce record batch — offending ID absent in retry batch...
-  Transient pattern confirmed — single occurrence, self-resolved on retry...
-→ Result badge: green "Transient — Safe to Close"
-→ Result panel: "Recent Run at 03:47 AM completed successfully. 
-   Offending Salesforce record absent in retry. Ticket can be closed."
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SAMPLE DATA STRUCTURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-b/446740953 (STALE — 50 DAYS):
-  Fetching pipeline execution history for [PROD] Salesforce to Gin - Google Play...
-  Scanning run records post-failure timestamp (after Mar 20, 3:00 PM)...
-  Locating Recent Run attempt at 15:30 PM...
-  Verifying step-level execution status for EventLogFileCSV endpoint...
-  Detecting failure in Recent Run — UserCodeException on EventLogFileCSV READ-BY-ID...
-  Confirming same API error pattern — endpoint returning 5 consecutive failures...
-  Ticket has been open for 50 days — issue is persistent and unresolved...
-→ Result badge: red "Open 50 Days — Escalate Immediately"
-→ Result panel: "Same UserCodeException on every run. 
-   Ticket open 50 days with no resolution. Immediate escalation required."
+SAMPLE_TICKETS (array of 4):
+{
+  id: 't/23887',
+  email: 'user@cognizant.com',
+  description: '[XXX CONSUMER][YY-ZZZ-GEN]: Dashboard Issue - charts not loading',
+  status: 'Open',
+  createdAt: '13 Apr 2026, 9:00 AM',
+  hasUpdate: true,
+  isSample: true,
+  comments: [
+    {
+      author: 'AI Agent', role: 'bot', timestamp: '9:01 AM',
+      missingFields: [
+        { label: 'Type of issue' },
+        { label: 'Environment affected' },
+        { label: 'Error message' }
+      ],
+      enrichmentQuestions: [
+        { field: 'Type of issue', detail: 'Is this a rendering, data, or access issue?' },
+        { field: 'Environment', detail: 'Production, staging, or dev?' }
+      ]
+    },
+    {
+      author: 'user@cognizant.com', role: 'user', timestamp: '9:05 AM',
+      text: 'The charts stopped loading after the deployment at 8am. 
+             This is production. Error: "Failed to fetch datasource".'
+    }
+  ]
+}
+// Add 3 more tickets covering: VPN access, Email notifications, 
+// Kubernetes pod failure — each with similar comment structure
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SUPPORT OPS ASSISTANT  (Details tab, all tickets)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Card header: Zap icon (white on solid indigo-500 square)
-             "Support Ops Assistant" bold + "Answers generated by AI" (slate-400, right)
+SCENARIO_LIBRARY (array of 7):
+{
+  id: 'SOP-DASH-002',
+  name: 'Dashboard/Visualization Issue',
+  keywords: ['dashboard', 'chart', 'visualization', 'grafana', 'kibana', 'fetch'],
+  steps: [
+    'Verify datasource connectivity in admin panel',
+    'Check network policies for datasource access',
+    'Review recent deployment changes',
+    'Clear browser cache and retry',
+    'Restart datasource service if needed',
+    'Validate datasource credentials'
+  ],
+  kbArticle: 'KB-2024-0312'
+}
 
-Greeting bubble: bg-indigo-50 border-indigo-100 rounded-xl p-3
-  "Hi! 👋 I've analyzed this ticket through the AI pipeline. Here's what I found:"
+PAST_RESOLUTIONS (array of 4):
+{
+  ticketId: 't/22156',
+  similarity: 94,
+  resolvedDate: '5 Apr 2026',
+  keywords: ['dashboard', 'chart', 'data source', 'grafana'],
+  resolutionSteps: [
+    'Identified misconfigured datasource after v2.4.1 deploy',
+    'Reverted datasource plugin to v2.3.9',
+    'Restarted grafana-server service',
+    'Verified all dashboards loading correctly'
+  ],
+  kbArticles: ['KB-2024-0312', 'KB-2024-0189', 'KB-2023-0445']
+}
 
-4-line pipeline summary (icon + text):
-  Cpu    blue   → enrichment triggered / not needed
-  BookOpen purple → SOP matched / not matched
-  Database amber  → historical match found / not found
-  UserCheck orange → escalation info (if applicable)
+ESCALATION_AGENTS (array of 3):
+{ agent: 'Sarah Mitchell', department: 'L2 Infrastructure' }
+{ agent: 'James Okafor',   department: 'L2 Applications' }
+{ agent: 'Priya Nair',     department: 'L2 Platform Engineering' }
 
-"Ask Knowledge Base" section:
-  Textarea (2 rows) placeholder "Ask anything..." + Send button (indigo-600)
-  Enter key (without shift) submits
+S4_STEPS (6 routing steps, used in Execution card):
+[
+  { label: 'Indexing ticket context', subSteps: ['Loading ticket metadata', 
+    'Parsing description', 'Extracting keywords', 'Building context vector'] },
+  { label: 'Routing to knowledge base', subSteps: ['Querying KB index', 
+    'Ranking results', 'Filtering by relevance'] },
+  { label: 'Matching SOP library', subSteps: ['Loading SOP index', 
+    'Semantic matching', 'Score thresholding'] },
+  { label: 'Historical resolution lookup', subSteps: ['Embedding comparison', 
+    'Similarity scoring', 'Top-K retrieval'] },
+  { label: 'Generating recommendation', subSteps: ['Synthesizing results', 
+    'Building action plan'] },
+  { label: 'Finalizing routing decision', subSteps: ['Confidence check', 
+    'Writing resolution comment'] }
+]
 
-Chat bubbles:
-  User → right-aligned, bg-indigo-600 text-white rounded-xl rounded-br-sm
-  Bot  → left-aligned, bg-slate-100 text-slate-700 rounded-xl rounded-bl-sm
-  Both: px-3 py-2 max-w-[85%] text-sm leading-relaxed whitespace-pre-wrap
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DETAILS TAB — DATA MODEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Render a grid (grid-cols-2 gap-4) of labeled sections.
+Each section: bg-white rounded-xl border border-slate-200 p-4
 
-SPECIAL: if message contains t/XXXXXX or b/XXXXXX pattern:
-  Show "Searching Knowledge Base" telemetry card:
-    bg-slate-50 border-slate-200, Database icon (indigo-100 bg)
-    Header: "Searching Knowledge Base"
-    Right: animated "Searching" + ThinkingDots OR green "Record Found" + CheckCircle
-    Steps appear one-by-one (CheckCircle indigo-400 icon per step):
-      Initialising knowledge base search for incident [id]...
-      Connecting to GUTS (Google Universal Ticket System)...
-      Querying GUTS for [id] resolution record and root cause...
-      Fetching resolution transcript and linked KB articles from GUTS...
-      Searching MoMA for [id] incident record...
-      Querying Yaqs knowledge index for [id]...
-      Full incident record assembled from GUTS, MoMA and Yaqs...
+Classification: category, subcategory, service, priority (badge), status (badge)
+Reporter Info:  name, email, phone, department, site
+Assignment Info: assignment group, assigned to, escalation tier
+SLA Timings:    response target, resolution target, business time elapsed 
+                (show as countdown pill: text-amber-600 bg-amber-50 if <1h remaining)
+AI Tags:        flex-wrap row of indigo pill badges (text-xs rounded-full px-2 py-0.5)
+Related Records: list of linked ticket IDs with external link icons
 
-  Then show incident result card (bg-white border-indigo-200 shadow-sm):
-    Header: ticket ID (indigo-700 bold) + status badge (green) + date (right)
-    Summary (font-semibold slate-800)
-    2-col grid: Reporter | Assigned To | Department | Program | 
-                Site | Priority | Resolved At | Resolution Time
-    CTI: 3 rounded pills (bg-slate-100 text-slate-600)
-    Description paragraph (text-xs slate-600)
-    Root Cause paragraph (text-xs slate-600)
-    Resolution Steps: numbered (indigo circle badges w-4 h-4 bg-indigo-100 text-indigo-700)
-  
-  If ticket ID not found:
-    bg-amber-50 border-amber-200 panel:
-    "No record found for [id] in GUTS. Verify the ticket ID and try again."
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MATCHING LOGIC (pure JS, no AI)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ANIMATION TIMING SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-useEffect watching agentSelectedTicketId.
-On change: reset ALL state arrays to [] and all done-booleans to false.
-Collect all timeouts in a timers[] array, return cleanup.
+matchScenario(description):
+  lowercase description, check which SCENARIO_LIBRARY entry has 
+  the most keyword hits → return that entry or null
 
-Phase timing pattern (adjust base delays per ticket type):
-  phase starts at: previousPhaseDoneAt + 800ms gap
-  each step appears: phaseStart + (stepIndex × 600ms)
-  phase done: phaseStart + (stepCount × 600ms) + 400ms
+matchPastResolution(description):
+  same approach against PAST_RESOLUTIONS keywords → 
+  return best match or null
 
-Contact center ticket (t/233838887) full sequence:
-  300ms   → Triage pre-check steps start
-  pre done → enrichment questions shown
-  [user clicks Approve] → 1800ms → context panel appears → check steps start
-  check done → CTI steps start
-  CTI done → dup scan steps start
-  dup done → Recommendation: similar ticket steps start
-  rec done → runbook steps start
-  runbook done → troubleshoot steps start
+isDuplicate(description, existingTickets):
+  simple substring/keyword overlap against other tickets → 
+  return matched ticket ID or null
 
-Pipeline ticket (b/448326226) full sequence:
-  300ms   → Triage dup scan starts
-  dup done + 800ms → Investigate RCA steps start
-  RCA done + 800ms → Recommendation steps start
-  rec done + 1200ms → Lifecycle steps start
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADDITIONAL REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- All state in a single App.jsx. No external state libraries.
+- Left panel search filters the visible ticket list by ID or description.
+- Ticket list merges SAMPLE_TICKETS with runtime tickets 
+  (runtime wins on duplicate IDs) via a Map.
+- Ticket cards already processed do not re-animate on re-selection.
+- getPipelineState(ticketId) helper: reads ticket.comments to derive 
+  enrichment / sopMatch / historicalMatch / escalation / isDuplicateOf 
+  / kbArticlesOnly booleans/objects.
+- All animations must clean up with clearTimeout on unmount/re-render 
+  (return cleanup from useEffect).
+- Use only lucide-react icons: Cpu, Database, BookOpen, Wrench, Search,
+  Inbox, ArrowUpRight, CheckCircle, Copy2, Play, Zap, Bot, User.
+- No placeholder <img> for user avatars — use initials in a colored 
+  rounded div instead.
+- Responsive: the 3-panel layout requires min-w-0 on the center panel 
+  so it doesn't overflow.
+- Do NOT add any backend, auth, or real API calls.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DETAILS TAB LAYOUT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-bg-slate-50 p-5, max-w-4xl mx-auto
-grid grid-cols-3 gap-4:
-  [col-span-2] Classification card — Server icon header
-    2-col grid of fields: Category, Subcategory, CI, Service,
-    Department, Location, Assignment Group, Assigned To, Escalation Tier
-  [col-span-1] stack:
-    Reporter card (email)
-    Opened date card
-  [col-span-3] Support Ops Assistant card (full width)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-COLOUR REFERENCE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Page bg:            bg-slate-100
-Cards:              bg-white
-Selected ticket:    bg-indigo-50 + border-l-2 border-indigo-600
-Triage Agent:       bg-blue-50  / text-blue-600
-Investigate Agent:  bg-purple-50 / text-purple-600
-CTI section:        bg-violet-50 / text-violet-600
-Recommendation:     bg-amber-50 / text-amber-600
-Lifecycle Agent:    bg-green-50 / text-green-600
-Support Ops Asst:   bg-indigo-500 (solid square)
-User avatar:        bg-indigo-600 (solid circle)
-Error logs bg:      bg-gray-900
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DELIVERABLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+A single src/App.jsx (with all data, components, and logic inline) 
+plus src/index.css (CSS variables + Tailwind import). 
+The app should demo the full pipeline when any ticket is clicked:
+  thinking (3s) → enrichment card → CTI + duplicate steps animate → 
+  S4 execution steps animate → resolution cards appear.
