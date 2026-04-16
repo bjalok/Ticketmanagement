@@ -1,0 +1,49 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OVERALL PAGE LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Full-height flex row (no scroll on outer):
+- LEFT: w-64 sidebar — ticket queue with search
+- RIGHT: flex-1 — ticket detail panel with tabs
+
+Left sidebar:
+  - Header row: Inbox icon + "QUEUE" label (uppercase, tracking-wider) 
+    + ticket count badge (indigo pill)
+  - Search input (slate-50 bg, magnifier icon inside)
+  - Scrollable ticket list — each ticket is a button:
+      ticket ID (indigo, bold) + status badge (blue pill "Open")
+      red animated pulse dot if hasUpdate
+      description (2-line clamp, slate-600)
+      createdAt (slate-400)
+    Selected ticket has indigo-50 background + indigo-600 left border
+
+Right panel — when no ticket selected:
+  - Centered Layers icon (large, faded) + "Select a ticket from the queue"
+
+Right panel — when ticket selected:
+  - TITLE BAR: ticket ID + createdAt on one line, description below
+    + user profile at far right: round indigo avatar (initials) + 
+      name bold + role text-xs slate-400
+  - TABS: "Overview" and "Details" — pill style, active = indigo bg
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SHARED COMPONENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ThinkingDots: 3 small colored dots with staggered bounce animation
+  (animationDelay: 0ms, 150ms, 300ms)
+
+Status badges (pill shape, rounded-full, text-sm font-bold):
+  - "Scanning..." — blue text + ThinkingDots
+  - "No Duplicate" — slate-500, white bg, slate border
+  - "Duplicate Found" — orange-600, orange-50 bg, orange border + AlertTriangle icon
+  - "RCA Complete" — green-600, green-50 bg, green border + CheckCircle icon
+  - "Pending..." — slate-400, no bg
+  - "Analysing..." — blue-500 + ThinkingDots
+  - "Enrichment Needed" — orange-600, orange-50
+  - "Context Provided" — green-600, green-50 + CheckCircle
+  - "Recommendations Ready" — amber-600, amber-50 + CheckCircle
+  - "KB Articles Found" — blue-600, blue-50 + BookOpen
+
+Telemetry step list (monospace font, font-mono, text-sm text-slate-500):
+  Each step: colored asterisk (*) prefix + step text
+  Steps appear one by one via setTimeout, 500-700ms apart
+  Wrap in a bg-slate-50 rounded-lg border border-slate-200 p-2.5 card

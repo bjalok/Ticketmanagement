@@ -61,43 +61,24 @@ Telemetry step list (monospace font, font-mono, text-sm text-slate-500):
   Wrap in a bg-slate-50 rounded-lg border border-slate-200 p-2.5 card
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SAMPLE TICKETS — 2 CATEGORIES
+SAMPLE TICKETS —  CATEGORIES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATABRIDGE PIPELINE TICKETS:
 
-CONTACT CENTER TICKETS (t/ prefix):
-
-1. t/233838887
-   email: user@cognizant.com
-   description: [GTECH CONSUMER][PH-REMOTE-GEN]: Dashboard Issue
-   status: Open | createdAt: 13 Apr 2026, 9:00 AM
-   Initial AI comment has 4 enrichment questions:
-     - Type of issue
-     - Dashboard & tools involved
-     - Data range & discrepancy details
-     - Program & site
-   User reply: "its access related issue\nI am looking at Speakeasy 
-   historical Dashboard related to XXX\nThis is from YYY GCC at ZZZ Gurgaon"
-
-2. t/239828919 — Verint profile update issue (WFM)
-3. t/238603185 — Speakeasy not working, won't launch
-4. t/235370408 — Block abusive caller phone number
-
-DATABRIDGE PIPELINE TICKETS (b/ prefix):
-
-5. b/448326226
+1. x/44226
    DatabridgeStepFailed: SalesforceToCapacitor-UAT pipeline failed
-   reporter: prasadbabuk@google.com | Created: 11 Apr 2026, 10:30 AM
+   reporter: prabuk@company.com | Created: 11 Apr 2026, 10:30 AM
 
-6. b/471136666
+2. x/47116
    DatabridgeStepFailed: [PROD] Salesforce to Gin Integration - Android BD Prod
-   reporter: subbu@company.com | Created: 6 Apr 2026, 3:05 AM
+   reporter: suu@company.com | Created: 6 Apr 2026, 3:05 AM
 
-7. b/446740953
+3. x/44673
    DatabridgeStepFailed: [PROD] Salesforce to Gin Integration - Google Play Merchandising
-   reporter: mdb.databridge-workflow-controller@google.com | Created: 20 Jan 2026
+   reporter: mdb.databridge-workflow-controller@company.com | Created: 20 Jan 2026
 
-8. b/452279135 (duplicate ticket of b/448326226)
-   Same DatabridgeStepFailed error as b/448326226
+4. x/45135 (duplicate ticket of x/44226)
+   Same DatabridgeStepFailed error as x/44226
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 OVERVIEW TAB — AGENT PIPELINE CARDS
