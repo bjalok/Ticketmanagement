@@ -1,16 +1,46 @@
-# React + Vite
+# AI Ticket Management — Support Ops Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page React demo of an AI-powered contact-center support tool. Agents work a live ticket queue; the embedded AI pipeline automatically enriches, classifies, deduplicates, and resolves tickets with animated telemetry.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Prerequisites
 
-## React Compiler
+| Tool | Min version |
+|------|-------------|
+| Node.js | 18.x |
+| npm | 9.x (bundled with Node 18) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+---
+
+## Run (development)
+
+```bash
+npm run dev
+```
+
+Vite starts a local dev server with Hot Module Replacement.  
+Open the URL printed in your terminal — usually **http://localhost:5173**.
+
+
+---
+
+## Tech stack
+
+| Layer | Library / Tool |
+|-------|---------------|
+| Framework | React 19 |
+| Build tool | Vite 8 |
+| Styling | Tailwind CSS v4 (JIT via `@tailwindcss/vite`) |
+| Icons | lucide-react |
+| Linting | ESLint 9 (flat config) |
+
+
