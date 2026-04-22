@@ -7,13 +7,13 @@ export const S4_STEPS = [
   'Linking related knowledge base articles...',
 ];
 
-export const CTI_STEPS = [
+export const CSI_STEPS = [
   'Parsing ticket summary and reporter context...',
   'Tokenising key phrases from user reply...',
-  'Matching against CTI taxonomy database...',
+  'Matching against CSI taxonomy database...',
   'Scoring category confidence across c-c classes...',
   'Cross-referencing program and site metadata...',
-  'Validating CTI triple against historical ticket corpus...',
+  'Validating CSI triple against historical ticket corpus...',
   'Finalising category, type, and item classification...',
 ];
 
@@ -57,8 +57,8 @@ export const GSD100_REC_RESOLUTION = [
 ];
 
 export const GSD100_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / AC historical dashboard / access...',
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / AC historical dashboard / access...',
   'Locating SOP for AC historical dashboard access requests...',
   'Retrieving RUNBOOK-CC-047 from knowledge base...',
   'Validating runbook version and current applicability...',
@@ -116,8 +116,8 @@ export const GSD103_REC_RESOLUTION = [
 ];
 
 export const GSD103_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / ABC-XYZ / create new profile...',
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / ABC-XYZ / create new profile...',
   'Locating SOP for VV new agent profile creation...',
   'Retrieving RUNBOOK-WFM-012 from knowledge base...',
   'Validating runbook version and current applicability...',
@@ -158,63 +158,6 @@ export const GSD104_DUP_STEPS = [
   '3 tickets found above confidence threshold...',
 ];
 
-export const GSD105_CONTEXT_STEPS = [
-  'Reading ticket description and reporter details...',
-  'Parsing ticket summary and key phrases...',
-  'Checking required context fields against ticket schema...',
-  'Evaluating completeness of reporter information...',
-  'Verifying program, site, and system details in description...',
-  'All required fields present — context complete...',
-];
-
-export const GSD105_DUP_STEPS = [
-  'Scanning active incident queue for similar issues...',
-  'Embedding ticket description for semantic similarity...',
-  'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for phone number block requests...',
-  'Computing cosine similarity scores across corpus...',
-  'Applying 80% confidence threshold filter...',
-  'No tickets found above confidence threshold...',
-];
-
-export const GSD105_REC_STEPS = [
-  'Loading similar ticket corpus from vector store...',
-  'Fetching t/23068 (93% match) from incident archive...',
-  'Extracting resolution transcript from t/23068...',
-  'Parsing resolution steps from closed ticket...',
-  'Mapping steps to current ticket context...',
-  'Linking resolution to: To block Number in RPC studio runbook...',
-  'Validating resolution applicability...',
-];
-
-export const GSD105_REC_RESOLUTION = [
-  'Access the RPC tool from the support portal.',
-  'Search for abusiveblock_create and click the v2_write templates.',
-  'Input the CCSid and phone number in E.164 format to be blocked, crm_id, expiration_year, expiration_month and expiration_date.',
-  'Click send. Successfully blocked number should appear on the screen.',
-];
-
-export const GSD105_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / easy-config / abusive-user-block...',
-  'Locating SOP for blocking abusive phone numbers in RPC studio...',
-  'Retrieving "To block Number in RPC studio runbook" from knowledge base...',
-  'Validating runbook version and current applicability...',
-];
-
-export const GSD105_RUNBOOK_RESOLUTION = [
-  'Access the RPC tool from the support portal.',
-  'Search for abusiveblock_create and click the v2_write templates.',
-  'Input the CCSid and phone number in E.164 format to be blocked, crm_id, expiration_year, expiration_month and expiration_date.',
-  'Click send. Successfully blocked number should appear on the screen.',
-];
-
-export const GSD105_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for RPC abusive block entries...',
-  'Checking error-code catalogue for phone number block request failures...',
-  'Scanning step-by-step guides for AC abusive caller blocking...',
-  'Cross-referencing troubleshoot tags: c-c, easy-config, abusive-block...',
-];
 
 export const GSD076_KB = {
   id: 't/23757',

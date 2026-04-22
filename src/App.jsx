@@ -2,7 +2,7 @@
 import {
   Search, Inbox, Cpu, Database,
   Zap, BookOpen, UserCheck, Check, Terminal, CheckCircle, Layers, Send,
-  Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink
+  Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink, Activity
 } from 'lucide-react';
 
 // Pre-existing sample tickets shown in agent queue 
@@ -12,7 +12,7 @@ const SAMPLE_TICKETS = [
   {
     id: 't/23887',
     email: 'user@cognizant.com',
-    description: '[XXX CONSUMER][YY-ZZZ-GEN]: Dashboard Issue',
+    description: 'Dashboard Issue',
     status: 'Open',
     createdAt: '13 Apr 2026, 9:00 AM',
     hasUpdate: true,
@@ -39,58 +39,14 @@ const SAMPLE_TICKETS = [
         author: 'user@cognizant.com',
         role: 'user',
         timestamp: '9:05 AM',
-        text: 'its access related issue\nI am looking at AC historical Dashboard related to XXX\nThis is from YYY GCC at ZZZ Gurgaon',
+        text: 'its access related issue\nI am looking at historical operations Dashboard related to HR Functions\nThis is from Gurgaon site office',
       },
     ],
-  },
-  {
-    id: 't/23919',
-    email: 'ashi@company.com',
-    description: '[XXX YYY][XXX CONSUMER][XX YY Hive] I am unable to update RRR for alsylvain@company.com please fix it',
-    status: 'Open',
-    createdAt: '13 Apr 2026, 9:30 AM',
-    hasUpdate: true,
-    isSample: true,
-    comments: [
-      {
-        author: 'AI Agent',
-        role: 'bot',
-        timestamp: '9:31 AM',
-        missingFields: [
-          { label: 'Specific update that is failing' },
-          { label: 'Single or multiple agents' },
-          { label: 'Error code or message' },
-          { label: 'Program this request falls under' },
-        ],
-        enrichmentQuestions: [
-          { field: 'Specific update that is failing', detail: 'Can you specify what specific update is failing?' },
-          { field: 'Single or multiple agents', detail: 'Is this affecting a single agent or multiple agents?' },
-          { field: 'Error code or message', detail: 'Are there any specific error codes or messages you are seeing?' },
-          { field: 'Program this request falls under', detail: 'Please confirm the specific program this request falls under.' },
-        ],
-      },
-      {
-        author: 'ashi@company.com',
-        role: 'user',
-        timestamp: '9:35 AM',
-        text: 'I am trying to create new profile\nthis is just one agent slivester@company.com\nthere is no error code\nthis is for CPS program',
-      },
-    ],
-  },
-  {
-    id: 't/23919',
-    email: 'ashi@company.com',
-    description: '[XXX YYY][XXX CONSUMER][XX YY Hive] I am unable to update RRR for alsylvain@company.com please fix it',
-    status: 'Open',
-    createdAt: '13 Apr 2026, 10:30 AM',
-    hasUpdate: true,
-    isSample: true,
-    comments: [],
   },
   {
     id: 't/23885',
     email: 'XYZteam@company.com',
-    description: '[XXX DEMAND YYY - G FFF][ABC] GCP GGGG, TP, FGR GFT : Speak easy is not working. it wont launch please fix this ASAP as agent cannot take calls',
+    description: 'HR Function Operational Dashboard access issue for Gurgaon site office',
     status: 'Open',
     createdAt: '13 Apr 2026, 11:00 AM',
     hasUpdate: true,
@@ -98,11 +54,21 @@ const SAMPLE_TICKETS = [
     comments: [],
   },
   {
-    id: 't/23408',
-    email: 'reporter@cognizant.com',
-    description: '[XXX_GGG_TYR.GWAZE][CCC, ER-MMM]: Request to block specific phone number(abusive caller)',
+    id: 't/23906',
+    email: 'etl-ops@company.com',
+    description: 'Snowflake ETL jobs queued at peak',
     status: 'Open',
-    createdAt: '14 Apr 2026, 9:00 AM',
+    createdAt: '13 Apr 2026, 2:00 PM',
+    hasUpdate: true,
+    isSample: true,
+    comments: [],
+  },
+  {
+    id: 't/23908',
+    email: 'platform-eng@company.com',
+    description: 'Kubernetes OOMKilled after config rollout',
+    status: 'Open',
+    createdAt: '13 Apr 2026, 3:00 PM',
     hasUpdate: true,
     isSample: true,
     comments: [],
@@ -126,13 +92,13 @@ const S4_STEPS = [
   'Linking related knowledge base articles...',
 ];
 
-const CTI_STEPS = [
+const CSI_STEPS = [
   'Parsing ticket summary and reporter context...',
   'Tokenising key phrases from user reply...',
-  'Matching against CTI taxonomy database...',
+  'Matching against CSI taxonomy database...',
   'Scoring category confidence across c-c classes...',
   'Cross-referencing program and site metadata...',
-  'Validating CTI triple against historical ticket corpus...',
+  'Validating CSI triple against historical ticket corpus...',
   'Finalising category, type, and item classification...',
 ];
 const GSD100_PRE_STEPS = [
@@ -170,9 +136,9 @@ const GSD100_REC_RESOLUTION = [
   'Add user to the Listnr Adwords GCC distribution group for ongoing access.',
 ];
 const GSD100_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / AC historical dashboard / access...',
-  'Locating SOP for AC historical dashboard access requests...',
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / Operational historical dashboard / access...',
+  'Locating SOP for Operational historical dashboard access requests...',
   'Retrieving RUNBOOK-CC-047 from knowledge base...',
   'Validating runbook version and current applicability...',
 ];
@@ -214,8 +180,8 @@ const GSD103_REC_RESOLUTION = [
   'Notify the requester (ashi@google.com) once the profile is active.',
 ];
 const GSD103_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / ABC-XYZ / create new profile...',
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / ABC-XYZ / create new profile...',
   'Locating SOP for VV new agent profile creation...',
   'Retrieving RUNBOOK-WFM-012 from knowledge base...',
   'Validating runbook version and current applicability...',
@@ -250,58 +216,6 @@ const GSD104_CONTEXT_STEPS = [
   'Verifying program, site, and system details in description...',
   'All required fields present — context complete...',
 ];
-// t/23408 — abusive caller phone block
-const GSD105_CONTEXT_STEPS = [
-  'Reading ticket description and reporter details...',
-  'Parsing ticket summary and key phrases...',
-  'Checking required context fields against ticket schema...',
-  'Evaluating completeness of reporter information...',
-  'Verifying program, site, and system details in description...',
-  'All required fields present — context complete...',
-];
-const GSD105_DUP_STEPS = [
-  'Scanning active incident queue for similar issues...',
-  'Embedding ticket description for semantic similarity...',
-  'Comparing against open tickets (last 90 days)...',
-  'Querying resolved ticket history for phone number block requests...',
-  'Computing cosine similarity scores across corpus...',
-  'Applying 80% confidence threshold filter...',
-  'No tickets found above confidence threshold...',
-];
-const GSD105_REC_STEPS = [
-  'Loading similar ticket corpus from vector store...',
-  'Fetching t/23068 (93% match) from incident archive...',
-  'Extracting resolution transcript from t/23068...',
-  'Parsing resolution steps from closed ticket...',
-  'Mapping steps to current ticket context...',
-  'Linking resolution to: To block Number in RPC studio runbook...',
-  'Validating resolution applicability...',
-];
-const GSD105_REC_RESOLUTION = [
-  'Access the RPC tool from the support portal.',
-  'Search for abusiveblock_create and click the v2_write templates.',
-  'Input the CCSid and phone number in E.164 format to be blocked, crm_id, expiration_year, expiration_month and expiration_date.',
-  'Click send. Successfully blocked number should appear on the screen.',
-];
-const GSD105_RUNBOOK_STEPS = [
-  'Querying scenario runbook library for CTI match...',
-  'Matching CTI: c-c / easy-config / abusive-user-block...',
-  'Locating SOP for blocking abusive phone numbers in RPC studio...',
-  'Retrieving "To block Number in RPC studio runbook" from knowledge base...',
-  'Validating runbook version and current applicability...',
-];
-const GSD105_RUNBOOK_RESOLUTION = [
-  'Access the RPC tool from the support portal.',
-  'Search for abusiveblock_create and click the v2_write templates.',
-  'Input the CCSid and phone number in E.164 format to be blocked, crm_id, expiration_year, expiration_month and expiration_date.',
-  'Click send. Successfully blocked number should appear on the screen.',
-];
-const GSD105_TROUBLESHOOT_STEPS = [
-  'Searching troubleshoot guide index for RPC abusive block entries...',
-  'Checking error-code catalogue for phone number block request failures...',
-  'Scanning step-by-step guides for AC abusive caller blocking...',
-  'Cross-referencing troubleshoot tags: c-c, easy-config, abusive-block...',
-];
 
 const GSD104_DUP_STEPS = [
   'Scanning active incident queue for similar issues...',
@@ -311,6 +225,193 @@ const GSD104_DUP_STEPS = [
   'Computing cosine similarity scores across corpus...',
   'Applying 80% confidence threshold filter...',
   '3 tickets found above confidence threshold...',
+];
+
+const GSD100_INV_STEPS = [
+  'Connecting to Historical Operations Dashboard access logs...',
+  'Fetching permission audit trail for reporter...',
+  'Parsing role assignments for HR Functions dashboard...',
+  'Checking viewer_historical role — not found for this user...',
+  'Cross-referencing Gurgaon site office distribution group membership...',
+  'Querying admin panel for current role configuration...',
+  'Comparing required vs assigned permissions for HR Functions...',
+  'Checking HR Operations group enrollment status...',
+  'Root cause confirmed — viewer_historical role not assigned to user...',
+];
+
+const GSD104_INV_STEPS = [
+  'Connecting to pipeline execution logs...',
+  'Fetching SFTOCP - UAT run logs from Databridge...',
+  'Parsing error stack trace from failed pipeline run...',
+  'Identifying root cause: NullPointerException at file path resolution...',
+  'Cross-referencing PermissionDeniedException against IAM policies...',
+  'Querying MPM package version for corp/salesforcehub/integrations/sawmill...',
+  'Checking UAT label applied to MPM build — includes cl/816241916...',
+  'Comparing build date: pre-2025-10-31 (missing fix) vs required version...',
+  'Root cause confirmed — MPM version mismatch and file permission error...',
+];
+
+const GSD100_LIFECYCLE_STEPS = [
+  'Querying role assignment status for reporter...',
+  'Verifying viewer_historical role propagation to HR Functions dashboard...',
+  'Checking HR Operations distribution group enrollment status...',
+  'Confirming dashboard reachability for Gurgaon site office...',
+  'Validating session token against current role permissions...',
+  'Cross-referencing access grant request fulfilment log...',
+  'Access check failed — viewer_historical role not yet assigned...',
+];
+
+const GSD104_LIFECYCLE_STEPS = [
+  'Fetching pipeline execution history for [PROD] Salesforce to XXX Integration...',
+  'Scanning run records post-failure timestamp (after 03:01 AM)...',
+  'Locating Recent Run attempt at 03:47 AM...',
+  'Verifying step-level execution status for Convert_Search_Fields 2...',
+  'Confirming pipeline exit code: 0 — no errors detected...',
+  'Cross-referencing Salesforce record batch — offending ID absent in retry batch...',
+  'Transient pattern confirmed — single occurrence, self-resolved on retry...',
+];
+
+const GSD106_CONTEXT_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Parsing ticket summary and key phrases...',
+  'Checking required context fields against ticket schema...',
+  'Evaluating completeness of reporter information...',
+  'Verifying system, warehouse, and affected job details in description...',
+  'All required fields present — context complete...',
+];
+
+const GSD106_DUP_STEPS = [
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Snowflake ETL issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+
+const GSD106_INV_STEPS = [
+  'Connecting to Snowflake job scheduler audit logs...',
+  'Fetching ETL job queue records for etl_peak_load_batch...',
+  'Checking warehouse ETL_WH status at time of failure...',
+  'Detecting warehouse auto-suspend event — ETL_WH suspended at 14:01:14...',
+  'Measuring warehouse cold-start duration — 89s (exceeded 90s queue timeout)...',
+  'Analysing warehouse configuration: size=X-Small, auto-suspend=60s...',
+  'Cross-referencing Snowflake credit usage at peak window...',
+  'Comparing ETL job concurrency vs warehouse capacity...',
+  'Root cause confirmed — aggressive auto-suspend causing cold-start queue overflow at peak...',
+];
+
+const GSD106_REC_STEPS = [
+  'Loading similar ticket corpus from vector store...',
+  'Searching for Snowflake ETL queue timeout tickets...',
+  'Computing similarity scores against historical corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+
+const GSD106_RUNBOOK_STEPS = [
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / Data Platform / ETL queue...',
+  'Searching for SOP: Snowflake warehouse queue management...',
+  'No matching runbook found in knowledge base...',
+];
+
+const GSD106_TROUBLESHOOT_STEPS = [
+  'Searching troubleshoot guide index for Snowflake ETL entries...',
+  'Checking error-code catalogue for queue timeout entries...',
+  'Scanning step-by-step guides for warehouse cold-start issues...',
+  'Cross-referencing troubleshoot tags: snowflake, warehouse, etl-queue...',
+  'Troubleshoot guide entries found — fetching resolution steps...',
+];
+
+const GSD106_TROUBLESHOOT_RESOLUTION = [
+  'Check warehouse size — upgrade from X-Small to Small or Medium for peak-hour ETL windows.',
+  'Adjust warehouse auto-suspend to 300s or higher during business hours to prevent cold-start delays.',
+  'Review Snowflake credit usage and account limits — ensure sufficient credits for peak concurrency.',
+  'Check query history for concurrent session conflicts during the queue time window.',
+  'Consider scheduling peak ETL jobs against a dedicated warehouse to avoid contention.',
+];
+
+const GSD106_LIFECYCLE_STEPS = [
+  'Fetching ETL job run history for etl_peak_load_batch (last 24 hrs)...',
+  'Scanning run records post-failure timestamp (after 14:03 PM)...',
+  'Locating rescheduled run attempt at 15:05 PM...',
+  'Checking warehouse ETL_WH status at 15:05 PM — SUSPENDED again...',
+  'Measuring queue delay for rescheduled run: 62s...',
+  'Confirming job completed at 15:06 PM — 1 hour behind schedule...',
+  'Pattern detected — ETL jobs consistently queueing during peak window (14:00–16:00)...',
+];
+
+const GSD108_CONTEXT_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Parsing ticket summary and key phrases...',
+  'Checking required context fields against ticket schema...',
+  'Evaluating completeness of reporter information...',
+  'Verifying cluster, namespace, deployment, and config details in description...',
+  'All required fields present — context complete...',
+];
+
+const GSD108_DUP_STEPS = [
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Kubernetes OOM issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+
+const GSD108_INV_STEPS = [
+  'Connecting to Kubernetes cluster event logs (namespace: production)...',
+  'Fetching pod event history for api-gateway deployment...',
+  'Identifying OOMKilled pod: api-gateway-7b9f4d-xkp9q (exit code: 137)...',
+  'Correlating OOMKill timestamp with config rollout at 15:00:02 UTC...',
+  'Checking pod memory limit: 256Mi — container peak usage: 298Mi...',
+  'Extracting ConfigMap diff — JVM_HEAP_SIZE changed: 128m → 200m...',
+  'Scanning crash loop indicators — single occurrence, no loop detected...',
+  'Cross-referencing pod restart count: 1 (self-recovered)...',
+  'Root cause identified — ConfigMap raised JVM heap above pod memory limit; single transient event, pod self-recovered...',
+];
+
+const GSD108_REC_STEPS = [
+  'Loading similar ticket corpus from vector store...',
+  'Fetching t/23841 (88% match) from incident archive...',
+  'Extracting resolution transcript from t/23841...',
+  'Parsing resolution steps from closed ticket...',
+  'Mapping steps to current ticket context...',
+  'Validating resolution applicability...',
+];
+
+const GSD108_REC_RESOLUTION = [
+  "Identify the OOMKilled pod: kubectl get pods -n production — locate api-gateway pod with status OOMKilled.",
+  "Review the ConfigMap change: kubectl describe configmap api-gateway-config -n production — compare old vs new JVM_HEAP_SIZE value.",
+  "Either revert JVM_HEAP_SIZE to 128m in the ConfigMap or increase the pod memory limit to 512Mi in the Deployment spec.",
+  "Apply the fix: kubectl apply -f deployment.yaml — verify pod restarts cleanly with kubectl get pods -w -n production.",
+];
+
+const GSD108_RUNBOOK_STEPS = [
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: c-c / Kubernetes Platform / pod OOM...',
+  'Searching for SOP: Kubernetes pod OOMKilled recovery...',
+  'No matching runbook found in knowledge base...',
+];
+
+const GSD108_TROUBLESHOOT_STEPS = [
+  'Searching troubleshoot guide index for Kubernetes OOM entries...',
+  'Checking error-code catalogue for OOMKilled (exit code 137) entries...',
+  'Scanning step-by-step guides for pod memory limit issues...',
+  'Cross-referencing troubleshoot tags: kubernetes, oom, config-rollout...',
+];
+
+const GSD108_LIFECYCLE_STEPS = [
+  'Fetching pod event history for api-gateway (last 4 hrs)...',
+  'Scanning pod restart records post-OOMKill timestamp (after 15:01)...',
+  'Locating scheduled pod restart at 16:05 PM...',
+  'Checking pod api-gateway-7b9f4d startup — no OOMKill detected...',
+  'Verifying health check status: all endpoints responding (200 OK)...',
+  'Confirming api-gateway run completed successfully at 16:06 PM...',
+  'Transient confirmed — single OOMKill event, pod self-recovered on restart...',
 ];
 
 // Knowledge Base — t/23757 incident record
@@ -388,6 +489,7 @@ const AgentView = ({
   const [gsd100RunbookDone, setGsd100RunbookDone] = useState(false);
   const [gsd100TroubleshootSteps, setGsd100TroubleshootSteps] = useState([]);
   const [gsd100TroubleshootDone, setGsd100TroubleshootDone] = useState(false);
+  const [gsd100CommentApproved, setGsd100CommentApproved] = useState(false);
   const [gsd103ContextSteps, setGsd103ContextSteps] = useState([]);
   const [gsd103ContextDone, setGsd103ContextDone] = useState(false);
   const [gsd103CtiSteps, setGsd103CtiSteps] = useState([]);
@@ -407,18 +509,50 @@ const AgentView = ({
   const [gsd104CtiDone, setGsd104CtiDone] = useState(false);
   const [gsd104DupSteps, setGsd104DupSteps] = useState([]);
   const [gsd104DupDone, setGsd104DupDone] = useState(false);
-  const [gsd105ContextSteps, setGsd105ContextSteps] = useState([]);
-  const [gsd105ContextDone, setGsd105ContextDone] = useState(false);
-  const [gsd105CtiSteps, setGsd105CtiSteps] = useState([]);
-  const [gsd105CtiDone, setGsd105CtiDone] = useState(false);
-  const [gsd105DupSteps, setGsd105DupSteps] = useState([]);
-  const [gsd105DupDone, setGsd105DupDone] = useState(false);
-  const [gsd105RecSteps, setGsd105RecSteps] = useState([]);
-  const [gsd105RecDone, setGsd105RecDone] = useState(false);
-  const [gsd105RunbookSteps, setGsd105RunbookSteps] = useState([]);
-  const [gsd105RunbookDone, setGsd105RunbookDone] = useState(false);
-  const [gsd105TroubleshootSteps, setGsd105TroubleshootSteps] = useState([]);
-  const [gsd105TroubleshootDone, setGsd105TroubleshootDone] = useState(false);
+  const [gsd100InvSteps, setGsd100InvSteps] = useState([]);
+  const [gsd100InvDone, setGsd100InvDone] = useState(false);
+  const [gsd100InvLogsVisible, setGsd100InvLogsVisible] = useState(false);
+  const [gsd100LifecycleSteps, setGsd100LifecycleSteps] = useState([]);
+  const [gsd100LifecycleDone, setGsd100LifecycleDone] = useState(false);
+  const [gsd104InvSteps, setGsd104InvSteps] = useState([]);
+  const [gsd104InvDone, setGsd104InvDone] = useState(false);
+  const [gsd104InvLogsVisible, setGsd104InvLogsVisible] = useState(false);
+  const [gsd104LifecycleSteps, setGsd104LifecycleSteps] = useState([]);
+  const [gsd104LifecycleDone, setGsd104LifecycleDone] = useState(false);
+  const [gsd106ContextSteps, setGsd106ContextSteps] = useState([]);
+  const [gsd106ContextDone, setGsd106ContextDone] = useState(false);
+  const [gsd106CtiSteps, setGsd106CtiSteps] = useState([]);
+  const [gsd106CtiDone, setGsd106CtiDone] = useState(false);
+  const [gsd106DupSteps, setGsd106DupSteps] = useState([]);
+  const [gsd106DupDone, setGsd106DupDone] = useState(false);
+  const [gsd106InvSteps, setGsd106InvSteps] = useState([]);
+  const [gsd106InvDone, setGsd106InvDone] = useState(false);
+  const [gsd106InvLogsVisible, setGsd106InvLogsVisible] = useState(false);
+  const [gsd106RecSteps, setGsd106RecSteps] = useState([]);
+  const [gsd106RecDone, setGsd106RecDone] = useState(false);
+  const [gsd106RunbookSteps, setGsd106RunbookSteps] = useState([]);
+  const [gsd106RunbookDone, setGsd106RunbookDone] = useState(false);
+  const [gsd106TroubleshootSteps, setGsd106TroubleshootSteps] = useState([]);
+  const [gsd106TroubleshootDone, setGsd106TroubleshootDone] = useState(false);
+  const [gsd106LifecycleSteps, setGsd106LifecycleSteps] = useState([]);
+  const [gsd106LifecycleDone, setGsd106LifecycleDone] = useState(false);
+  const [gsd108ContextSteps, setGsd108ContextSteps] = useState([]);
+  const [gsd108ContextDone, setGsd108ContextDone] = useState(false);
+  const [gsd108CtiSteps, setGsd108CtiSteps] = useState([]);
+  const [gsd108CtiDone, setGsd108CtiDone] = useState(false);
+  const [gsd108DupSteps, setGsd108DupSteps] = useState([]);
+  const [gsd108DupDone, setGsd108DupDone] = useState(false);
+  const [gsd108InvSteps, setGsd108InvSteps] = useState([]);
+  const [gsd108InvDone, setGsd108InvDone] = useState(false);
+  const [gsd108InvLogsVisible, setGsd108InvLogsVisible] = useState(false);
+  const [gsd108RecSteps, setGsd108RecSteps] = useState([]);
+  const [gsd108RecDone, setGsd108RecDone] = useState(false);
+  const [gsd108RunbookSteps, setGsd108RunbookSteps] = useState([]);
+  const [gsd108RunbookDone, setGsd108RunbookDone] = useState(false);
+  const [gsd108TroubleshootSteps, setGsd108TroubleshootSteps] = useState([]);
+  const [gsd108TroubleshootDone, setGsd108TroubleshootDone] = useState(false);
+  const [gsd108LifecycleSteps, setGsd108LifecycleSteps] = useState([]);
+  const [gsd108LifecycleDone, setGsd108LifecycleDone] = useState(false);
 
   // KB incident search state
   const [kbSearchTicketId, setKbSearchTicketId] = useState(null);
@@ -473,6 +607,7 @@ const AgentView = ({
     setGsd100CheckDone(false);
     setGsd100ContextSubmitted(false);
     setGsd100ContextVisible(false);
+    setGsd100CommentApproved(false);
     setGsd100CtiSteps([]);
     setGsd100CtiDone(false);
     setGsd100DupSteps([]);
@@ -484,18 +619,21 @@ const AgentView = ({
     setGsd100RunbookDone(false);
     setGsd100TroubleshootSteps([]);
     setGsd100TroubleshootDone(false);
+    setGsd100InvSteps([]);
+    setGsd100InvDone(false);
+    setGsd100InvLogsVisible(false);
+    setGsd100LifecycleSteps([]);
+    setGsd100LifecycleDone(false);
     const timers = [];
     GSD100_PRE_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100PreSteps(prev => [...prev, step]), 300 + i * 700));
     });
     const preDoneAt = 300 + GSD100_PRE_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd100PreDone(true), preDoneAt));
-    timers.push(setTimeout(() => setGsd100ContextSubmitted(true), preDoneAt + 1500));
-    timers.push(setTimeout(() => setGsd100ContextVisible(true), preDoneAt + 3300));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/23887 CTI + duplicate + recommendation animation — triggered after context submitted
+  // t/23887 CSI + duplicate + recommendation animation — triggered after context submitted
   useEffect(() => {
     if (!gsd100ContextSubmitted) return;
     const timers = [];
@@ -505,10 +643,10 @@ const AgentView = ({
     const checkDoneAt = 300 + GSD100_CHECK_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd100CheckDone(true), checkDoneAt));
     const ctiStart = checkDoneAt + 500;
-    CTI_STEPS.forEach((step, i) => {
+    CSI_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
     });
-    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd100CtiDone(true), ctiDoneAt));
     const dupStart = ctiDoneAt + 600;
     GSD100_DUP_STEPS.forEach((step, i) => {
@@ -516,11 +654,29 @@ const AgentView = ({
     });
     const dupDoneAt = dupStart + GSD100_DUP_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd100DupDone(true), dupDoneAt));
-    const recStart = dupDoneAt + 3500;
-    GSD100_REC_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd100RecSteps(prev => [...prev, step]), recStart + i * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd100ContextVisible]);
+
+
+  // t/23887 investigation animation — starts after dup detection complete
+  useEffect(() => {
+    if (!gsd100DupDone) return;
+    const timers = [];
+    GSD100_INV_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100InvSteps(prev => [...prev, step]), 1200 + i * 900));
     });
-    const recDoneAt = recStart + GSD100_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd100InvDone(true), 1200 + GSD100_INV_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd100DupDone]);
+
+  // t/23887 recommendation animation — starts after investigation complete
+  useEffect(() => {
+    if (!gsd100InvDone) return;
+    const timers = [];
+    GSD100_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100RecSteps(prev => [...prev, step]), 1200 + i * 700));
+    });
+    const recDoneAt = 1200 + GSD100_REC_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd100RecDone(true), recDoneAt));
     const runbookStart = recDoneAt + 800;
     GSD100_RUNBOOK_STEPS.forEach((step, i) => {
@@ -534,10 +690,185 @@ const AgentView = ({
     });
     timers.push(setTimeout(() => setGsd100TroubleshootDone(true), troubleshootStart + GSD100_TROUBLESHOOT_STEPS.length * 700));
     return () => timers.forEach(clearTimeout);
-  }, [gsd100ContextVisible]);
+  }, [gsd100InvDone]);
 
+  // t/23887 lifecycle animation — starts after recommendation complete
+  useEffect(() => {
+    if (!gsd100TroubleshootDone) return;
+    const timers = [];
+    GSD100_LIFECYCLE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd100LifecycleSteps(prev => [...prev, step]), 1500 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd100LifecycleDone(true), 1500 + GSD100_LIFECYCLE_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd100TroubleshootDone]);
 
-  // t/23919 context validation + CTI + duplicate + recommendation animation
+  // t/23885 lifecycle animation — starts after investigation complete
+  useEffect(() => {
+    if (!gsd104InvDone) return;
+    const timers = [];
+    GSD104_LIFECYCLE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104LifecycleSteps(prev => [...prev, step]), 2500 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd104LifecycleDone(true), 2500 + GSD104_LIFECYCLE_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd104InvDone]);
+
+  // t/23906 context + CSI + duplicate animation
+  useEffect(() => {
+    if (agentSelectedTicketId !== 't/23906') return;
+    setGsd106ContextSteps([]); setGsd106ContextDone(false);
+    setGsd106CtiSteps([]); setGsd106CtiDone(false);
+    setGsd106DupSteps([]); setGsd106DupDone(false);
+    setGsd106InvSteps([]); setGsd106InvDone(false); setGsd106InvLogsVisible(false);
+    setGsd106RecSteps([]); setGsd106RecDone(false);
+    setGsd106RunbookSteps([]); setGsd106RunbookDone(false);
+    setGsd106TroubleshootSteps([]); setGsd106TroubleshootDone(false);
+    setGsd106LifecycleSteps([]); setGsd106LifecycleDone(false);
+    const timers = [];
+    GSD106_CONTEXT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106ContextSteps(prev => [...prev, step]), 300 + i * 700));
+    });
+    const contextDoneAt = 300 + GSD106_CONTEXT_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd106ContextDone(true), contextDoneAt));
+    const ctiStart = contextDoneAt + 600;
+    CSI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd106CtiDone(true), ctiDoneAt));
+    const dupStart = ctiDoneAt + 600;
+    GSD106_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106DupSteps(prev => [...prev, step]), dupStart + i * 900));
+    });
+    const dupDoneAt = dupStart + GSD106_DUP_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd106DupDone(true), dupDoneAt));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
+
+  // t/23906 investigation animation — starts after dup detection complete
+  useEffect(() => {
+    if (!gsd106DupDone) return;
+    const timers = [];
+    GSD106_INV_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106InvSteps(prev => [...prev, step]), 1200 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd106InvDone(true), 1200 + GSD106_INV_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd106DupDone]);
+
+  // t/23906 recommendation animation — starts after investigation complete
+  useEffect(() => {
+    if (!gsd106InvDone) return;
+    const timers = [];
+    GSD106_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106RecSteps(prev => [...prev, step]), 1200 + i * 700));
+    });
+    const recDoneAt = 1200 + GSD106_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd106RecDone(true), recDoneAt));
+    const runbookStart = recDoneAt + 800;
+    GSD106_RUNBOOK_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
+    });
+    const runbookDoneAt = runbookStart + GSD106_RUNBOOK_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd106RunbookDone(true), runbookDoneAt));
+    const troubleshootStart = runbookDoneAt + 800;
+    GSD106_TROUBLESHOOT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
+    });
+    timers.push(setTimeout(() => setGsd106TroubleshootDone(true), troubleshootStart + GSD106_TROUBLESHOOT_STEPS.length * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd106InvDone]);
+
+  // t/23906 lifecycle animation — starts after recommendation complete
+  useEffect(() => {
+    if (!gsd106TroubleshootDone) return;
+    const timers = [];
+    GSD106_LIFECYCLE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd106LifecycleSteps(prev => [...prev, step]), 1500 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd106LifecycleDone(true), 1500 + GSD106_LIFECYCLE_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd106TroubleshootDone]);
+
+  // t/23908 context + CSI + duplicate animation
+  useEffect(() => {
+    if (agentSelectedTicketId !== 't/23908') return;
+    setGsd108ContextSteps([]); setGsd108ContextDone(false);
+    setGsd108CtiSteps([]); setGsd108CtiDone(false);
+    setGsd108DupSteps([]); setGsd108DupDone(false);
+    setGsd108InvSteps([]); setGsd108InvDone(false); setGsd108InvLogsVisible(false);
+    setGsd108RecSteps([]); setGsd108RecDone(false);
+    setGsd108RunbookSteps([]); setGsd108RunbookDone(false);
+    setGsd108TroubleshootSteps([]); setGsd108TroubleshootDone(false);
+    setGsd108LifecycleSteps([]); setGsd108LifecycleDone(false);
+    const timers = [];
+    GSD108_CONTEXT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108ContextSteps(prev => [...prev, step]), 300 + i * 700));
+    });
+    const contextDoneAt = 300 + GSD108_CONTEXT_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd108ContextDone(true), contextDoneAt));
+    const ctiStart = contextDoneAt + 600;
+    CSI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd108CtiDone(true), ctiDoneAt));
+    const dupStart = ctiDoneAt + 600;
+    GSD108_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108DupSteps(prev => [...prev, step]), dupStart + i * 900));
+    });
+    const dupDoneAt = dupStart + GSD108_DUP_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd108DupDone(true), dupDoneAt));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
+
+  // t/23908 investigation animation — starts after dup detection complete
+  useEffect(() => {
+    if (!gsd108DupDone) return;
+    const timers = [];
+    GSD108_INV_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108InvSteps(prev => [...prev, step]), 1200 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd108InvDone(true), 1200 + GSD108_INV_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd108DupDone]);
+
+  // t/23908 recommendation animation — starts after investigation complete
+  useEffect(() => {
+    if (!gsd108InvDone) return;
+    const timers = [];
+    GSD108_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108RecSteps(prev => [...prev, step]), 1200 + i * 700));
+    });
+    const recDoneAt = 1200 + GSD108_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd108RecDone(true), recDoneAt));
+    const runbookStart = recDoneAt + 800;
+    GSD108_RUNBOOK_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
+    });
+    const runbookDoneAt = runbookStart + GSD108_RUNBOOK_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd108RunbookDone(true), runbookDoneAt));
+    const troubleshootStart = runbookDoneAt + 800;
+    GSD108_TROUBLESHOOT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
+    });
+    timers.push(setTimeout(() => setGsd108TroubleshootDone(true), troubleshootStart + GSD108_TROUBLESHOOT_STEPS.length * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd108InvDone]);
+
+  // t/23908 lifecycle animation — starts after recommendation complete
+  useEffect(() => {
+    if (!gsd108TroubleshootDone) return;
+    const timers = [];
+    GSD108_LIFECYCLE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd108LifecycleSteps(prev => [...prev, step]), 1500 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd108LifecycleDone(true), 1500 + GSD108_LIFECYCLE_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd108TroubleshootDone]);
+
+  // t/23919 context validation + CSI + duplicate + recommendation animation
   useEffect(() => {
     if (agentSelectedTicketId !== 't/23919') return;
     setGsd103ContextSteps([]);
@@ -560,10 +891,10 @@ const AgentView = ({
     const contextDoneAt = 300 + GSD103_CONTEXT_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd103ContextDone(true), contextDoneAt));
     const ctiStart = contextDoneAt + 600;
-    CTI_STEPS.forEach((step, i) => {
+    CSI_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd103CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
     });
-    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd103CtiDone(true), ctiDoneAt));
     const dupStart = ctiDoneAt + 600;
     GSD103_DUP_STEPS.forEach((step, i) => {
@@ -592,7 +923,7 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/23885 context validation + CTI + duplicate animation
+  // t/23885 context validation + CSI + duplicate + investigation animation
   useEffect(() => {
     if (agentSelectedTicketId !== 't/23885') return;
     setGsd104ContextSteps([]);
@@ -601,6 +932,11 @@ const AgentView = ({
     setGsd104CtiDone(false);
     setGsd104DupSteps([]);
     setGsd104DupDone(false);
+    setGsd104InvSteps([]);
+    setGsd104InvDone(false);
+    setGsd104InvLogsVisible(false);
+    setGsd104LifecycleSteps([]);
+    setGsd104LifecycleDone(false);
     const timers = [];
     GSD104_CONTEXT_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd104ContextSteps(prev => [...prev, step]), 300 + i * 700));
@@ -608,10 +944,10 @@ const AgentView = ({
     const contextDoneAt = 300 + GSD104_CONTEXT_STEPS.length * 700;
     timers.push(setTimeout(() => setGsd104ContextDone(true), contextDoneAt));
     const ctiStart = contextDoneAt + 600;
-    CTI_STEPS.forEach((step, i) => {
+    CSI_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd104CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
     });
-    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd104CtiDone(true), ctiDoneAt));
     const dupStart = ctiDoneAt + 600;
     GSD104_DUP_STEPS.forEach((step, i) => {
@@ -619,61 +955,14 @@ const AgentView = ({
     });
     const dupDoneAt = dupStart + GSD104_DUP_STEPS.length * 900;
     timers.push(setTimeout(() => setGsd104DupDone(true), dupDoneAt));
+    const invStart = dupDoneAt + 1200;
+    GSD104_INV_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd104InvSteps(prev => [...prev, step]), invStart + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd104InvDone(true), invStart + GSD104_INV_STEPS.length * 900));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
-  // t/23408 context validation + CTI + duplicate + recommendation animation
-  useEffect(() => {
-    if (agentSelectedTicketId !== 't/23408') return;
-    setGsd105ContextSteps([]);
-    setGsd105ContextDone(false);
-    setGsd105CtiSteps([]);
-    setGsd105CtiDone(false);
-    setGsd105DupSteps([]);
-    setGsd105DupDone(false);
-    setGsd105RecSteps([]);
-    setGsd105RecDone(false);
-    setGsd105RunbookSteps([]);
-    setGsd105RunbookDone(false);
-    setGsd105TroubleshootSteps([]);
-    setGsd105TroubleshootDone(false);
-    const timers = [];
-    GSD105_CONTEXT_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105ContextSteps(prev => [...prev, step]), 300 + i * 700));
-    });
-    const contextDoneAt = 300 + GSD105_CONTEXT_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd105ContextDone(true), contextDoneAt));
-    const ctiStart = contextDoneAt + 600;
-    CTI_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
-    });
-    const ctiDoneAt = ctiStart + CTI_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd105CtiDone(true), ctiDoneAt));
-    const dupStart = ctiDoneAt + 600;
-    GSD105_DUP_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105DupSteps(prev => [...prev, step]), dupStart + i * 900));
-    });
-    const dupDoneAt = dupStart + GSD105_DUP_STEPS.length * 900;
-    timers.push(setTimeout(() => setGsd105DupDone(true), dupDoneAt));
-    const recStart = dupDoneAt + 3500;
-    GSD105_REC_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105RecSteps(prev => [...prev, step]), recStart + i * 700));
-    });
-    const recDoneAt = recStart + GSD105_REC_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd105RecDone(true), recDoneAt));
-    const runbookStart = recDoneAt + 800;
-    GSD105_RUNBOOK_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
-    });
-    const runbookDoneAt = runbookStart + GSD105_RUNBOOK_STEPS.length * 700;
-    timers.push(setTimeout(() => setGsd105RunbookDone(true), runbookDoneAt));
-    const troubleshootStart = runbookDoneAt + 800;
-    GSD105_TROUBLESHOOT_STEPS.forEach((step, i) => {
-      timers.push(setTimeout(() => setGsd105TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
-    });
-    timers.push(setTimeout(() => setGsd105TroubleshootDone(true), troubleshootStart + GSD105_TROUBLESHOOT_STEPS.length * 700));
-    return () => timers.forEach(clearTimeout);
-  }, [agentSelectedTicketId]);
 
   // KB incident search animation
   useEffect(() => {
@@ -839,7 +1128,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 't/23887' && t.id !== 't/23919' && t.id !== 't/23885' && t.id !== 't/23408') {
+                if (!hasBeenRouted && t.id !== 't/23887' && t.id !== 't/23919' && t.id !== 't/23885' && t.id !== 't/23906' && t.id !== 't/23908') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -953,7 +1242,8 @@ const AgentView = ({
                       't/23887': 'Rahul Sharma',
                       't/23919': 'Ashi Verma',
                       't/23885': 'Ravi Kumar',
-                      't/23408': 'Czant PP-MMM',
+                      't/23906': 'Data Ops Team',
+                      't/23908': 'Platform Engineering',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
@@ -1016,10 +1306,16 @@ const AgentView = ({
                               : gsd104ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
-                          ) : agentTicket?.id === 't/23408' ? (
-                            gsd105ContextDone
+                          ) : agentTicket?.id === 't/23906' ? (
+                            gsd106ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
-                              : gsd105ContextSteps.length > 0
+                              : gsd106ContextSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : null
+                          ) : agentTicket?.id === 't/23908' ? (
+                            gsd108ContextDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
+                              : gsd108ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
                           ) : pipeline?.enrichment ? (() => {
@@ -1037,7 +1333,7 @@ const AgentView = ({
                             <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Complete</span>
                           )}
                         </div>
-                        {/* t/23919: context validation + CTI + duplicate (no duplicate found) */}
+                        {/* t/23919: context validation + CSI + duplicate (no duplicate found) */}
                         {agentTicket.id === 't/23919' && !isThinking && gsd103ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
@@ -1059,11 +1355,11 @@ const AgentView = ({
                                 ))}
                               </div>
                             </div>
-                            {/* CTI Detection */}
+                            {/* CSI Detection */}
                             {gsd103CtiSteps.length > 0 && (
                               <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                  <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
                                   {!gsd103CtiDone
                                     ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                     : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
@@ -1082,7 +1378,7 @@ const AgentView = ({
                                       <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
-                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
                                       <p className="text-sm font-semibold text-slate-700">ABC-XYZ</p>
                                     </div>
                                     <div>
@@ -1118,7 +1414,7 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/23885: context validation + CTI + duplicate found */}
+                        {/* t/23885: context validation + CSI + duplicate found */}
                         {agentTicket.id === 't/23885' && !isThinking && gsd104ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
                             {/* Context Validation */}
@@ -1140,11 +1436,11 @@ const AgentView = ({
                                 ))}
                               </div>
                             </div>
-                            {/* CTI Detection */}
+                            {/* CSI Detection */}
                             {gsd104CtiSteps.length > 0 && (
                               <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                  <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
                                   {!gsd104CtiDone
                                     ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                     : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
@@ -1163,12 +1459,12 @@ const AgentView = ({
                                       <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
-                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                      <p className="text-sm font-semibold text-slate-700">barkeep</p>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
+                                      <p className="text-sm font-semibold text-slate-700">Operational historical dashboard</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                      <p className="text-sm font-semibold text-slate-700">app launch</p>
+                                      <p className="text-sm font-semibold text-slate-700">access</p>
                                     </div>
                                   </div>
                                 )}
@@ -1195,9 +1491,9 @@ const AgentView = ({
                                     <p className="text-sm font-semibold text-orange-700 mb-2">3 duplicate tickets identified:</p>
                                     <div className="space-y-2">
                                       {[
-                                        { id: 't/238602912', time: '13 Apr 2026, 9:45 AM' },
-                                        { id: 't/238603568', time: '13 Apr 2026, 8:52 AM' },
-                                        { id: 't/23166', time: '13 Apr 2026, 8:10 AM' },
+                                        { id: 't/23860', time: '13 Apr 2026, 9:45 AM' },
+                                        { id: 't/23868', time: '13 Apr 2026, 10:45 AM' },
+                                        { id: 't/23887', time: '13 Apr 2026, 9:00 AM' },
                                       ].map(dup => (
                                         <div key={dup.id} className="bg-white rounded-lg border border-orange-200 p-2.5 shadow-sm">
                                           <div className="flex items-center justify-between mb-1.5">
@@ -1207,8 +1503,8 @@ const AgentView = ({
                                               <span className="text-sm text-slate-400">{dup.time}</span>
                                             </div>
                                           </div>
-                                          <p className="text-sm font-semibold text-slate-700 mb-1">Speak easy not working</p>
-                                          <p className="text-sm text-slate-500 leading-snug">XXX DEMAND YYY-GGGT VGT GCP Generalists TP VGTR BBB : AC not Working</p>
+                                          <p className="text-sm font-semibold text-slate-700 mb-1">Dashboard Issue</p>
+                                          <p className="text-sm text-slate-500 leading-snug">Dashboard Issue</p>
                                           <div className="mt-1.5 flex items-center gap-2">
                                             <span className="text-sm bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full font-bold border border-orange-100">Open</span>
                                             <span className="text-sm text-slate-400">XYZteam@company.com</span>
@@ -1222,79 +1518,76 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {/* t/23408: context validation + CTI + duplicate (no duplicate found) */}
-                        {agentTicket.id === 't/23408' && !isThinking && gsd105ContextSteps.length > 0 && (
+                        {/* t/23906: context validation + CSI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/23906' && !isThinking && gsd106ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
-                            {/* Context Validation */}
                             <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <div className="flex items-center justify-between mb-1.5">
                                 <div>
                                   <p className="text-sm font-bold text-slate-600">Validating Context</p>
-                                  <p className="text-sm text-slate-400">14 Apr 2026, 9:01 AM</p>
+                                  <p className="text-sm text-slate-400">13 Apr 2026, 2:01 PM</p>
                                 </div>
-                                {!gsd105ContextDone
+                                {!gsd106ContextDone
                                   ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
                                   : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Validated — Context Provided</span>}
                               </div>
                               <div className="space-y-1 font-mono">
-                                {gsd105ContextSteps.map((step, i) => (
+                                {gsd106ContextSteps.map((step, i) => (
                                   <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                     <span className="text-slate-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                             </div>
-                            {/* CTI Detection */}
-                            {gsd105CtiSteps.length > 0 && (
+                            {gsd106CtiSteps.length > 0 && (
                               <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
-                                  {!gsd105CtiDone
+                                  <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
+                                  {!gsd106CtiDone
                                     ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                     : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
-                                  {gsd105CtiSteps.map((step, i) => (
+                                  {gsd106CtiSteps.map((step, i) => (
                                     <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                       <span className="text-violet-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
-                                {gsd105CtiDone && (
+                                {gsd106CtiDone && (
                                   <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
                                       <p className="text-sm font-semibold text-slate-700">c-c</p>
                                     </div>
                                     <div>
-                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                      <p className="text-sm font-semibold text-slate-700">AC config</p>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
+                                      <p className="text-sm font-semibold text-slate-700">Data Platform</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
-                                      <p className="text-sm font-semibold text-slate-700">abusive user block</p>
+                                      <p className="text-sm font-semibold text-slate-700">ETL queue</p>
                                     </div>
                                   </div>
                                 )}
                               </div>
                             )}
-                            {/* Duplicate Identification — no duplicate */}
-                            {gsd105DupSteps.length > 0 && (
+                            {gsd106DupSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-2">
                                   <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
-                                  {!gsd105DupDone
+                                  {!gsd106DupDone
                                     ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
                                     : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
-                                  {gsd105DupSteps.map((step, i) => (
+                                  {gsd106DupSteps.map((step, i) => (
                                     <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                       <span className="text-slate-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
-                                {gsd105DupDone && (
+                                {gsd106DupDone && (
                                   <div className="mt-2 pt-2 border-t border-slate-200">
                                     <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
                                   </div>
@@ -1303,7 +1596,85 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23408' && pipeline?.enrichment && !isThinking ? (() => {
+                        {/* t/23908: context validation + CSI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/23908' && !isThinking && gsd108ContextSteps.length > 0 && (
+                          <div className="mt-2 space-y-2">
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <div>
+                                  <p className="text-sm font-bold text-slate-600">Validating Context</p>
+                                  <p className="text-sm text-slate-400">13 Apr 2026, 3:01 PM</p>
+                                </div>
+                                {!gsd108ContextDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Validated — Context Provided</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd108ContextSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {gsd108CtiSteps.length > 0 && (
+                              <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
+                                  {!gsd108CtiDone
+                                    ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd108CtiSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-violet-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd108CtiDone && (
+                                  <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                      <p className="text-sm font-semibold text-slate-700">c-c</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
+                                      <p className="text-sm font-semibold text-slate-700">Kubernetes Platform</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                      <p className="text-sm font-semibold text-slate-700">pod OOM</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {gsd108DupSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                  {!gsd108DupDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd108DupSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd108DupDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
@@ -1343,6 +1714,34 @@ const AgentView = ({
                                       </div>
                                     ))}
                                   </div>
+                                  {!gsd100CommentApproved ? (
+                                    <div className="mt-3">
+                                      <p className="text-sm text-slate-600 font-medium mb-2">Do you want to update these comments in this ticket?</p>
+                                      <div className="flex gap-2">
+                                        <button
+                                          onClick={() => {
+                                            setGsd100CommentApproved(true);
+                                            setTimeout(() => setGsd100ContextSubmitted(true), 500);
+                                            setTimeout(() => setGsd100ContextVisible(true), 2000);
+                                          }}
+                                          className="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1"
+                                        >
+                                          <CheckCircle className="w-3 h-3" /> Approve
+                                        </button>
+                                        <button
+                                          onClick={() => {}}
+                                          className="flex-1 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center justify-center gap-1"
+                                        >
+                                          Reject
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="mt-3 flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-2 border border-green-100">
+                                      <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                                      <span className="font-semibold">Comments updated in ticket</span>
+                                    </div>
+                                  )}
                                 </div>
                               )}
                               {agentTicket.id === 't/23887' && gsd100ContextVisible && (
@@ -1377,13 +1776,13 @@ const AgentView = ({
                                   )}
                                 </>
                               )}
-                              {/* t/23887: CTI detection + duplicate identification (only after context submitted) */}
+                              {/* t/23887: CSI detection + duplicate identification (only after context submitted) */}
                               {agentTicket.id === 't/23887' && gsd100ContextSubmitted && gsd100CtiSteps.length > 0 && (
                                 <div className="space-y-2">
-                                  {/* CTI Section */}
+                                  {/* CSI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                     <div className="flex items-center justify-between mb-2">
-                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                      <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
                                       {!gsd100CtiDone ? (
                                         <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                       ) : (
@@ -1405,8 +1804,8 @@ const AgentView = ({
                                           <p className="text-sm font-semibold text-slate-700">c-c</p>
                                         </div>
                                         <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
-                                          <p className="text-sm font-semibold text-slate-700">AC historical dashboard</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
+                                          <p className="text-sm font-semibold text-slate-700">Operational historical dashboard</p>
                                         </div>
                                         <div>
                                           <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
@@ -1443,13 +1842,13 @@ const AgentView = ({
                                   )}
                                 </div>
                               )}
-                              {/* t/23919: CTI detection + duplicate identification */}
+                              {/* t/23919: CSI detection + duplicate identification */}
                               {agentTicket.id === 't/23919' && enrichmentResolved && gsd103CtiSteps.length > 0 && (
                                 <div className="space-y-2">
-                                  {/* CTI Section */}
+                                  {/* CSI Section */}
                                   <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
                                     <div className="flex items-center justify-between mb-2">
-                                      <p className="text-sm font-bold text-violet-700">Determining CTI (Category, Type, Item)</p>
+                                      <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
                                       {!gsd103CtiDone
                                         ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
                                         : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
@@ -1469,7 +1868,7 @@ const AgentView = ({
                                           <p className="text-sm font-semibold text-slate-700">c-c</p>
                                         </div>
                                         <div>
-                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Type</p>
+                                          <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
                                           <p className="text-sm font-semibold text-slate-700">ABC-XYZ</p>
                                         </div>
                                         <div>
@@ -1533,12 +1932,248 @@ const AgentView = ({
                               )}
                             </div>
                           );
-                        })() : agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23408' && !isThinking && (
+                        })() : agentTicket.id !== 't/23919' && agentTicket.id !== 't/23885' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && !isThinking && (
                           <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
                         )}
                       </div>
                     </div>
                   </div>
+
+                  {/* Investigate Agent Card — t/23887, t/23885, t/23906 & t/23908 */}
+                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23885' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908') && (() => {
+                    const is87 = agentTicket.id === 't/23887';
+                    const is06 = agentTicket.id === 't/23906';
+                    const is08 = agentTicket.id === 't/23908';
+                    const invSteps = is87 ? gsd100InvSteps : is06 ? gsd106InvSteps : is08 ? gsd108InvSteps : gsd104InvSteps;
+                    const invDone = is87 ? gsd100InvDone : is06 ? gsd106InvDone : is08 ? gsd108InvDone : gsd104InvDone;
+                    const invLogsVisible = is87 ? gsd100InvLogsVisible : is06 ? gsd106InvLogsVisible : is08 ? gsd108InvLogsVisible : gsd104InvLogsVisible;
+                    const setInvLogsVisible = is87 ? setGsd100InvLogsVisible : is06 ? setGsd106InvLogsVisible : is08 ? setGsd108InvLogsVisible : setGsd104InvLogsVisible;
+                    const getLogColor = (line) => {
+                      if (/ERROR/.test(line) || line.startsWith('Caused by:') || /Exception:/.test(line) || line.startsWith('java.lang.') || line.startsWith('java.io.')) return 'text-red-400';
+                      if (/WARN/.test(line)) return 'text-yellow-400';
+                      if (line.startsWith('    at ')) return 'text-slate-400';
+                      return 'text-green-400';
+                    };
+                    const logText87 = `[2026-04-13 09:05:12] INFO  Dashboard access check initiated for reporter (Gurgaon site office)
+[2026-04-13 09:05:13] INFO  Target resource: Historical Operations Dashboard → HR Functions
+[2026-04-13 09:05:14] WARN  Role check: viewer_historical — NOT FOUND for user
+[2026-04-13 09:05:15] WARN  User not enrolled in: HR Operations distribution group (Gurgaon site)
+[2026-04-13 09:05:16] ERROR PERMISSION_DENIED: Access to Historical Operations Dashboard blocked
+
+com.dashboard.auth.PermissionDeniedException:
+    Reporter lacks required role viewer_historical
+    at com.dashboard.HistoricalOps.checkAccess(HistoricalOps.java:142)
+    at com.dashboard.auth.RoleValidator.validate(RoleValidator.java:88)
+
+Caused by: com.dashboard.auth.RoleNotFoundException:
+    Role viewer_historical not assigned to reporter
+    at com.dashboard.admin.RoleAssignment.lookup(RoleAssignment.java:67)
+    at com.dashboard.auth.RoleValidator.validate(RoleValidator.java:55)
+
+[2026-04-13 09:05:16] INFO  Access request logged. Exit code: 1`;
+                    const logText85 = `[2026-04-11 10:28:14] INFO  Databridge pipeline started: SFTOCP-UAT
+[2026-04-11 10:28:15] INFO  Loading MPM package: corp/salesforcehub/integrations/sawmill/salesforce_sawmill_d_v7_pipeline
+[2026-04-11 10:28:16] INFO  UAT label resolved → build: 2025-09-14 (cl/814203001)
+[2026-04-11 10:28:17] WARN  Build predates required fix cl/816241916 (2025-10-07)
+[2026-04-11 10:28:18] INFO  Initialising sub-transformation: ShgSawmillIntegrationPipelineUAT
+[2026-04-11 10:28:19] WARN  Sub-transformation path is relative — attempting to resolve against working dir
+[2026-04-11 10:28:20] ERROR Step "SFToCP" FAILED
+
+java.lang.RuntimeException: Step execution failed
+    at com.google.databridge.StepRunner.execute(StepRunner.java:241)
+    at com.google.databridge.PipelineExecutor.runStep(PipelineExecutor.java:189)
+    at com.google.databridge.PipelineExecutor.run(PipelineExecutor.java:112)
+
+Caused by: com.google.io.file.PermissionDeniedException:
+    /google_src/files/head/depot/google3/corp/
+    salesforcehub/integrations/sawmill/
+    at com.google.io.file.FileSystem.open(FileSystem.java:88)
+    at com.google.sawmill.SawmillConfig.load(SawmillConfig.java:55)
+
+Caused by: java.lang.NullPointerException: Cannot match any
+    file paths with file pattern
+    /placer/test/scratch/home/shg-databridge-sawm*
+    at com.google.placer.FileResolver.resolve(FileResolver.java:134)
+    at com.google.sawmill.SawmillConfig.resolveSubTransform(SawmillConfig.java:201)
+
+[2026-04-11 10:28:20] INFO  Pipeline terminated. Exit code: 1`;
+                    const logText08 = `[2026-04-13 15:01:05] INFO  Kubernetes deployment check initiated: api-gateway (namespace: production)
+[2026-04-13 15:01:06] INFO  Config rollout detected — new ConfigMap applied at 15:00:02 UTC
+[2026-04-13 15:01:07] WARN  Pod api-gateway-7b9f4d-xkp9q status: OOMKilled (exit code: 137)
+[2026-04-13 15:01:08] WARN  Memory limit: 256Mi — container peak usage: 298Mi
+[2026-04-13 15:01:09] ERROR OOMKilled: api-gateway pod terminated — memory exceeded limit
+
+com.k8s.monitor.OOMKilledException:
+    Container api-gateway exceeded memory limit (256Mi)
+    at k8s.kubelet.ContainerManager.enforceLimit(ContainerManager.go:214)
+    at k8s.kubelet.PodManager.syncPod(PodManager.go:88)
+
+Caused by: java.lang.OutOfMemoryError:
+    Java heap space — new ConfigMap set JVM_HEAP_SIZE=200m (was 128m)
+    at com.api.gateway.Bootstrap.init(Bootstrap.java:134)
+    at com.api.gateway.Server.start(Server.java:55)
+
+[2026-04-13 15:01:10] INFO  Pod rescheduled. Single occurrence detected. Exit code: 137`;
+                    const logText06 = `[2026-04-13 14:02:15] INFO  Snowflake ETL scheduler started — batch: etl_peak_load_batch
+[2026-04-13 14:02:16] INFO  Target warehouse: ETL_WH (X-Small, auto-suspend: 60s)
+[2026-04-13 14:02:16] WARN  Warehouse ETL_WH is SUSPENDED — sending auto-resume request
+[2026-04-13 14:02:17] WARN  Auto-resume pending... warehouse cold-start in progress
+[2026-04-13 14:03:45] ERROR QUEUE_TIMEOUT: ETL job etl_peak_load_batch exceeded queue wait limit (90s)
+
+com.snowflake.etl.QueueTimeoutException:
+    Job queued for 89s — warehouse ETL_WH not ready
+    at com.snowflake.scheduler.JobDispatcher.dispatch(JobDispatcher.java:214)
+    at com.snowflake.etl.BatchRunner.execute(BatchRunner.java:88)
+
+Caused by: com.snowflake.warehouse.WarmupException:
+    Warehouse ETL_WH failed to resume within timeout
+    at com.snowflake.warehouse.Manager.resume(Manager.java:67)
+    at com.snowflake.scheduler.JobDispatcher.warmUp(JobDispatcher.java:155)
+
+[2026-04-13 14:03:45] INFO  Job rescheduled. Exit code: 1`;
+                    const logLines = (is87 ? logText87 : is06 ? logText06 : is08 ? logText08 : logText85).split('\n');
+                    if (!is87 && !is06 && !is08) return (
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center flex-shrink-0">
+                            <Search className="w-4 h-4 text-red-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm font-bold text-slate-800">Investigate Agent</p>
+                              {gsd104DupDone
+                                ? <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>
+                                : <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Pending</span>
+                              }
+                            </div>
+                            {gsd104DupDone && (
+                              <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
+                                <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
+                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/23887</span> for resolution.</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                    return (
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center flex-shrink-0">
+                            <Search className="w-4 h-4 text-red-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm font-bold text-slate-800">Investigate Agent</p>
+                              {invDone
+                                ? <span className="text-sm font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Root Cause Identified</span>
+                                : invSteps.length > 0
+                                  ? <span className="flex items-center gap-1.5 text-sm text-red-500 font-medium">Analysing <ThinkingDots color="red" /></span>
+                                  : <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Pending</span>
+                              }
+                            </div>
+                            {invSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <p className="text-sm font-bold text-slate-600">Root Cause Analysis</p>
+                                  <span className="text-sm text-slate-400">{is87 ? '13 Apr 2026, 9:20 AM' : is06 ? '13 Apr 2026, 2:01 PM' : is08 ? '13 Apr 2026, 3:01 PM' : '13 Apr 2026, 11:02 AM'}</span>
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {invSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-red-400">*</span>
+                                      <span>{step}</span>
+                                      {i === 1 && (
+                                        <button
+                                          onClick={() => setInvLogsVisible(v => !v)}
+                                          className="ml-2 text-sm text-indigo-600 hover:underline font-medium flex items-center gap-1 flex-shrink-0"
+                                        >
+                                          <ExternalLink className="w-3 h-3" />
+                                          {invLogsVisible ? 'Hide logs' : 'View logs'}
+                                        </button>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                                {invLogsVisible && !invDone && (
+                                  <div className="mt-3 bg-slate-900 rounded-lg p-3 border border-slate-700 overflow-x-auto">
+                                    <div className="text-sm font-mono leading-relaxed">
+                                      {logLines.map((line, idx) => (
+                                        <div key={idx} className={`whitespace-pre ${getLogColor(line)}`}>{line || ' '}</div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                                {invDone && (
+                                  <div className="mt-3 pt-2.5 border-t border-slate-200">
+                                    <p className="text-sm font-bold text-slate-600 mb-1.5">Error Logs:</p>
+                                    <div className="bg-slate-900 rounded-lg p-3 border border-slate-700 overflow-x-auto mb-3">
+                                      <div className="text-sm font-mono leading-relaxed">
+                                        {logLines.map((line, idx) => (
+                                          <div key={idx} className={`whitespace-pre ${getLogColor(line)}`}>{line || ' '}</div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                    <p className="text-sm font-bold text-red-700 mb-1.5">Root Cause:</p>
+                                    <div className="space-y-1.5">
+                                      {is87 ? (
+                                        <>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Missing Role Assignment:</span> Reporter does not have the viewer_historical role required for Historical Operations Dashboard → HR Functions.</p>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Distribution Group:</span> Reporter is not enrolled in the HR Operations group required for ongoing access provisioning at the Gurgaon site office.</p>
+                                          </div>
+                                        </>
+                                      ) : is06 ? (
+                                        <>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Aggressive Auto-Suspend:</span> Warehouse ETL_WH is configured with a 60s auto-suspend, causing cold-start delays during peak ETL windows when jobs arrive faster than the warehouse can warm up.</p>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Undersized Warehouse:</span> X-Small warehouse cannot handle concurrent peak-hour ETL batch volume — jobs exceed the 90s queue timeout before ETL_WH completes its cold-start resume.</p>
+                                          </div>
+                                        </>
+                                      ) : is08 ? (
+                                        <>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Config Change Triggered OOM:</span> New ConfigMap set JVM_HEAP_SIZE=200m (up from 128m), pushing peak container memory to 298Mi against a 256Mi pod limit — triggering OOMKilled (exit code 137) on pod api-gateway-7b9f4d-xkp9q.</p>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Transient Single Occurrence:</span> OOMKill affected one pod instance — Kubernetes restarted it automatically. No crash loop detected, restart count: 1. Pod self-recovered; likely transient spike tied to initial heap allocation on startup.</p>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">MPM Version Mismatch:</span> UAT label resolved to build 2025-09-14 (cl/814203001), which predates required fix cl/816241916 (2025-10-07).</p>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">File Permission Error:</span> NullPointerException at file path resolution — sub-transformation path cannot be resolved against working directory.</p>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* S4 Card */}
                   <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
@@ -1555,13 +2190,18 @@ const AgentView = ({
                             const isRouting = routingTicketId === agentSelectedTicketId;
                             if (isThinking || isRouting) return <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>;
                             if (agentTicket?.id === 't/23887' && gsd100TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/23887' && gsd100DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23887' && gsd100InvDone && !gsd100TroubleshootDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23887' && gsd100DupDone) return <span className="text-sm font-medium text-slate-400">Pending</span>;
                             if (agentTicket?.id === 't/23919' && gsd103TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
                             if (agentTicket?.id === 't/23919' && gsd103DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/23885' && gsd104DupDone) return <span className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Duplicate Identified</span>;
+                            if (agentTicket?.id === 't/23885' && gsd104DupDone) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (agentTicket?.id === 't/23885' && gsd104CtiDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Scanning <ThinkingDots /></span>;
-                            if (agentTicket?.id === 't/23408' && gsd105TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
-                            if (agentTicket?.id === 't/23408' && gsd105DupDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23906' && gsd106TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23906' && gsd106InvDone && !gsd106TroubleshootDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23906' && gsd106DupDone) return <span className="text-sm font-medium text-slate-400">Pending</span>;
+                            if (agentTicket?.id === 't/23908' && gsd108TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23908' && gsd108InvDone && !gsd108TroubleshootDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23908' && gsd108DupDone) return <span className="text-sm font-medium text-slate-400">Pending</span>;
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
@@ -1766,35 +2406,112 @@ const AgentView = ({
                               <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
                               <div>
                                 <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
-                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/23166</span> for resolution.</p>
+                                <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/23887</span> for resolution.</p>
                               </div>
                             </div>
                           </div>
                         )}
-                        {/* t/23408 Recommendation Agent — similar ticket, runbook, troubleshoot */}
-                        {agentTicket?.id === 't/23408' && gsd105RecSteps.length > 0 && (
+                        {/* t/23906 Recommendation Agent — no similar ticket, no runbook, troubleshoot guide found */}
+                        {agentTicket?.id === 't/23906' && gsd106RecSteps.length > 0 && (
                           <div className="mt-2 space-y-3">
-                            {/* Similar Ticket Resolution */}
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-bold text-slate-600">Resolution from Similar Ticket</p>
+                                {!gsd106RecDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> Not Found</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd106RecSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              {gsd106RecDone && (
+                                <div className="mt-2 pt-2 border-t border-slate-200">
+                                  <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found above 80% confidence threshold.</p>
+                                </div>
+                              )}
+                            </div>
+                            {gsd106RunbookSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Scenario Runbook</p>
+                                  {!gsd106RunbookDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> Not Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd106RunbookSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd106RunbookDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 font-medium">No matching runbook found in the knowledge base for this CSI combination.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {gsd106TroubleshootSteps.length > 0 && (
+                              <div className="p-2.5 bg-green-50 rounded-lg border border-green-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-green-700">Troubleshoot Guide</p>
+                                  {!gsd106TroubleshootDone
+                                    ? <span className="flex items-center gap-1 text-sm text-green-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-green-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Steps Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd106TroubleshootSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-green-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd106TroubleshootDone && (
+                                  <div className="mt-2 pt-2 border-t border-green-200">
+                                    <p className="text-sm font-bold text-green-800 mb-1.5">Troubleshoot Steps:</p>
+                                    <div className="space-y-1.5">
+                                      {GSD106_TROUBLESHOOT_RESOLUTION.map((step, i) => (
+                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                          <span className="w-4 h-4 rounded-full bg-green-100 text-green-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                          <span>{step}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {/* t/23908 Recommendation Agent — similar ticket found, no runbook, no troubleshoot steps */}
+                        {agentTicket?.id === 't/23908' && gsd108RecSteps.length > 0 && (
+                          <div className="mt-2 space-y-3">
+                            {/* Similar Ticket Resolution — Found */}
                             <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                               <div className="flex items-center justify-between mb-2">
                                 <p className="text-sm font-bold text-amber-700">Resolution from Similar Ticket</p>
-                                {!gsd105RecDone
+                                {!gsd108RecDone
                                   ? <span className="flex items-center gap-1 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>
                                   : <span className="text-sm font-bold text-amber-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
                               </div>
                               <div className="space-y-1 font-mono">
-                                {gsd105RecSteps.map((step, i) => (
+                                {gsd108RecSteps.map((step, i) => (
                                   <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                     <span className="text-amber-400">*</span><span>{step}</span>
                                   </div>
                                 ))}
                               </div>
-                              {gsd105RecDone && (
+                              {gsd108RecDone && (
                                 <div className="mt-2 pt-2 border-t border-amber-200">
-                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/23068 · 93% match</p>
-                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/23068):</p>
+                                  <p className="text-sm font-semibold text-amber-600 mb-2">t/23841 · 88% match</p>
+                                  <p className="text-sm font-bold text-amber-800 mb-1.5">Resolution Steps (from t/23841):</p>
                                   <div className="space-y-1.5">
-                                    {GSD105_REC_RESOLUTION.map((step, i) => (
+                                    {GSD108_REC_RESOLUTION.map((step, i) => (
                                       <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
                                         <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
                                         <span>{step}</span>
@@ -1804,74 +2521,56 @@ const AgentView = ({
                                 </div>
                               )}
                             </div>
-                            {/* Scenario Runbook */}
-                            {gsd105RunbookSteps.length > 0 && (
-                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
-                                <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (To block Number in RPC studio runbook)</p>
-                                  {!gsd105RunbookDone
-                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
-                                </div>
-                                <div className="space-y-1 font-mono">
-                                  {gsd105RunbookSteps.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
-                                      <span className="text-blue-400">*</span><span>{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                                {gsd105RunbookDone && (
-                                  <div className="mt-2 pt-2 border-t border-blue-200">
-                                    <p className="text-sm font-bold text-blue-800 mb-1.5">Resolution Steps (To block Number in RPC studio runbook):</p>
-                                    <div className="space-y-1.5">
-                                      {GSD105_RUNBOOK_RESOLUTION.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                                          <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold text-base flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
-                                          <span>{step}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    <div className="mt-3 pt-2 border-t border-blue-100 flex items-center gap-1.5">
-                                      <ExternalLink className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
-                                      <a
-                                        href="#"
-                                        onClick={e => e.preventDefault()}
-                                        className="text-sm text-blue-600 font-semibold hover:underline"
-                                      >
-                                        To block Number in RPC studio runbook
-                                      </a>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            {/* Troubleshoot Guide — no steps found */}
-                            {gsd105TroubleshootSteps.length > 0 && (
+                            {/* Scenario Runbook — not found */}
+                            {gsd108RunbookSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-2">
-                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
-                                  {!gsd105TroubleshootDone
+                                  <p className="text-sm font-bold text-slate-600">Scenario Runbook</p>
+                                  {!gsd108RunbookDone
                                     ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
-                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> Not Found</span>}
                                 </div>
                                 <div className="space-y-1 font-mono">
-                                  {gsd105TroubleshootSteps.map((step, i) => (
+                                  {gsd108RunbookSteps.map((step, i) => (
                                     <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
                                       <span className="text-slate-400">*</span><span>{step}</span>
                                     </div>
                                   ))}
                                 </div>
-                                {gsd105TroubleshootDone && (
+                                {gsd108RunbookDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 font-medium">No matching runbook found in the knowledge base for this CSI combination.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {/* Troubleshoot Guide — no steps found */}
+                            {gsd108TroubleshootSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
+                                  {!gsd108TroubleshootDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd108TroubleshootSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd108TroubleshootDone && (
                                   <div className="mt-2 pt-2 border-t border-slate-200">
                                     <p className="text-sm text-slate-500 font-medium">No troubleshoot guide steps found for this issue type.</p>
-                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution or runbook steps above.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to similar ticket resolution steps above.</p>
                                   </div>
                                 )}
                               </div>
                             )}
                           </div>
                         )}
-                        {agentTicket?.id !== 't/23887' && agentTicket?.id !== 't/23919' && agentTicket?.id !== 't/23885' && agentTicket?.id !== 't/23408' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {agentTicket?.id !== 't/23887' && agentTicket?.id !== 't/23919' && agentTicket?.id !== 't/23885' && agentTicket?.id !== 't/23906' && agentTicket?.id !== 't/23908' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
@@ -1955,6 +2654,142 @@ const AgentView = ({
                       </div>
                     </div>
                   </div>
+
+                  {/* LifecycleOps Agent Card — t/23887, t/23885, t/23906 & t/23908 */}
+                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23885' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908') && (() => {
+                    const is87 = agentTicket.id === 't/23887';
+                    const is06 = agentTicket.id === 't/23906';
+                    const is08 = agentTicket.id === 't/23908';
+                    const lifecycleSteps = is87 ? gsd100LifecycleSteps : is06 ? gsd106LifecycleSteps : is08 ? gsd108LifecycleSteps : gsd104LifecycleSteps;
+                    const lifecycleDone = is87 ? gsd100LifecycleDone : is06 ? gsd106LifecycleDone : is08 ? gsd108LifecycleDone : gsd104LifecycleDone;
+                    const getLifecycleLogColor = (line) => {
+                      if (/ERROR/.test(line)) return 'text-red-400';
+                      if (/WARN/.test(line)) return 'text-yellow-400';
+                      return 'text-green-400';
+                    };
+                    const logLines = is87 ? [
+                      '[2026-04-13 09:50:00] INFO  Access verification initiated for reporter (Gurgaon site office)',
+                      '[2026-04-13 09:50:01] INFO  Target resource: Historical Operations Dashboard → HR Functions',
+                      '[2026-04-13 09:50:02] WARN  Role check: viewer_historical — NOT FOUND for reporter',
+                      '[2026-04-13 09:50:03] WARN  HR Operations distribution group — reporter not enrolled',
+                      '[2026-04-13 09:50:04] ERROR PERMISSION_DENIED: Access to Historical Operations Dashboard still blocked',
+                      '[2026-04-13 09:50:05] INFO  Access grant request status: PENDING. Exit code: 1',
+                    ] : is06 ? [
+                      '[2026-04-13 15:05:02] INFO  ETL job rescheduled: etl_peak_load_batch (retry attempt 1)',
+                      '[2026-04-13 15:05:03] WARN  Warehouse ETL_WH still SUSPENDED — auto-resume triggered',
+                      '[2026-04-13 15:05:05] WARN  Job queued — cold-start delay: 62s',
+                      '[2026-04-13 15:06:07] INFO  Warehouse ETL_WH resumed — job dispatched (1hr 3min late)',
+                      '[2026-04-13 15:06:09] INFO  etl_peak_load_batch completed. Exit code: 0',
+                      '[2026-04-13 15:06:10] WARN  Pattern detected: recurring queue delay at peak window (14:00–16:00).',
+                    ] : is08 ? [
+                      '[2026-04-13 16:05:12] INFO  Pod api-gateway-7b9f4d scheduled (restart #1 after OOMKill)',
+                      '[2026-04-13 16:05:14] INFO  Config: ConfigMap applied — JVM_HEAP_SIZE=200m, MEMORY_LIMIT=256Mi',
+                      '[2026-04-13 16:05:16] INFO  Pod api-gateway-7b9f4d started cleanly — no OOMKill',
+                      '[2026-04-13 16:05:20] INFO  Health check passed — all endpoints responding (200 OK)',
+                      '[2026-04-13 16:06:45] INFO  api-gateway completed run successfully. Exit code: 0',
+                    ] : [
+                      '[2026-04-06 03:47:12] INFO  Databridge pipeline started: [PROD] Salesforce to XXX Integration',
+                      '[2026-04-06 03:47:14] INFO  Step Convert_Search_Fields 2 — processing records...',
+                      '[2026-04-06 03:47:31] INFO  Step Convert_Search_Fields 2 completed — 1,247 records processed',
+                      '[2026-04-06 03:47:45] INFO  Pipeline completed successfully. Exit code: 0',
+                    ];
+                    if (!is87 && !is06 && !is08) return (
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center flex-shrink-0">
+                            <Activity className="w-4 h-4 text-green-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm font-bold text-slate-800">LifecycleOps Agent</p>
+                              {gsd104DupDone
+                                ? <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>
+                                : <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Pending</span>
+                              }
+                            </div>
+                            {gsd104DupDone && (
+                              <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 flex items-start gap-2.5">
+                                <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="text-sm font-bold text-orange-700 mb-0.5">Duplicate Ticket</p>
+                                  <p className="text-sm text-slate-700">This is a duplicate ticket. Please refer to the parent ticket <span className="font-bold text-indigo-600">t/23887</span> for resolution.</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                    return (
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center flex-shrink-0">
+                            <Activity className="w-4 h-4 text-green-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm font-bold text-slate-800">LifecycleOps Agent</p>
+                              {lifecycleDone
+                                ? (is87 || is06)
+                                  ? <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Action Required</span>
+                                  : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> {is08 ? 'Transient — Self-Resolved' : 'Verified'}</span>
+                                : lifecycleSteps.length > 0
+                                  ? <span className="flex items-center gap-1.5 text-sm text-green-500 font-medium">Analysing <ThinkingDots color="green" /></span>
+                                  : <span className="text-sm font-medium text-slate-400">Pending</span>
+                              }
+                            </div>
+                            {lifecycleSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{is87 ? 'Access Lifecycle Verification' : is06 ? 'ETL Run Verification' : is08 ? 'Pod Recovery Verification' : 'Recent Run Verification'}</p>
+                                <div className="space-y-1 font-mono">
+                                  {lifecycleSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-green-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {lifecycleDone && (
+                                  <div className="mt-3 pt-2.5 border-t border-slate-200">
+                                    <p className={`text-sm font-bold mb-1 ${(is87 || is06) ? 'text-amber-700' : 'text-green-700'}`}>{is87 ? 'Access Not Yet Granted' : is06 ? 'Run Completed — 1 Hour Behind Schedule' : is08 ? 'Pod Recovered — Run Completed Successfully' : 'Recent Run Successful'}</p>
+                                    <p className="text-sm text-slate-600 mb-3">
+                                      {is87
+                                        ? 'viewer_historical role has not been assigned to reporter — access to Historical Operations Dashboard → HR Functions remains blocked pending admin action.'
+                                        : is06
+                                          ? 'Rescheduled ETL run at 15:05 also queued due to warehouse ETL_WH being suspended — job completed 1 hour 3 minutes behind schedule. Recurring pattern detected at peak window (14:00–16:00).'
+                                          : is08
+                                            ? 'Pod api-gateway-7b9f4d restarted at 16:05 after the initial OOMKill — started cleanly with no further memory issues, health checks passed, run completed successfully at 16:06.'
+                                            : 'Pipeline run on 6 Apr 2026 at 03:47 AM completed with no errors — confirming a transient data-driven failure.'}
+                                    </p>
+                                    <p className="text-sm font-bold text-slate-600 mb-1.5">{is87 ? 'Access Audit Log:' : is06 ? 'ETL Run Log:' : is08 ? 'Pod Recovery Log:' : 'Recent Run Log:'}</p>
+                                    <div className="bg-slate-900 rounded-lg p-3 border border-slate-700 overflow-x-auto mb-3">
+                                      <div className="text-sm font-mono leading-relaxed">
+                                        {logLines.map((line, idx) => (
+                                          <div key={idx} className={`whitespace-pre ${getLifecycleLogColor(line)}`}>{line}</div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                    <p className={`text-sm font-bold mb-1.5 ${(is87 || is06) ? 'text-amber-700' : 'text-green-700'}`}>Lifecycle Recommendation</p>
+                                    <div className="flex items-start gap-2">
+                                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${(is87 || is06) ? 'bg-amber-400' : 'bg-green-400'}`} />
+                                      <p className="text-sm text-slate-700">
+                                        {is87
+                                          ? 'Access grant pending — viewer_historical role not yet assigned. Submit access request to admin and enrol reporter in HR Operations distribution group at Gurgaon site. Verify access after role propagation (15–30 min).'
+                                          : is06
+                                            ? 'Recurrent queuing confirmed — etl_peak_load_batch ran 1 hour 3 min behind schedule on retry. Increase warehouse ETL_WH auto-suspend to 300s+ during peak hours (14:00–16:00) and upgrade from X-Small to Small to prevent further delays. Apply troubleshoot guide steps above.'
+                                            : is08
+                                              ? 'Transient failure confirmed — OOMKilled event was a single occurrence triggered by config rollout setting JVM_HEAP_SIZE=200m against 256Mi pod limit. Pod self-recovered on restart. Review ConfigMap changes and consider increasing pod memory limit to 512Mi or reverting JVM heap setting to prevent future occurrences. Refer to similar ticket resolution steps above.'
+                                              : 'Transient failure confirmed — Recent Run succeeded without intervention. This ticket can be closed. No service disruption persists.'}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* S5 Card — duplicate override */}
                   {pipeline?.isDuplicateOf && (
@@ -2190,7 +3025,7 @@ const AgentView = ({
                                   ))}
                                 </div>
                                 <div className="mb-2.5">
-                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">CTI</p>
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">CSI</p>
                                   <div className="flex gap-1.5 flex-wrap">
                                     {[GSD076_KB.cti.category, GSD076_KB.cti.type, GSD076_KB.cti.item].map(v => (
                                       <span key={v} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">{v}</span>
