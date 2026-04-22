@@ -426,11 +426,13 @@ const AgentView = ({
   const [kbSearchDone, setKbSearchDone] = useState(false);
   const [kbResultReady, setKbResultReady] = useState(false);
 
-  // Combine sample tickets + real tickets; real tickets override sample if same ID
-  const ticketMap = new Map();
-  SAMPLE_TICKETS.forEach(t => ticketMap.set(t.id, t));
-  tickets.forEach(t => ticketMap.set(t.id, t)); // real state wins
-  const allQueueTickets = Array.from(ticketMap.values());
+  // Show all sample tickets (preserving duplicates), then append any dynamic tickets
+  // that don't match a sample ID. Dynamic tickets update the first matching sample entry.
+  const dynamicById = new Map(tickets.map(t => [t.id, t]));
+  const allQueueTickets = [
+    ...SAMPLE_TICKETS.map(s => dynamicById.get(s.id) || s),
+    ...tickets.filter(t => !SAMPLE_TICKETS.some(s => s.id === t.id)),
+  ];
   const filteredQueue = searchQuery.trim()
     ? allQueueTickets.filter(t =>
       t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -486,7 +488,10 @@ const AgentView = ({
     GSD100_PRE_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setGsd100PreSteps(prev => [...prev, step]), 300 + i * 700));
     });
-    timers.push(setTimeout(() => setGsd100PreDone(true), 300 + GSD100_PRE_STEPS.length * 700));
+    const preDoneAt = 300 + GSD100_PRE_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd100PreDone(true), preDoneAt));
+    timers.push(setTimeout(() => setGsd100ContextSubmitted(true), preDoneAt + 1500));
+    timers.push(setTimeout(() => setGsd100ContextVisible(true), preDoneAt + 3300));
     return () => timers.forEach(clearTimeout);
   }, [agentSelectedTicketId]);
 
@@ -741,7 +746,7 @@ const AgentView = ({
 
   const handleAgentApply = (ticketId, commentIdx) => {
     const ticket = allQueueTickets.find(t => t.id === ticketId);
-    const comment = ticket?.comments[commentIdx];
+    const comment = ticket?.comments?.[commentIdx];
     const sopText = comment?.solution
       || (comment?.matchedScenario ? scenarioLibrary.find(s => s.scenario === comment.matchedScenario.scenario)?.solution : null)
       || '';
@@ -829,7 +834,7 @@ const AgentView = ({
             </div>
           ) : filteredQueue.map(t => (
             <button
-              key={t.id}
+              key={t.id + '_' + t.createdAt}
               onClick={() => {
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
@@ -1338,26 +1343,6 @@ const AgentView = ({
                                       </div>
                                     ))}
                                   </div>
-                                  {!gsd100ContextSubmitted && (
-                                    <div className="mt-3 p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center gap-3">
-                                      <p className="text-sm text-slate-600 font-medium flex-1">Do you want to update these comments in this ticket?</p>
-                                      <button
-                                        onClick={() => {
-                                          setGsd100ContextSubmitted(true);
-                                          setTimeout(() => setGsd100ContextVisible(true), 1800);
-                                        }}
-                                        className="flex-shrink-0 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-1"
-                                      >
-                                        <CheckCircle className="w-3 h-3" /> Approve
-                                      </button>
-                                      <button
-                                        onClick={() => {}}
-                                        className="flex-shrink-0 px-3 py-1.5 bg-white hover:bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-colors flex items-center gap-1"
-                                      >
-                                        Reject
-                                      </button>
-                                    </div>
-                                  )}
                                 </div>
                               )}
                               {agentTicket.id === 't/23887' && gsd100ContextVisible && (
