@@ -11,7 +11,7 @@ export const CSI_STEPS = [
   'Parsing ticket summary and reporter context...',
   'Tokenising key phrases from user reply...',
   'Matching against CSI taxonomy database...',
-  'Scoring category confidence across c-c classes...',
+  'Scoring category confidence across IT classes...',
   'Cross-referencing program and site metadata...',
   'Validating CSI triple against historical ticket corpus...',
   'Finalising category, type, and item classification...',
@@ -58,8 +58,8 @@ export const GSD100_REC_RESOLUTION = [
 
 export const GSD100_RUNBOOK_STEPS = [
   'Querying scenario runbook library for CSI match...',
-  'Matching CSI: c-c / AC historical dashboard / access...',
-  'Locating SOP for AC historical dashboard access requests...',
+  'Matching CSI: IT / HR Function dashboard / access...',
+  'Locating SOP for HR Function dashboard access requests...',
   'Retrieving RUNBOOK-CC-047 from knowledge base...',
   'Validating runbook version and current applicability...',
 ];
@@ -76,7 +76,7 @@ export const GSD100_TROUBLESHOOT_STEPS = [
   'Searching troubleshoot guide index for AC dashboard entries...',
   'Checking error-code catalogue for access-related entries...',
   'Scanning step-by-step guides for dashboard permission issues...',
-  'Cross-referencing troubleshoot tags: c-c, dashboard, access...',
+  'Cross-referencing troubleshoot tags: IT, dashboard, access...',
 ];
 
 export const GSD103_CONTEXT_STEPS = [
