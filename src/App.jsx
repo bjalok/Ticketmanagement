@@ -2,7 +2,7 @@
 import {
   Search, Inbox, Cpu, Database,
   Zap, BookOpen, UserCheck, Check, Terminal, CheckCircle, Layers, Send,
-  Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink, Activity
+  Tag, Link, Clock, AlertTriangle, Server, Phone, ExternalLink, Activity, PlayCircle
 } from 'lucide-react';
 
 // Pre-existing sample tickets shown in agent queue 
@@ -81,6 +81,16 @@ const SAMPLE_TICKETS = [
     description: 'VPN disconnects every few minutes',
     status: 'Open',
     createdAt: '13 Apr 2026, 4:00 PM',
+    hasUpdate: true,
+    isSample: true,
+    comments: [],
+  },
+  {
+    id: 't/23912',
+    email: 'ops-team@company.com',
+    description: 'Backend Pod Failure, Order-service pods are restarting frequently, causing delays in processing customer orders.',
+    status: 'Open',
+    createdAt: '14 Apr 2026, 9:00 AM',
     hasUpdate: true,
     isSample: true,
     comments: [],
@@ -490,6 +500,114 @@ const GSD110_LIFECYCLE_STEPS = [
   'Issue persists — VPN still disconnecting every ~5 minutes...',
 ];
 
+// Resolution apply step sequences — one per wired ticket
+const GSD100_APPLY_STEPS = [
+  'Submitting viewer_historical role assignment request for reporter (Gurgaon site)...',
+  'Enrolling reporter in HR Operations distribution group...',
+  'Notifying IT admin: access grant for Historical Operations Dashboard → HR Functions...',
+  'Scheduling access verification check (15–30 min after role propagation)...',
+  'Resolution steps submitted — awaiting admin confirmation.',
+];
+const GSD104_APPLY_STEPS = [
+  'Marking ticket as transient — pipeline self-recovered, no further action needed...',
+  'Adding resolution note to ticket record...',
+  'Flagging pipeline for next-run automated monitoring...',
+  'Ticket resolved and closed.',
+];
+const GSD106_APPLY_STEPS = [
+  'Updating warehouse ETL_WH auto-suspend setting to 300s...',
+  'Upgrading warehouse ETL_WH from X-Small to Small tier...',
+  'Applying peak-hour priority configuration (14:00–16:00 window)...',
+  'Rescheduling etl_peak_load_batch for next peak window with updated config...',
+  'ETL configuration updated — changes confirmed and applied.',
+];
+const GSD108_APPLY_STEPS = [
+  'Updating Deployment spec: pod memory limit 256Mi → 512Mi for api-gateway...',
+  'Reverting ConfigMap: JVM_HEAP_SIZE 200m → 128m to stay within limit...',
+  'Applying changes: kubectl apply -f deployment.yaml (namespace: production)...',
+  'Verifying pod restart and health check status — all endpoints 200 OK...',
+  'Preventive fix applied — api-gateway configuration updated successfully.',
+];
+const GSD110_APPLY_STEPS = [
+  'Sending VPN client configuration update to reporter: vpn-user@company.com...',
+  'Enabling keepalive on VPN client: interval set to 60s...',
+  'Extending DHCP lease on VPN gateway to 3600s...',
+  'Verifying VPN session stability post-configuration (monitoring 5 min)...',
+  'VPN configuration applied — keepalive active, session monitoring confirmed.',
+];
+
+// t/23912 — Backend Pod Failure (Order-service CrashLoopBackOff)
+const GSD112_CONTEXT_STEPS = [
+  'Reading ticket description and reporter details...',
+  'Parsing ticket summary and key phrases...',
+  'Checking required context fields against ticket schema...',
+  'Evaluating completeness of environment and pod details in description...',
+  'Verifying namespace, deployment, and affected service information...',
+  'All required fields present — context complete...',
+];
+const GSD112_DUP_STEPS = [
+  'Scanning active incident queue for similar issues...',
+  'Embedding ticket description for semantic similarity...',
+  'Comparing against open tickets (last 90 days)...',
+  'Querying resolved ticket history for Kubernetes pod restart issues...',
+  'Computing cosine similarity scores across corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+const GSD112_INV_STEPS = [
+  'Connecting to Kubernetes cluster event logs (namespace: production)...',
+  'Fetching pod event history for order-service deployment...',
+  'Identifying pod restarts: order-service-6d8f4b-xk9p2 — CrashLoopBackOff detected...',
+  'Parsing crash logs — ConnectionTimeoutException to payment-svc:8080...',
+  'Checking connection pool status: 50/50 active connections exhausted...',
+  'Analysing health check failures: /actuator/health returning 503...',
+  'Correlating payment-service endpoint availability at crash time...',
+  'Root cause identified — payment-service timeout exhausting connection pool; pod health check fails, triggering CrashLoopBackOff...',
+];
+const GSD112_REC_STEPS = [
+  'Loading similar ticket corpus from vector store...',
+  'Searching for Kubernetes pod crash loop tickets...',
+  'Computing similarity scores against historical corpus...',
+  'Applying 80% confidence threshold filter...',
+  'No tickets found above confidence threshold...',
+];
+const GSD112_RUNBOOK_STEPS = [
+  'Querying scenario runbook library for CSI match...',
+  'Matching CSI: IT / Kubernetes Platform / Pod crash loop...',
+  'Locating SOP for CrashLoopBackOff recovery...',
+  'Retrieving RUNBOOK-K8S-019 from knowledge base...',
+  'Validating runbook version and current applicability...',
+];
+const GSD112_RUNBOOK_RESOLUTION = [
+  { cmd: 'kubectl get pods -n production | grep order-service', desc: 'List all order-service pods and their current restart counts.' },
+  { cmd: 'kubectl describe pod order-service-6d8f4b-xk9p2 -n production', desc: 'Review pod events, exit codes, and resource limits.' },
+  { cmd: 'kubectl logs order-service-6d8f4b-xk9p2 -n production --previous', desc: 'Fetch previous container logs to confirm root cause.' },
+  { cmd: 'kubectl rollout restart deployment/order-service -n production', desc: 'Restart deployment with fresh pod instances to clear CrashLoopBackOff.' },
+  { cmd: 'kubectl scale deployment/order-service --replicas=3 -n production', desc: 'Scale up to 3 replicas to distribute connection load and prevent pool exhaustion.' },
+];
+const GSD112_TROUBLESHOOT_STEPS = [
+  'Searching troubleshoot guide index for Kubernetes CrashLoopBackOff entries...',
+  'Checking error-code catalogue for ConnectionTimeoutException entries...',
+  'Scanning step-by-step guides for pod restart loop issues...',
+  'Cross-referencing troubleshoot tags: kubernetes, crashloop, connection-timeout...',
+];
+const GSD112_LIFECYCLE_STEPS = [
+  'Fetching pod event history for order-service (last 30 minutes)...',
+  'Scanning restart records post-initial crash timestamp (after 08:46)...',
+  'Checking pod order-service-6d8f4b-xk9p2 current status: CrashLoopBackOff...',
+  'Measuring restart count: 6 restarts in last 25 minutes...',
+  'Verifying payment-service endpoint availability: still unreachable...',
+  'Connection pool still exhausted — root cause unresolved...',
+  'Issue persists — order-service pods in active CrashLoopBackOff...',
+];
+const GSD112_APPLY_STEPS = [
+  'Executing: kubectl rollout restart deployment/order-service -n production...',
+  'Executing: kubectl scale deployment/order-service --replicas=3 -n production...',
+  'Monitoring pod startup and health check status...',
+  'Verifying connection pool recovery and payment-service reachability...',
+  'Pod rollout complete — order-service stabilized, health checks passing.',
+];
+
 // Knowledge Base — t/23757 incident record
 const GSD076_KB = {
   id: 't/23757',
@@ -675,6 +793,43 @@ const AgentView = ({
   const [gsd110TroubleshootDone, setGsd110TroubleshootDone] = useState(false);
   const [gsd110LifecycleSteps, setGsd110LifecycleSteps] = useState([]);
   const [gsd110LifecycleDone, setGsd110LifecycleDone] = useState(false);
+
+  // Resolution Execution Agent state — one set per wired ticket
+  const [gsd100ApplyApproved, setGsd100ApplyApproved] = useState(false);
+  const [gsd100ApplySteps, setGsd100ApplySteps] = useState([]);
+  const [gsd100ApplyDone, setGsd100ApplyDone] = useState(false);
+  const [gsd104ApplyApproved, setGsd104ApplyApproved] = useState(false);
+  const [gsd104ApplySteps, setGsd104ApplySteps] = useState([]);
+  const [gsd104ApplyDone, setGsd104ApplyDone] = useState(false);
+  const [gsd106ApplyApproved, setGsd106ApplyApproved] = useState(false);
+  const [gsd106ApplySteps, setGsd106ApplySteps] = useState([]);
+  const [gsd106ApplyDone, setGsd106ApplyDone] = useState(false);
+  const [gsd108ApplyApproved, setGsd108ApplyApproved] = useState(false);
+  const [gsd108ApplySteps, setGsd108ApplySteps] = useState([]);
+  const [gsd108ApplyDone, setGsd108ApplyDone] = useState(false);
+  const [gsd110ApplyApproved, setGsd110ApplyApproved] = useState(false);
+  const [gsd110ApplySteps, setGsd110ApplySteps] = useState([]);
+  const [gsd110ApplyDone, setGsd110ApplyDone] = useState(false);
+  const [gsd112ContextSteps, setGsd112ContextSteps] = useState([]);
+  const [gsd112ContextDone, setGsd112ContextDone] = useState(false);
+  const [gsd112CtiSteps, setGsd112CtiSteps] = useState([]);
+  const [gsd112CtiDone, setGsd112CtiDone] = useState(false);
+  const [gsd112DupSteps, setGsd112DupSteps] = useState([]);
+  const [gsd112DupDone, setGsd112DupDone] = useState(false);
+  const [gsd112InvSteps, setGsd112InvSteps] = useState([]);
+  const [gsd112InvDone, setGsd112InvDone] = useState(false);
+  const [gsd112InvLogsVisible, setGsd112InvLogsVisible] = useState(false);
+  const [gsd112RecSteps, setGsd112RecSteps] = useState([]);
+  const [gsd112RecDone, setGsd112RecDone] = useState(false);
+  const [gsd112RunbookSteps, setGsd112RunbookSteps] = useState([]);
+  const [gsd112RunbookDone, setGsd112RunbookDone] = useState(false);
+  const [gsd112TroubleshootSteps, setGsd112TroubleshootSteps] = useState([]);
+  const [gsd112TroubleshootDone, setGsd112TroubleshootDone] = useState(false);
+  const [gsd112LifecycleSteps, setGsd112LifecycleSteps] = useState([]);
+  const [gsd112LifecycleDone, setGsd112LifecycleDone] = useState(false);
+  const [gsd112ApplyApproved, setGsd112ApplyApproved] = useState(false);
+  const [gsd112ApplySteps, setGsd112ApplySteps] = useState([]);
+  const [gsd112ApplyDone, setGsd112ApplyDone] = useState(false);
 
   // KB incident search state
   const [kbSearchTicketId, setKbSearchTicketId] = useState(null);
@@ -1067,6 +1222,83 @@ const AgentView = ({
     return () => timers.forEach(clearTimeout);
   }, [gsd110TroubleshootDone]);
 
+  // t/23912 context + CSI + duplicate animation
+  useEffect(() => {
+    if (agentSelectedTicketId !== 't/23912') return;
+    setGsd112ContextSteps([]); setGsd112ContextDone(false);
+    setGsd112CtiSteps([]); setGsd112CtiDone(false);
+    setGsd112DupSteps([]); setGsd112DupDone(false);
+    setGsd112InvSteps([]); setGsd112InvDone(false); setGsd112InvLogsVisible(false);
+    setGsd112RecSteps([]); setGsd112RecDone(false);
+    setGsd112RunbookSteps([]); setGsd112RunbookDone(false);
+    setGsd112TroubleshootSteps([]); setGsd112TroubleshootDone(false);
+    setGsd112LifecycleSteps([]); setGsd112LifecycleDone(false);
+    const timers = [];
+    GSD112_CONTEXT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112ContextSteps(prev => [...prev, step]), 300 + i * 700));
+    });
+    const contextDoneAt = 300 + GSD112_CONTEXT_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd112ContextDone(true), contextDoneAt));
+    const ctiStart = contextDoneAt + 600;
+    CSI_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112CtiSteps(prev => [...prev, step]), ctiStart + i * 900));
+    });
+    const ctiDoneAt = ctiStart + CSI_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd112CtiDone(true), ctiDoneAt));
+    const dupStart = ctiDoneAt + 600;
+    GSD112_DUP_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112DupSteps(prev => [...prev, step]), dupStart + i * 900));
+    });
+    const dupDoneAt = dupStart + GSD112_DUP_STEPS.length * 900;
+    timers.push(setTimeout(() => setGsd112DupDone(true), dupDoneAt));
+    return () => timers.forEach(clearTimeout);
+  }, [agentSelectedTicketId]);
+
+  // t/23912 investigation animation — starts after dup detection complete
+  useEffect(() => {
+    if (!gsd112DupDone) return;
+    const timers = [];
+    GSD112_INV_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112InvSteps(prev => [...prev, step]), 1200 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd112InvDone(true), 1200 + GSD112_INV_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd112DupDone]);
+
+  // t/23912 recommendation animation — starts after investigation complete
+  useEffect(() => {
+    if (!gsd112InvDone) return;
+    const timers = [];
+    GSD112_REC_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112RecSteps(prev => [...prev, step]), 1200 + i * 700));
+    });
+    const recDoneAt = 1200 + GSD112_REC_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd112RecDone(true), recDoneAt));
+    const runbookStart = recDoneAt + 800;
+    GSD112_RUNBOOK_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112RunbookSteps(prev => [...prev, step]), runbookStart + i * 700));
+    });
+    const runbookDoneAt = runbookStart + GSD112_RUNBOOK_STEPS.length * 700;
+    timers.push(setTimeout(() => setGsd112RunbookDone(true), runbookDoneAt));
+    const troubleshootStart = runbookDoneAt + 800;
+    GSD112_TROUBLESHOOT_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112TroubleshootSteps(prev => [...prev, step]), troubleshootStart + i * 700));
+    });
+    timers.push(setTimeout(() => setGsd112TroubleshootDone(true), troubleshootStart + GSD112_TROUBLESHOOT_STEPS.length * 700));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd112InvDone]);
+
+  // t/23912 lifecycle animation — starts after recommendation complete
+  useEffect(() => {
+    if (!gsd112TroubleshootDone) return;
+    const timers = [];
+    GSD112_LIFECYCLE_STEPS.forEach((step, i) => {
+      timers.push(setTimeout(() => setGsd112LifecycleSteps(prev => [...prev, step]), 1500 + i * 900));
+    });
+    timers.push(setTimeout(() => setGsd112LifecycleDone(true), 1500 + GSD112_LIFECYCLE_STEPS.length * 900));
+    return () => timers.forEach(clearTimeout);
+  }, [gsd112TroubleshootDone]);
+
   // t/23919 context validation + CSI + duplicate + recommendation animation
   useEffect(() => {
     if (agentSelectedTicketId !== 't/23919') return;
@@ -1293,6 +1525,28 @@ const AgentView = ({
     }, totalTime);
   };
 
+  const handleResolutionApprove = (ticketId) => {
+    const cfgMap = {
+      't/23887': { steps: GSD100_APPLY_STEPS, setApproved: setGsd100ApplyApproved, setSteps: setGsd100ApplySteps, setDone: setGsd100ApplyDone },
+      't/23888': { steps: GSD104_APPLY_STEPS, setApproved: setGsd104ApplyApproved, setSteps: setGsd104ApplySteps, setDone: setGsd104ApplyDone },
+      't/23906': { steps: GSD106_APPLY_STEPS, setApproved: setGsd106ApplyApproved, setSteps: setGsd106ApplySteps, setDone: setGsd106ApplyDone },
+      't/23908': { steps: GSD108_APPLY_STEPS, setApproved: setGsd108ApplyApproved, setSteps: setGsd108ApplySteps, setDone: setGsd108ApplyDone },
+      't/23910': { steps: GSD110_APPLY_STEPS, setApproved: setGsd110ApplyApproved, setSteps: setGsd110ApplySteps, setDone: setGsd110ApplyDone },
+      't/23912': { steps: GSD112_APPLY_STEPS, setApproved: setGsd112ApplyApproved, setSteps: setGsd112ApplySteps, setDone: setGsd112ApplyDone },
+    };
+    const cfg = cfgMap[ticketId];
+    if (!cfg) return;
+    cfg.setApproved(true);
+    cfg.steps.forEach((stepText, i) => {
+      setTimeout(() => {
+        cfg.setSteps(prev => [...prev, stepText]);
+        if (i === cfg.steps.length - 1) {
+          setTimeout(() => cfg.setDone(true), 900);
+        }
+      }, i * 950);
+    });
+  };
+
   return (
     <div className="flex-1 flex overflow-hidden">
 
@@ -1328,7 +1582,7 @@ const AgentView = ({
                 setAgentSelectedTicketId(t.id);
                 setAgentActiveTab('Overview');
                 const hasBeenRouted = t.comments && t.comments.some(c => c.routedAfterEnrichment);
-                if (!hasBeenRouted && t.id !== 't/23887' && t.id !== 't/23919' && t.id !== 't/23888' && t.id !== 't/23906' && t.id !== 't/23908' && t.id !== 't/23910') {
+                if (!hasBeenRouted && t.id !== 't/23887' && t.id !== 't/23919' && t.id !== 't/23888' && t.id !== 't/23906' && t.id !== 't/23908' && t.id !== 't/23910' && t.id !== 't/23912') {
                   // Ensure sample tickets are in shared state so processAIEnrichment can update them
                   if (t.isSample) {
                     setTickets(prev => {
@@ -1445,6 +1699,7 @@ const AgentView = ({
                       't/23906': 'Data Ops Team',
                       't/23908': 'Platform Engineering',
                       't/23910': 'Priya Mehta',
+                      't/23912': 'Ops Team',
                     };
                     const callerName = callerMap[agentTicket.id] || agentTicket.email;
                     return (
@@ -1523,6 +1778,12 @@ const AgentView = ({
                             gsd110ContextDone
                               ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
                               : gsd110ContextSteps.length > 0
+                                ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
+                                : null
+                          ) : agentTicket?.id === 't/23912' ? (
+                            gsd112ContextDone
+                              ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Context Validated</span>
+                              : gsd112ContextSteps.length > 0
                                 ? <span className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">Analysing <ThinkingDots /></span>
                                 : null
                           ) : pipeline?.enrichment ? (() => {
@@ -1801,6 +2062,84 @@ const AgentView = ({
                             )}
                           </div>
                         )}
+                        {/* t/23912: context validation + CSI + duplicate (no duplicate found) */}
+                        {agentTicket.id === 't/23912' && !isThinking && gsd112ContextSteps.length > 0 && (
+                          <div className="mt-2 space-y-2">
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <div>
+                                  <p className="text-sm font-bold text-slate-600">Validating Context</p>
+                                  <p className="text-sm text-slate-400">14 Apr 2026, 9:01 AM</p>
+                                </div>
+                                {!gsd112ContextDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Analysing <ThinkingDots /></span>
+                                  : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Context Validated — Context Provided</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd112ContextSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {gsd112CtiSteps.length > 0 && (
+                              <div className="p-2.5 bg-violet-50 rounded-lg border border-violet-100">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-violet-700">Determining CSI (Category, Subcategory, Item)</p>
+                                  {!gsd112CtiDone
+                                    ? <span className="flex items-center gap-1 text-sm text-violet-500 font-medium">Analysing <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" /> Detected</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd112CtiSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-violet-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd112CtiDone && (
+                                  <div className="mt-2 pt-2 border-t border-violet-100 grid grid-cols-3 gap-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Category</p>
+                                      <p className="text-sm font-semibold text-slate-700">IT</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Subcategory</p>
+                                      <p className="text-sm font-semibold text-slate-700">Kubernetes Platform</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-bold text-violet-400 uppercase tracking-wider mb-0.5">Item</p>
+                                      <p className="text-sm font-semibold text-slate-700">Pod crash loop</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {gsd112DupSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Identifying Duplicates</p>
+                                  {!gsd112DupDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Scanning <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1"><Check className="w-2.5 h-2.5" /> No duplicates</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd112DupSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd112DupDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 italic">No duplicate tickets found above 80% confidence threshold.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
                         {/* t/23910: context validation + CSI + duplicate (no duplicate found) */}
                         {agentTicket.id === 't/23910' && !isThinking && gsd110ContextSteps.length > 0 && (
                           <div className="mt-2 space-y-2">
@@ -1957,7 +2296,7 @@ const AgentView = ({
                             )}
                           </div>
                         )}
-                        {agentTicket.id !== 't/23919' && agentTicket.id !== 't/23888' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && agentTicket.id !== 't/23910' && pipeline?.enrichment && !isThinking ? (() => {
+                        {agentTicket.id !== 't/23919' && agentTicket.id !== 't/23888' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && agentTicket.id !== 't/23910' && agentTicket.id !== 't/23912' && pipeline?.enrichment && !isThinking ? (() => {
                           const enrichmentIdx = agentComments.indexOf(pipeline.enrichment);
                           const reporterReply = agentComments.find((c, i) => c.role === 'user' && i > enrichmentIdx);
                           const enrichmentResolved = !!(reporterReply);
@@ -2215,23 +2554,24 @@ const AgentView = ({
                               )}
                             </div>
                           );
-                        })() : agentTicket.id !== 't/23919' && agentTicket.id !== 't/23888' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && agentTicket.id !== 't/23910' && !isThinking && (
+                        })() : agentTicket.id !== 't/23919' && agentTicket.id !== 't/23888' && agentTicket.id !== 't/23906' && agentTicket.id !== 't/23908' && agentTicket.id !== 't/23910' && agentTicket.id !== 't/23912' && !isThinking && (
                           <p className="text-sm text-slate-500 mt-0.5">All required context fields present. Ticket routed to resolution agents.</p>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Investigate Agent Card — t/23887, t/23888, t/23906, t/23908 & t/23910 */}
-                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23888' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908' || agentTicket?.id === 't/23910') && (() => {
+                  {/* Investigate Agent Card — t/23887, t/23888, t/23906, t/23908, t/23910 & t/23912 */}
+                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23888' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908' || agentTicket?.id === 't/23910' || agentTicket?.id === 't/23912') && (() => {
                     const is87 = agentTicket.id === 't/23887';
                     const is06 = agentTicket.id === 't/23906';
                     const is08 = agentTicket.id === 't/23908';
                     const is10 = agentTicket.id === 't/23910';
-                    const invSteps = is87 ? gsd100InvSteps : is06 ? gsd106InvSteps : is08 ? gsd108InvSteps : is10 ? gsd110InvSteps : gsd104InvSteps;
-                    const invDone = is87 ? gsd100InvDone : is06 ? gsd106InvDone : is08 ? gsd108InvDone : is10 ? gsd110InvDone : gsd104InvDone;
-                    const invLogsVisible = is87 ? gsd100InvLogsVisible : is06 ? gsd106InvLogsVisible : is08 ? gsd108InvLogsVisible : is10 ? gsd110InvLogsVisible : gsd104InvLogsVisible;
-                    const setInvLogsVisible = is87 ? setGsd100InvLogsVisible : is06 ? setGsd106InvLogsVisible : is08 ? setGsd108InvLogsVisible : is10 ? setGsd110InvLogsVisible : setGsd104InvLogsVisible;
+                    const is12 = agentTicket.id === 't/23912';
+                    const invSteps = is87 ? gsd100InvSteps : is06 ? gsd106InvSteps : is08 ? gsd108InvSteps : is10 ? gsd110InvSteps : is12 ? gsd112InvSteps : gsd104InvSteps;
+                    const invDone = is87 ? gsd100InvDone : is06 ? gsd106InvDone : is08 ? gsd108InvDone : is10 ? gsd110InvDone : is12 ? gsd112InvDone : gsd104InvDone;
+                    const invLogsVisible = is87 ? gsd100InvLogsVisible : is06 ? gsd106InvLogsVisible : is08 ? gsd108InvLogsVisible : is10 ? gsd110InvLogsVisible : is12 ? gsd112InvLogsVisible : gsd104InvLogsVisible;
+                    const setInvLogsVisible = is87 ? setGsd100InvLogsVisible : is06 ? setGsd106InvLogsVisible : is08 ? setGsd108InvLogsVisible : is10 ? setGsd110InvLogsVisible : is12 ? setGsd112InvLogsVisible : setGsd104InvLogsVisible;
                     const getLogColor = (line) => {
                       if (/ERROR/.test(line) || line.startsWith('Caused by:') || /Exception:/.test(line) || line.startsWith('java.lang.') || line.startsWith('java.io.')) return 'text-red-400';
                       if (/WARN/.test(line)) return 'text-yellow-400';
@@ -2330,8 +2670,25 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
     at com.vpn.client.Config.validate(Config.java:55)
 
 [2026-04-13 14:10:25] INFO  Session terminated. Exit code: 1`;
-                    const logLines = (is87 ? logText87 : is06 ? logText06 : is08 ? logText08 : is10 ? logText10 : logText85).split('\n');
-                    if (!is87 && !is06 && !is08 && !is10) return (
+                    const logText12 = `[2026-04-14 08:45:12] INFO  order-service pod starting: order-service-6d8f4b-xk9p2 (namespace: production)
+[2026-04-14 08:45:15] INFO  Connecting to payment-service endpoint: payment-svc:8080
+[2026-04-14 08:45:45] ERROR ConnectionTimeoutException: payment-svc:8080 unreachable after 30s (attempt 3/3)
+[2026-04-14 08:45:45] ERROR DB connection pool exhausted: 50/50 connections active
+[2026-04-14 08:45:46] ERROR Health check failed: GET /actuator/health → 503 Service Unavailable
+[2026-04-14 08:45:47] ERROR Pod crash: order-service-6d8f4b-xk9p2 — exit code: 1
+
+com.orders.service.PaymentConnectionException:
+    Failed to connect to payment-service after 3 retries
+    at com.orders.client.PaymentClient.connect(PaymentClient.java:112)
+    at com.orders.service.OrderProcessor.process(OrderProcessor.java:78)
+
+Caused by: java.net.ConnectException:
+    Connection timed out: payment-svc:8080
+    at sun.nio.ch.SocketChannelImpl.checkConnect(SocketChannelImpl.java:790)
+
+[2026-04-14 08:45:47] INFO  Pod terminating. Exit code: 1`;
+                    const logLines = (is87 ? logText87 : is06 ? logText06 : is08 ? logText08 : is10 ? logText10 : is12 ? logText12 : logText85).split('\n');
+                    if (!is87 && !is06 && !is08 && !is10 && !is12) return (
                       <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                         <div className="flex items-start gap-3">
                           <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center flex-shrink-0">
@@ -2378,7 +2735,7 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                                 <div className="flex items-center justify-between mb-1.5">
                                   <p className="text-sm font-bold text-slate-600">Root Cause Analysis</p>
-                                  <span className="text-sm text-slate-400">{is87 ? '13 Apr 2026, 9:20 AM' : is06 ? '13 Apr 2026, 2:01 PM' : is08 ? '13 Apr 2026, 3:01 PM' : is10 ? '13 Apr 2026, 4:01 PM' : '13 Apr 2026, 11:02 AM'}</span>
+                                  <span className="text-sm text-slate-400">{is87 ? '13 Apr 2026, 9:20 AM' : is06 ? '13 Apr 2026, 2:01 PM' : is08 ? '13 Apr 2026, 3:01 PM' : is10 ? '13 Apr 2026, 4:01 PM' : is12 ? '14 Apr 2026, 9:01 AM' : '13 Apr 2026, 11:02 AM'}</span>
                                 </div>
                                 <div className="space-y-1 font-mono">
                                   {invSteps.map((step, i) => (
@@ -2462,6 +2819,17 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                                             <p className="text-sm text-slate-700"><span className="font-semibold">DHCP Lease Interval Match:</span> DHCP lease duration (300s) matches the idle timeout, compounding disconnects during network handoff events and preventing stable reconnection.</p>
                                           </div>
                                         </>
+                                      ) : is12 ? (
+                                        <>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">Payment-Service Timeout:</span> order-service is unable to reach payment-svc:8080 — all 3 retry attempts time out after 30s, exhausting the DB connection pool (50/50 active) and causing the health check at /actuator/health to return 503.</p>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                                            <p className="text-sm text-slate-700"><span className="font-semibold">CrashLoopBackOff:</span> Kubernetes detects the failing health check and kills the pod (exit code 1), restarting it — but the restart re-triggers the same timeout cycle, resulting in a CrashLoopBackOff with 6 restarts in 25 minutes.</p>
+                                          </div>
+                                        </>
                                       ) : (
                                         <>
                                           <div className="flex items-start gap-2">
@@ -2515,6 +2883,9 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                             if (agentTicket?.id === 't/23910' && gsd110TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
                             if (agentTicket?.id === 't/23910' && gsd110InvDone && !gsd110TroubleshootDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
                             if (agentTicket?.id === 't/23910' && gsd110DupDone) return <span className="text-sm font-medium text-slate-400">Pending</span>;
+                            if (agentTicket?.id === 't/23912' && gsd112TroubleshootDone) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Recommendations Ready</span>;
+                            if (agentTicket?.id === 't/23912' && gsd112InvDone && !gsd112TroubleshootDone) return <span className="flex items-center gap-1.5 text-sm text-amber-500 font-medium">Searching <ThinkingDots /></span>;
+                            if (agentTicket?.id === 't/23912' && gsd112DupDone) return <span className="text-sm font-medium text-slate-400">Pending</span>;
                             if (pipeline?.historicalMatch) return <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Match Found</span>;
                             if (pipeline?.isDuplicateOf) return <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>;
                             if (pipeline?.kbArticlesOnly) return <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 flex items-center gap-1"><BookOpen className="w-3 h-3" /> KB Articles Found</span>;
@@ -2961,7 +3332,95 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                             )}
                           </div>
                         )}
-                        {agentTicket?.id !== 't/23887' && agentTicket?.id !== 't/23919' && agentTicket?.id !== 't/23888' && agentTicket?.id !== 't/23906' && agentTicket?.id !== 't/23908' && agentTicket?.id !== 't/23910' && !isThinking && routingTicketId !== agentSelectedTicketId && (
+                        {/* t/23912 Recommendation Agent — no similar ticket, runbook found, no troubleshoot steps */}
+                        {agentTicket?.id === 't/23912' && gsd112RecSteps.length > 0 && (
+                          <div className="mt-2 space-y-3">
+                            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm font-bold text-slate-600">Resolution from Similar Ticket</p>
+                                {!gsd112RecDone
+                                  ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                  : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> Not Found</span>}
+                              </div>
+                              <div className="space-y-1 font-mono">
+                                {gsd112RecSteps.map((step, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                    <span className="text-slate-400">*</span><span>{step}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              {gsd112RecDone && (
+                                <div className="mt-2 pt-2 border-t border-slate-200">
+                                  <p className="text-sm text-slate-500 font-medium">No similar resolved tickets found above 80% confidence threshold.</p>
+                                </div>
+                              )}
+                            </div>
+                            {gsd112RunbookSteps.length > 0 && (
+                              <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-blue-700">Scenario Runbook (RUNBOOK-K8S-019)</p>
+                                  {!gsd112RunbookDone
+                                    ? <span className="flex items-center gap-1 text-sm text-blue-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm font-bold text-blue-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd112RunbookSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-blue-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd112RunbookDone && (
+                                  <div className="mt-3 pt-2.5 border-t border-blue-200">
+                                    <div className="flex items-center gap-2 mb-2.5">
+                                      <div className="w-1 h-4 bg-blue-500 rounded-full flex-shrink-0" />
+                                      <p className="text-sm font-bold text-blue-800 uppercase tracking-wider">RUNBOOK-K8S-019</p>
+                                      <span className="text-xs text-blue-500 font-medium">CrashLoopBackOff Recovery</span>
+                                    </div>
+                                    <div className="space-y-2.5">
+                                      {GSD112_RUNBOOK_RESOLUTION.map((step, i) => (
+                                        <div key={i} className="flex items-start gap-2.5">
+                                          <span className="w-5 h-5 rounded-full bg-blue-600 text-white font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">{i + 1}</span>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="bg-slate-900 rounded-md px-3 py-1.5 mb-1 flex items-center gap-2">
+                                              <span className="text-green-400 text-xs font-mono flex-shrink-0">$</span>
+                                              <code className="text-green-300 font-mono text-xs whitespace-pre-wrap break-all">{step.cmd}</code>
+                                            </div>
+                                            <p className="text-xs text-slate-500 pl-1">{step.desc}</p>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {gsd112TroubleshootSteps.length > 0 && (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-sm font-bold text-slate-600">Troubleshoot Guide</p>
+                                  {!gsd112TroubleshootDone
+                                    ? <span className="flex items-center gap-1 text-sm text-slate-500 font-medium">Searching <ThinkingDots /></span>
+                                    : <span className="text-sm text-slate-400 font-medium flex items-center gap-1"><AlertTriangle className="w-3 h-3 text-slate-400" /> No Steps Found</span>}
+                                </div>
+                                <div className="space-y-1 font-mono">
+                                  {gsd112TroubleshootSteps.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
+                                      <span className="text-slate-400">*</span><span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {gsd112TroubleshootDone && (
+                                  <div className="mt-2 pt-2 border-t border-slate-200">
+                                    <p className="text-sm text-slate-500 font-medium">No troubleshoot guide steps found for this issue type.</p>
+                                    <p className="text-sm text-slate-400 mt-0.5">Refer to the runbook steps above.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {agentTicket?.id !== 't/23887' && agentTicket?.id !== 't/23919' && agentTicket?.id !== 't/23888' && agentTicket?.id !== 't/23906' && agentTicket?.id !== 't/23908' && agentTicket?.id !== 't/23910' && agentTicket?.id !== 't/23912' && !isThinking && routingTicketId !== agentSelectedTicketId && (
                           pipeline?.isDuplicateOf ? (
                             <div className="mt-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
                               <p className="text-sm text-slate-500">Analysis skipped — this is a duplicate ticket.</p>
@@ -3046,14 +3505,15 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                     </div>
                   </div>
 
-                  {/* LifecycleOps Agent Card — t/23887, t/23888, t/23906, t/23908 & t/23910 */}
-                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23888' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908' || agentTicket?.id === 't/23910') && (() => {
+                  {/* LifecycleOps Agent Card — t/23887, t/23888, t/23906, t/23908, t/23910 & t/23912 */}
+                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23888' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908' || agentTicket?.id === 't/23910' || agentTicket?.id === 't/23912') && (() => {
                     const is87 = agentTicket.id === 't/23887';
                     const is06 = agentTicket.id === 't/23906';
                     const is08 = agentTicket.id === 't/23908';
                     const is10 = agentTicket.id === 't/23910';
-                    const lifecycleSteps = is87 ? gsd100LifecycleSteps : is06 ? gsd106LifecycleSteps : is08 ? gsd108LifecycleSteps : is10 ? gsd110LifecycleSteps : gsd104LifecycleSteps;
-                    const lifecycleDone = is87 ? gsd100LifecycleDone : is06 ? gsd106LifecycleDone : is08 ? gsd108LifecycleDone : is10 ? gsd110LifecycleDone : gsd104LifecycleDone;
+                    const is12 = agentTicket.id === 't/23912';
+                    const lifecycleSteps = is87 ? gsd100LifecycleSteps : is06 ? gsd106LifecycleSteps : is08 ? gsd108LifecycleSteps : is10 ? gsd110LifecycleSteps : is12 ? gsd112LifecycleSteps : gsd104LifecycleSteps;
+                    const lifecycleDone = is87 ? gsd100LifecycleDone : is06 ? gsd106LifecycleDone : is08 ? gsd108LifecycleDone : is10 ? gsd110LifecycleDone : is12 ? gsd112LifecycleDone : gsd104LifecycleDone;
                     const getLifecycleLogColor = (line) => {
                       if (/ERROR/.test(line)) return 'text-red-400';
                       if (/WARN/.test(line)) return 'text-yellow-400';
@@ -3086,13 +3546,20 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                       '[2026-04-13 15:30:23] INFO  Disconnecting: vpn-user@company.com — Exit code: 1',
                       '[2026-04-13 15:30:25] WARN  Keepalive still disabled on client device',
                       '[2026-04-13 15:30:26] ERROR Issue persistent — VPN disconnecting every ~5 minutes',
+                    ] : is12 ? [
+                      '[2026-04-14 09:10:14] INFO  Pod watch started: order-service (namespace: production)',
+                      '[2026-04-14 09:10:15] WARN  order-service-6d8f4b-xk9p2: restart #4 detected',
+                      '[2026-04-14 09:15:22] ERROR ConnectionTimeoutException: payment-svc:8080 unreachable (restart #5)',
+                      '[2026-04-14 09:20:31] ERROR Pod crash: order-service-6d8f4b-xk9p2 — exit code: 1 (restart #6)',
+                      '[2026-04-14 09:20:32] WARN  CrashLoopBackOff: back-off 5m0s (restart threshold exceeded)',
+                      '[2026-04-14 09:20:33] ERROR Issue persistent — order-service pods in active CrashLoopBackOff',
                     ] : [
                       '[2026-04-06 03:47:12] INFO  Databridge pipeline started: [PROD] Salesforce to XXX Integration',
                       '[2026-04-06 03:47:14] INFO  Step Convert_Search_Fields 2 — processing records...',
                       '[2026-04-06 03:47:31] INFO  Step Convert_Search_Fields 2 completed — 1,247 records processed',
                       '[2026-04-06 03:47:45] INFO  Pipeline completed successfully. Exit code: 0',
                     ];
-                    if (!is87 && !is06 && !is08 && !is10) return (
+                    if (!is87 && !is06 && !is08 && !is10 && !is12) return (
                       <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                         <div className="flex items-start gap-3">
                           <div className="w-9 h-9 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center flex-shrink-0">
@@ -3129,8 +3596,8 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                             <div className="flex items-center justify-between mb-2">
                               <p className="text-sm font-bold text-slate-800">LifecycleOps Agent</p>
                               {lifecycleDone
-                                ? (is87 || is06 || is10)
-                                  ? <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> {is10 ? 'Issue Persistent' : 'Action Required'}</span>
+                                ? (is87 || is06 || is10 || is12)
+                                  ? <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> {is10 ? 'Issue Persistent' : is12 ? 'Issue Persistent' : 'Action Required'}</span>
                                   : <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> {is08 ? 'Transient — Self-Resolved' : 'Verified'}</span>
                                 : lifecycleSteps.length > 0
                                   ? <span className="flex items-center gap-1.5 text-sm text-green-500 font-medium">Analysing <ThinkingDots color="green" /></span>
@@ -3139,7 +3606,7 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                             </div>
                             {lifecycleSteps.length > 0 && (
                               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{is87 ? 'Access Lifecycle Verification' : is06 ? 'ETL Run Verification' : is08 ? 'Pod Recovery Verification' : is10 ? 'VPN Session Verification' : 'Recent Run Verification'}</p>
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{is87 ? 'Access Lifecycle Verification' : is06 ? 'ETL Run Verification' : is08 ? 'Pod Recovery Verification' : is10 ? 'VPN Session Verification' : is12 ? 'Pod Restart Verification' : 'Recent Run Verification'}</p>
                                 <div className="space-y-1 font-mono">
                                   {lifecycleSteps.map((step, i) => (
                                     <div key={i} className="flex items-center gap-1.5 text-sm text-slate-500">
@@ -3149,7 +3616,7 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                                 </div>
                                 {lifecycleDone && (
                                   <div className="mt-3 pt-2.5 border-t border-slate-200">
-                                    <p className={`text-sm font-bold mb-1 ${(is87 || is06 || is10) ? 'text-amber-700' : 'text-green-700'}`}>{is87 ? 'Access Not Yet Granted' : is06 ? 'Run Completed — 1 Hour Behind Schedule' : is08 ? 'Pod Recovered — Run Completed Successfully' : is10 ? 'VPN Still Disconnecting — Issue Not Resolved' : 'Recent Run Successful'}</p>
+                                    <p className={`text-sm font-bold mb-1 ${(is87 || is06 || is10 || is12) ? 'text-amber-700' : 'text-green-700'}`}>{is87 ? 'Access Not Yet Granted' : is06 ? 'Run Completed — 1 Hour Behind Schedule' : is08 ? 'Pod Recovered — Run Completed Successfully' : is10 ? 'VPN Still Disconnecting — Issue Not Resolved' : is12 ? 'Pods Still Crashing — CrashLoopBackOff Active' : 'Recent Run Successful'}</p>
                                     <p className="text-sm text-slate-600 mb-3">
                                       {is87
                                         ? 'viewer_historical role has not been assigned to reporter — access to Historical Operations Dashboard → HR Functions remains blocked pending admin action.'
@@ -3159,9 +3626,11 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                                             ? 'Pod api-gateway-7b9f4d restarted at 16:05 after the initial OOMKill — started cleanly with no further memory issues, health checks passed, run completed successfully at 16:06.'
                                             : is10
                                               ? 'VPN session disconnected again at 15:30 — keepalive fix has not been applied by reporter. Session timeout still triggering every ~5 minutes. Issue remains unresolved and is actively impacting the reporter.'
-                                              : 'Pipeline run on 6 Apr 2026 at 03:47 AM completed with no errors — confirming a transient data-driven failure.'}
+                                              : is12
+                                                ? 'order-service reached restart #6 at 09:20 and entered CrashLoopBackOff back-off. payment-svc:8080 remains unreachable, connection pool still exhausted. Issue is active and impacting customer order processing.'
+                                                : 'Pipeline run on 6 Apr 2026 at 03:47 AM completed with no errors — confirming a transient data-driven failure.'}
                                     </p>
-                                    <p className="text-sm font-bold text-slate-600 mb-1.5">{is87 ? 'Access Audit Log:' : is06 ? 'ETL Run Log:' : is08 ? 'Pod Recovery Log:' : is10 ? 'VPN Session Log:' : 'Recent Run Log:'}</p>
+                                    <p className="text-sm font-bold text-slate-600 mb-1.5">{is87 ? 'Access Audit Log:' : is06 ? 'ETL Run Log:' : is08 ? 'Pod Recovery Log:' : is10 ? 'VPN Session Log:' : is12 ? 'Pod Restart Log:' : 'Recent Run Log:'}</p>
                                     <div className="bg-slate-900 rounded-lg p-3 border border-slate-700 overflow-x-auto mb-3">
                                       <div className="text-sm font-mono leading-relaxed">
                                         {logLines.map((line, idx) => (
@@ -3169,9 +3638,9 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                                         ))}
                                       </div>
                                     </div>
-                                    <p className={`text-sm font-bold mb-1.5 ${(is87 || is06 || is10) ? 'text-amber-700' : 'text-green-700'}`}>Lifecycle Recommendation</p>
+                                    <p className={`text-sm font-bold mb-1.5 ${(is87 || is06 || is10 || is12) ? 'text-amber-700' : 'text-green-700'}`}>Lifecycle Recommendation</p>
                                     <div className="flex items-start gap-2">
-                                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${(is87 || is06 || is10) ? 'bg-amber-400' : 'bg-green-400'}`} />
+                                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${(is87 || is06 || is10 || is12) ? 'bg-amber-400' : 'bg-green-400'}`} />
                                       <p className="text-sm text-slate-700">
                                         {is87
                                           ? 'Access grant pending — viewer_historical role not yet assigned. Submit access request to admin and enrol reporter in HR Operations distribution group at Gurgaon site. Verify access after role propagation (15–30 min).'
@@ -3181,11 +3650,115 @@ Caused by: com.vpn.network.KeepaliveDisabledException:
                                               ? 'Transient failure confirmed — OOMKilled event was a single occurrence triggered by config rollout setting JVM_HEAP_SIZE=200m against 256Mi pod limit. Pod self-recovered on restart. Review ConfigMap changes and consider increasing pod memory limit to 512Mi or reverting JVM heap setting to prevent future occurrences. Refer to similar ticket resolution steps above.'
                                               : is10
                                                 ? 'Issue still persistent — VPN keepalive fix not yet applied by reporter. Follow RUNBOOK-NET-031: enable keepalive (60s interval) in VPN client settings and extend DHCP lease to 3600s. Re-verify session stability after applying fix. Escalate to network admin if gateway idle timeout cannot be adjusted.'
-                                                : 'Transient failure confirmed — Recent Run succeeded without intervention. This ticket can be closed. No service disruption persists.'}
+                                                : is12
+                                                  ? 'Issue still active — order-service in CrashLoopBackOff with 6 restarts. Execute RUNBOOK-K8S-019: rollout restart the deployment and scale to 3 replicas to distribute connection load. Verify payment-service reachability post-restart and monitor pod health checks.'
+                                                  : 'Transient failure confirmed — Recent Run succeeded without intervention. This ticket can be closed. No service disruption persists.'}
                                       </p>
                                     </div>
                                   </div>
                                 )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Auto Healing Agent */}
+                  {(agentTicket?.id === 't/23887' || agentTicket?.id === 't/23888' || agentTicket?.id === 't/23906' || agentTicket?.id === 't/23908' || agentTicket?.id === 't/23910' || agentTicket?.id === 't/23912') && (() => {
+                    const is87 = agentTicket.id === 't/23887';
+                    const is06 = agentTicket.id === 't/23906';
+                    const is08 = agentTicket.id === 't/23908';
+                    const is10 = agentTicket.id === 't/23910';
+                    const is12 = agentTicket.id === 't/23912';
+                    const isdup = !is87 && !is06 && !is08 && !is10 && !is12;
+                    const lifecycleDone = is87 ? gsd100LifecycleDone : is06 ? gsd106LifecycleDone : is08 ? gsd108LifecycleDone : is10 ? gsd110LifecycleDone : is12 ? gsd112LifecycleDone : gsd104LifecycleDone;
+                    const applyApproved = is87 ? gsd100ApplyApproved : is06 ? gsd106ApplyApproved : is08 ? gsd108ApplyApproved : is10 ? gsd110ApplyApproved : is12 ? gsd112ApplyApproved : gsd104ApplyApproved;
+                    const applySteps = is87 ? gsd100ApplySteps : is06 ? gsd106ApplySteps : is08 ? gsd108ApplySteps : is10 ? gsd110ApplySteps : is12 ? gsd112ApplySteps : gsd104ApplySteps;
+                    const applyDone = is87 ? gsd100ApplyDone : is06 ? gsd106ApplyDone : is08 ? gsd108ApplyDone : is10 ? gsd110ApplyDone : is12 ? gsd112ApplyDone : gsd104ApplyDone;
+                    const APPLY_STEPS = is87 ? GSD100_APPLY_STEPS : is06 ? GSD106_APPLY_STEPS : is08 ? GSD108_APPLY_STEPS : is10 ? GSD110_APPLY_STEPS : is12 ? GSD112_APPLY_STEPS : GSD104_APPLY_STEPS;
+                    return (
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center flex-shrink-0">
+                            <PlayCircle className="w-4 h-4 text-violet-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <div>
+                                <p className="text-sm font-bold text-slate-800">Auto Healing Agent</p>
+                              </div>
+                              {applyDone
+                                ? <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Applied</span>
+                                : applyApproved
+                                  ? <span className="flex items-center gap-1.5 text-sm text-violet-500 font-medium">Applying <ThinkingDots color="violet" /></span>
+                                  : isdup
+                                    ? <span className="text-sm font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">Skipped</span>
+                                    : lifecycleDone
+                                      ? <span className="text-sm font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">Awaiting Approval</span>
+                                      : <span className="text-sm font-medium text-slate-400">Pending</span>
+                              }
+                            </div>
+                            {isdup ? (
+                              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <p className="text-sm text-slate-500">Resolution skipped — this ticket is a confirmed duplicate. Refer to the parent ticket for active resolution steps.</p>
+                              </div>
+                            ) : !lifecycleDone ? null : applyDone ? (
+                              <div className="p-2.5 bg-green-50 rounded-lg border border-green-200">
+                                <p className="text-sm font-semibold text-green-700 mb-2.5">All resolution steps applied successfully.</p>
+                                <div className="space-y-1.5">
+                                  {APPLY_STEPS.map((step, i) => (
+                                    <div key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                                      <div className="w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-green-500 flex items-center justify-center flex-shrink-0">
+                                        <Check className="w-2 h-2 text-white" strokeWidth={3} />
+                                      </div>
+                                      <span>{step}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : applyApproved ? (
+                              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="space-y-2">
+                                  {APPLY_STEPS.map((step, i) => {
+                                    const isDone = applyDone || i < applySteps.length - 1;
+                                    const isRunning = !applyDone && i === applySteps.length - 1;
+                                    return (
+                                      <div key={i} className="flex items-center gap-2 text-sm">
+                                        <div className={`w-3.5 h-3.5 rounded-full flex-shrink-0 flex items-center justify-center border-2 transition-all duration-300 ${isDone ? 'bg-green-500 border-green-500' : isRunning ? 'bg-violet-400 border-violet-400 animate-pulse' : 'bg-white border-slate-300'}`}>
+                                          {isDone && <Check className="w-2 h-2 text-white" strokeWidth={3} />}
+                                        </div>
+                                        <span className={`transition-colors duration-200 ${isDone ? 'text-slate-600' : isRunning ? 'text-violet-600 font-medium' : 'text-slate-300'}`}>{step}</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="p-3 bg-amber-50 rounded-lg border border-amber-200 mb-3">
+                                  <p className="text-sm font-semibold text-amber-800 mb-1">Permission Required</p>
+                                  <p className="text-sm text-amber-700">
+                                    {is87
+                                      ? 'Apply resolution steps: submit access grant request, enrol reporter in HR Operations group, and notify IT admin.'
+                                      : is06
+                                        ? 'Apply resolution steps: update ETL_WH auto-suspend to 300s, upgrade to Small tier, and reconfigure peak-hour scheduling.'
+                                        : is08
+                                          ? 'Apply resolution steps: increase pod memory limit to 512Mi and revert JVM_HEAP_SIZE to 128m in ConfigMap.'
+                                          : is10
+                                            ? 'Apply resolution steps: enable VPN keepalive (60s), extend DHCP lease to 3600s, and verify session stability.'
+                                            : is12
+                                              ? 'Execute RUNBOOK-K8S-019 commands: rollout restart order-service deployment and scale to 3 replicas to resolve CrashLoopBackOff.'
+                                              : 'Apply recommended resolution steps to close this ticket.'}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => handleResolutionApprove(agentTicket.id)}
+                                  className="px-4 py-1.5 bg-violet-600 text-white text-sm font-bold rounded-lg hover:bg-violet-700 transition-colors flex items-center gap-1.5"
+                                >
+                                  <CheckCircle className="w-3.5 h-3.5" /> Approve &amp; Apply
+                                </button>
                               </div>
                             )}
                           </div>
